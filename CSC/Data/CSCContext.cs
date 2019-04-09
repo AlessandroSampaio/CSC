@@ -12,5 +12,6 @@ namespace CSC.Models
 
         public DbSet<Funcionario> Funcionario { get; set; }
         public DbSet<Cliente> Cliente { get; set; }
+        public DbSet<User> User { get; set; }
     }
 }

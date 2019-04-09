@@ -40,6 +40,7 @@ namespace CSC
 
             services.AddScoped<ClienteServices>();
             services.AddScoped<FuncionarioServices>();
+            services.AddScoped<UserServices>();
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

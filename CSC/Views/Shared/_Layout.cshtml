@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@model CSC.Models.User
+
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -60,31 +63,27 @@
                         <!-- Modal body -->
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <form>
+                                <form >
+                                    <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="control-label">Usuario: </label>
-                                            <input class="form-control" />
-
+                                            <label asp-for="nomeLogon" class="control-label">Usuario: </label>
+                                            <input asp-for="nomeLogon" class="form-control" />
                                         </div>
-                                    </form>
-                                </div>
-                                <div class="col-md-12">
-                                    <form>
+                                    </div>
+                                    <div class="col-md-12">
+
                                         <div class="form-group">
-                                            <label class="control-label">Senha: </label>
-                                            <input class="form-control" type="password" />
-
+                                            <label asp-for="Senha" class="control-label">Senha: </label>
+                                            <input asp-for="Senha" class="form-control" type="password" />
                                         </div>
-                                    </form>
-                                </div>
-                                <div class="col-md-12">
-                                    <button type="button" class="btn btn-primary btn-block" data-dismiss="modal">Logon</button>
-                                </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button  asp-controller="Home" asp-action="Logon" method="post" class="btn btn-primary btn-block" type="submit">Login</button>
+                                    </div>
+                                </form>
                             </div>
-
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
