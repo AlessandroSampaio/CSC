@@ -1,0 +1,22 @@
+﻿using CSC.Models.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace CSC.Models
+{
+    public class Atendimento
+    {
+        public int Id { get; set; }
+        public Funcionario Funcionario { get; set; }
+        public Cliente Cliente { get; set; }
+        public DateTime Abertura { get; set; }
+        public DateTime Encerramento { get; set; }
+        public AtendimentoStatus Status { get; set; }
+        public TipoAtendimento AtendimentoTipo { get; set; }
+        public int OrigemID { get; set; }
+
+
+    }
+}

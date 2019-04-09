@@ -1,0 +1,46 @@
+﻿@model IEnumerable<CSC.Models.Funcionario>
+
+<table class="table table-sm table-hover">
+    <thead class="thead-dark rounded">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Admissao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Demissao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Veiculo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Admissao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Demissao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Veiculo)
+            </td>
+            <td>
+                <a asp-action="Editar" asp-route-id="@item.Id"><i class="fas fa-pen"></i></a>       
+                <a asp-action="Detalhes" asp-route-id="@item.Id"><i class="fas fa-search"></i></a>       
+                <a asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<a  asp-action="Create" class="btn btn-primary float-right">Novo</a>
