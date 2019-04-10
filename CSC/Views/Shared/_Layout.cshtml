@@ -1,7 +1,4 @@
-﻿@model CSC.Models.User
-
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -63,27 +60,26 @@
                         <!-- Modal body -->
                         <div class="modal-body">
                             <div class="row">
-                                <form >
+                                <form>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label asp-for="nomeLogon" class="control-label">Usuario: </label>
-                                            <input asp-for="nomeLogon" class="form-control" />
+                                            <label name="nomeLogon" class="control-label">Usuario: </label>
+                                            <input name="nomeLogon" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-md-12">
 
                                         <div class="form-group">
-                                            <label asp-for="Senha" class="control-label">Senha: </label>
-                                            <input asp-for="Senha" class="form-control" type="password" />
+                                            <label name="Senha" class="control-label">Senha: </label>
+                                            <input name="Senha" class="form-control" type="password" />
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <button  asp-controller="Home" asp-action="Logon" method="post" class="btn btn-primary btn-block" type="submit">Login</button>
+                                        <button asp-controller="Home" asp-action="Logon" method="post" class="btn btn-primary btn-block" type="submit">Login</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
