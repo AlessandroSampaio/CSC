@@ -28,7 +28,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm" style="margin-left: 160px; background-color:#00144f;">
+        <nav class="navbar navbar-expand-sm" style="margin-left: 200px; background-color:#00144f;">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
 
@@ -41,7 +41,12 @@
     </header>
 
     <div class="sidenav">
-        <a asp-controller="Funcionarios" asp-action="Index" class="text-md-center">Funcionarios</a>
+        <button class="dropdown-btn"><i class="fas fa-portrait"></i> Pessoas</button>
+        <div class="dropdown-container">
+            <a asp-controller="Usuario" asp-action="Index" class="text-md-center"><i class="fas fa-user"></i> Funcionarios</a>
+            <a asp-controller="Funcionarios" asp-action="Index" class="text-md-center">Cadastro</a>
+        </div>
+        <a href="#"><i class="fas fa-comment-alt"></i> Atendimentos</a>
     </div>
 
     <partial name="_CookieConsentPartial" />
@@ -59,8 +64,9 @@
 
                         <!-- Modal body -->
                         <div class="modal-body">
-                            <div class="row">
-                                <form>
+                            <form>
+                                <div class="row">
+
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label name="nomeLogon" class="control-label">Usuario: </label>
@@ -77,8 +83,9 @@
                                     <div class="col-md-12">
                                         <button asp-controller="Home" asp-action="Logon" method="post" class="btn btn-primary btn-block" type="submit">Login</button>
                                     </div>
-                                </form>
-                            </div>
+
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

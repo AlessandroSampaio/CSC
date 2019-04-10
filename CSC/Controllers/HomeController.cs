@@ -25,7 +25,7 @@ namespace CSC.Controllers
         [HttpGet]
         public async Task<IActionResult> Logon(string nomeLogon, string senha)
         {
-            await _UserServices.InsertUserAsync(new User(nomeLogon, senha));
+            //await _UserServices.InsertUserAsync(new User(nomeLogon, senha));
             return RedirectToAction("Index");
         }
     }

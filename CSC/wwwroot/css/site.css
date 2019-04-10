@@ -1,6 +1,7 @@
-﻿.sidenav {
+﻿/* Fixed sidenav, full height */
+.sidenav {
     height: 100%; /* Full-height: remove this if you want "auto" height */
-    width: 160px; /* Set the width of the sidebar */
+    width: 200px; /* Set the width of the sidebar */
     position: fixed; /* Fixed Sidebar (stay in place on scroll) */
     z-index: 1; /* Stay on top */
     top: 0; /* Stay at the top */
@@ -11,22 +12,48 @@
     margin-top: 64px;
 }
 
-    /* The navigation menu links */
-    .sidenav a {
-       /* padding: 6px 8px 20px 16px;*/
-        text-decoration: none;
-        font-size: 25px;
-        color: #f1f1f1;
-        display: block;
-    }
+/* Style the sidenav links and the dropdown button */
+.sidenav a, .dropdown-btn {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #f1f1f1;
+    display: block;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+}
 
-     /* When you mouse over the navigation links, change their color */
-    .sidenav a:hover {
-        color: #fff;
-    }
+/* On mouse-over */
+.sidenav a:hover, .dropdown-btn:hover {
+    color: #f1f1f1;
+}
 
-    .main {
-        margin-left: 160px; /* Same as the width of the sidebar */
-        padding: 0px 10px;
-    }
+/* Main content */
+.main {
+    margin-left: 200px; /* Same as the width of the sidenav */
+    font-size: 20px; /* Increased text to enable scrolling */
+    padding: 0px 10px;
+}
 
+/* Add an active class to the active dropdown button */
+.active {
+    background-color: green;
+    color: white;
+}
+
+/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+.dropdown-container {
+display: none;
+background-color: #00144f;
+padding-left: 8px;
+}
+
+/* Optional: Style the caret down icon */
+.fa-caret-down {
+    float: right;
+    padding-right: 8px;
+}
