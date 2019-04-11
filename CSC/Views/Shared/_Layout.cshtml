@@ -35,7 +35,18 @@
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <button class="btn my-2 my-sm-0" type="button" data-toggle="modal" data-target="#loginForm"><i class="fas fa-user fa-2x text-white"></i></button>
+                @{
+                    if (ViewBag.user != null)
+                    {
+                        <p class="text-white">Seja Bem-Vindo<br /> @ViewBag.user.nomeLogon</p>
+                        <button class="btn my-2 my-sm-0" type="button" data-toggle="modal" data-target="#logoutForm"><i class="fas fa-user-times fa-2x text-white"></i></button>
+                    }
+                    else
+                    {
+                        <button class="btn my-2 my-sm-0" type="button" data-toggle="modal" data-target="#loginForm"><i class="fas fa-user fa-2x text-white"></i></button>
+                    }
+                }
+
             </form>
         </nav>
     </header>
@@ -86,6 +97,39 @@
 
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main">
+                <div class="modal fade" id="logoutForm">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Logout</h4>
+                                <button type="button" class="close" data-dismiss="modal" style="font-size:25px;">&times;</button>
+                            </div>
+
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <form method="post">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p>Você tem certeza?</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button type="submit" asp-action="Logout" class="btn btn-block"><i class="fas fa-check fa-5x" style="color:green"></i></button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button class="btn btn-block"><i class="fas fa-times fa-5x" style="color:red"></i></button>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
