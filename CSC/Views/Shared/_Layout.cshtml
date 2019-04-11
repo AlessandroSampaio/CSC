@@ -38,7 +38,7 @@
                 @{
                     if (ViewBag.user != null)
                     {
-                        <p class="text-white">Seja Bem-Vindo<br /> @ViewBag.user.nomeLogon</p>
+                        <p class="text-white">Seja Bem-Vindo, @ViewBag.user.nomeLogon</p>
                         <button class="btn my-2 my-sm-0" type="button" data-toggle="modal" data-target="#logoutForm"><i class="fas fa-user-times fa-2x text-white"></i></button>
                     }
                     else
@@ -55,8 +55,8 @@
         <button class="dropdown-btn"><i class="fas fa-portrait"></i> Pessoas</button>
         <div class="dropdown-container">
             <a asp-controller="Funcionarios" asp-action="Index" class="text-left"><i class="fas fa-user-tie"></i> Funcionario</a>
+            <a asp-controller="Usuarios" asp-action="Index" class="text-left"><i class="fas fa-user-secret"></i> Usuario</a>
             <a asp-controller="Cliente" asp-action="Index" class="text-left"><i class="fas fa-id-card"></i> Cliente</a>
-            <a asp-controller="Usuario" asp-action="Index" class="text-left"><i class="fas fa-user-secret"></i> Usuario</a>
         </div>
         <a href="#"><i class="fas fa-headphones"></i> Atendimentos</a>
     </div>
@@ -122,7 +122,7 @@
                                             <p>Você tem certeza?</p>
                                         </div>
                                         <div class="col-md-6">
-                                            <button type="submit" asp-action="Logout" class="btn btn-block"><i class="fas fa-check fa-5x" style="color:green"></i></button>
+                                            <button type="submit" asp-controller="Home" asp-action="Logout" class="btn btn-block"><i class="fas fa-check fa-5x" style="color:green"></i></button>
                                         </div>
                                         <div class="col-md-6">
                                             <button class="btn btn-block"><i class="fas fa-times fa-5x" style="color:red"></i></button>
