@@ -1,8 +1,5 @@
-﻿@model CSC.Models.User
+﻿@model CSC.Models.ViewModel.UserFormViewModel
 
-@{
-    ViewData["Title"] = "Create";
-}
 
 <h1>Create</h1>
 
@@ -10,34 +7,25 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="NomeLogon" class="control-label"></label>
-                <input asp-for="NomeLogon" class="form-control" />
-                <span asp-validation-for="NomeLogon" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Senha" class="control-label"></label>
-                <input asp-for="Senha" class="form-control" />
-                <span asp-validation-for="Senha" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Funcionario" class="control-label"></label>
-                
-                <select class="form-control">
-                    @if (ViewBag.Funcionarios != null)
-                    {
-                        @foreach (Funcionario item in ViewBag.Funcionarios)
-                        {
-                           <!-- <input type="hidden" asp-for="Funcionario.Id" value="@item.Id" />-->
-                            <option>@item.Nome</option>
-                        }
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger">
+                <div class="form-group">
+                    <label asp-for="User.NomeLogon"></label>
+                    <input type="text" asp-for="User.NomeLogon" class="form-control" />
+                    <span asp-validation-for="User.NomeLogon" class="alert-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="User.Senha"></label>
+                    <input type="password" asp-for="User.Senha" class="form-control" />
+                    <span asp-validation-for="User.NomeLogon" class="alert-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="User.FuncionarioId"></label>
+                    <select asp-for="User.FuncionarioId" asp-items="@(new SelectList(Model.Funcionarios, "Id", "Nome"))" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                    <input type="submit" asp-action="Create" class="btn btn-primary" />
+                </div>
             </div>
         </form>
     </div>

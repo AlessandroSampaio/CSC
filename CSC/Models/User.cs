@@ -14,6 +14,7 @@ namespace CSC.Models
         public string Senha { get; set; }
         [Required]
         public Funcionario Funcionario { get; set; }
+        public int FuncionarioId { get; set; }
 
         public User() { }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CSC.Models;
+using CSC.Models.ViewModel;
 using CSC.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -47,14 +48,15 @@ namespace CSC.Controllers
         public async Task<IActionResult> Create()
         {
             var listFunc = await _funcionarioServices.FindFuncionariosWithNoUsers();
-            ViewBag.Funcionarios = listFunc;
-            return View();
+            var ViewModel = new UserFormViewModel() { Funcionarios = listFunc };
+            return View(ViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(User usuario)
+        public async Task<IActionResult> Create(User user)
         {
-            await _userServices.InsertUserAsync(usuario);
+             
+            await _userServices.InsertUserAsync(user);
             return RedirectToAction("Index");
         }
     }
