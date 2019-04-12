@@ -1,0 +1,41 @@
+﻿@model IEnumerable<CSC.Models.User>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+        </div>
+        <table class="table table-sm table-hover">
+            <thead class="thead-dark rounded">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.nomeLogon)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.funcionario.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.funcionario.Admissao)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (User item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.nomeLogon)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.funcionario.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.funcionario.Admissao)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+

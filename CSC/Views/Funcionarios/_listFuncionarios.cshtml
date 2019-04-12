@@ -31,7 +31,14 @@
                 @Html.DisplayFor(modelItem => item.Demissao)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Veiculo)
+                @if(item.Veiculo == 'S')
+                {
+                    <i class="fas fa-check" style="color: green;"></i>
+                }
+                else
+                {
+                    <i class="fas fa-times" style="color: red;"></i>
+                }
             </td>
             <td>
                 <a asp-action="Editar" asp-route-id="@item.Id"><i class="fas fa-pen"></i></a>       

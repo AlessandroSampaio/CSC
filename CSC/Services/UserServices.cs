@@ -1,6 +1,7 @@
 ﻿using CSC.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -46,6 +47,16 @@ namespace CSC.Services
                 .FirstOrDefaultAsync(f => f.Id == id);
         }
 
+        public async Task<List<User>> FindAllAsync()
+        {
+            return await _context.User.ToListAsync();
+        }
+
+        public async Task<List<User>> FindByNameAsync(string _name)
+        {
+            return await _context.User.Where(user => user.nomeLogon.Contains(_name)).ToListAsync();
+            
+        }
 
         public async Task InsertUserAsync(User user)
         {

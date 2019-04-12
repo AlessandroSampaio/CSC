@@ -20,11 +20,24 @@ namespace CSC.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var listUser = await _userServices.FindAllAsync();
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
             }
-            return View();
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View(listUser);
+        }
+
+
+        public async Task<IActionResult> Listagem(string _name)
+        {
+            if (_name == null) { _name = ""; }
+            var listUsuarios = await _userServices.FindByNameAsync(_name);
+            return PartialView("_listUsuarios", listUsuarios);
         }
     }
 }

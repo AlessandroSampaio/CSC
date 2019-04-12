@@ -13,8 +13,10 @@ namespace CSC.Models
         [Required]
         public string Nome { get; set; }
         [Required]
+        [Display(Name ="Data de Admissão")]
         [DataType (DataType.Date)]
         public DateTime Admissao  { get; set; }
+        [Display(Name = "Data de Demissão")]
         [DataType(DataType.Date)]
         public DateTime? Demissao { get; set; }
         public char Veiculo { get; set; }
