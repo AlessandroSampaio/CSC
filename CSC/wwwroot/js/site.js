@@ -12,6 +12,12 @@
                 dropdownContent.style.display = "block";
             }
         });
-    } }
-    )
+    }
+}
+);
 
+$(function () {
+    $('input[type=text]').keyup(function () {
+        $(this).val($(this).val().toUpperCase());
+    });
+});
