@@ -19,7 +19,7 @@ namespace CSC.Models
         [Display(Name = "Data de Demissão")]
         [DataType(DataType.Date)]
         public DateTime? Demissao { get; set; }
-        public char Veiculo { get; set; }
+        public bool Veiculo { get; set; }
 
     }
 }

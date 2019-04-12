@@ -49,11 +49,6 @@ namespace CSC.Services
         public async Task UpdateAsync(Funcionario obj)
         {
             bool hasAny = await _context.Funcionario.AnyAsync(x => x.Id == obj.Id);
-            if (!hasAny)
-            {
-                //throw new NotFoundException("Id not found");
-            }
-
             try
             {
                 _context.Update(obj);
@@ -61,8 +56,13 @@ namespace CSC.Services
             }
             catch (DbUpdateConcurrencyException e)
             {
-                //throw new DbConcurrencyException(e.Message);
+                throw e;
             }
+        }
+
+        public async Task<List<Funcionario>> FindFuncionariosWithNoUsers()
+        {
+            return await _context.Funcionario.Where(f => !_context.User.Any(u => u.Funcionario.Id == f.Id)).ToListAsync();
         }
 
     }

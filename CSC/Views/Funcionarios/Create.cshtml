@@ -27,9 +27,9 @@
                 <input asp-for="Demissao" class="form-control" />
                 <span asp-validation-for="Demissao" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Veiculo" class="control-label"></label>
-                <input asp-for="Veiculo" class="form-control" />
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="Veiculo" class="custom-control-input" />
+                <label asp-for="Veiculo" class="custom-control-label"></label><br/>
                 <span asp-validation-for="Veiculo" class="text-danger"></span>
             </div>
             <div class="form-group">

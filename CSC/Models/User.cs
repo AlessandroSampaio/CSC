@@ -10,16 +10,17 @@ namespace CSC.Models
     {
         public int Id { get; set; }
         [Display(Name = "Usuario")]
-        public string nomeLogon { get; set; }
+        public string NomeLogon { get; set; }
         public string Senha { get; set; }
-        public Funcionario funcionario { get; set; }
+        [Required]
+        public Funcionario Funcionario { get; set; }
 
         public User() { }
 
 
         public User(string name, string senha)
         {
-            this.nomeLogon = name;
+            this.NomeLogon = name;
             this.Senha = senha;
         }
     }
