@@ -24,16 +24,16 @@ namespace CSC.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var listUser = await _userServices.FindAllAsync();
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
+                var listUser = await _userServices.FindAllAsync();
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                return View(listUser);
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Home");
             }
-            return View(listUser);
         }
 
 
@@ -55,9 +55,15 @@ namespace CSC.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(User user)
         {
-             
-            await _userServices.InsertUserAsync(user);
-            return RedirectToAction("Index");
+            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
+            {
+                await _userServices.InsertUserAsync(user);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
     }
 }

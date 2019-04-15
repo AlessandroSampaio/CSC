@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,9 +11,12 @@ namespace CSC.Models
     {
         public int Id { get; set; }
         [Display(Name = "Usuario")]
-        public string NomeLogon { get; set; }
-        public string Senha { get; set; }
         [Required]
+        [Remote(action: "VerifyLogon", controller: "Home", AdditionalFields = nameof(Senha))]
+        public string NomeLogon { get; set; }
+        [Required]
+        public string Senha { get; set; }
+        //[Required]
         public Funcionario Funcionario { get; set; }
         public int FuncionarioId { get; set; }
 

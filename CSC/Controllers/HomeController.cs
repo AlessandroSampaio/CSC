@@ -17,27 +17,46 @@ namespace CSC.Controllers
             _UserServices = UserServices;
         }
 
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(User user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            user = _UserServices.ValidUser(user);
+            HttpContext.Session.SetInt32(SessionUserID, user.Id);
+            return  RedirectToAction("Index");
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public IActionResult VerifyLogon(string NomeLogon, string Senha)
+        {
+            User user = new User(NomeLogon, Senha);
+            if (_UserServices.ValidUser(user) == null)
+            {
+                return Json($"O usuario ou a senha estão incorretos!");
+            }
+            return Json(true);
+        }
 
         public async Task<IActionResult> Index()
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
-               ViewBag.user = await _UserServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                ViewBag.user = await _UserServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                return View();
             }
-            return View();
-        }
-
-        [HttpPost]
-        [HttpGet]
-        public IActionResult Logon(string nomeLogon, string senha)
-        {
-            User user = _UserServices.ValidUser(nomeLogon, senha);
-            if(user != null)
+            else
             {
-                HttpContext.Session.SetInt32(SessionUserID, user.Id);
-
+                return RedirectToAction(nameof(Login));
             }
-            return RedirectToAction("Index");
+           
         }
 
         [HttpPost]
@@ -45,7 +64,7 @@ namespace CSC.Controllers
         public IActionResult Logout(int id)
         {
             HttpContext.Session.Remove(SessionUserID);
-            return RedirectToAction("Index");
+            return RedirectToAction("Login");
         }
     }
 }

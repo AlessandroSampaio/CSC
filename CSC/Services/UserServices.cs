@@ -23,22 +23,17 @@ namespace CSC.Services
         {
             using (var sha256 = SHA256.Create())
             {
+                if (plainText == null)
+                    plainText = "";
                 var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(plainText));
                 return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
             }
         }
 
-        public User ValidUser(string _name, string _senha)
+        public User ValidUser(User user)
         {
-            User user = new User(_name, _senha);
-            if(_context.User.Where(u => u.NomeLogon==_name && u.Senha==GetHash(_senha)) == null)
-            {
-                return null;
-            }
-            else
-            {
-                return _context.User.Where(u => u.NomeLogon == _name && u.Senha == GetHash(_senha)).FirstOrDefault();
-            }
+            return _context.User.Where(u => u.NomeLogon == user.NomeLogon && u.Senha == GetHash(user.Senha))
+                .FirstOrDefault();
         }
 
         public async Task<User> FindByIdAsync(int id)

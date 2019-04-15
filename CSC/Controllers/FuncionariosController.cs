@@ -24,12 +24,12 @@ namespace CSC.Controllers
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                return View();
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Home");
             }
-            return View();
         }
 
         public async Task<IActionResult> Listagem(string _name)
@@ -44,9 +44,14 @@ namespace CSC.Controllers
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                Funcionario func = await _funcionarioServices.FindByIdAsync(id);
+                return View(func);
             }
-            Funcionario func = await _funcionarioServices.FindByIdAsync(id);
-            return View(func);
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
         }
 
         [HttpPost]
@@ -62,8 +67,12 @@ namespace CSC.Controllers
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                return View();
             }
-            return View();
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
 
         [HttpPost]

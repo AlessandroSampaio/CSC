@@ -6,12 +6,12 @@
     <title>CSC</title>
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/font-awesome/css/all.css" />
+        <link rel="stylesheet" href="~/fonts/font-awesome/css/all.css" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
-        <script src="~/font-awesome/js/all.js" type="text/javascript"></script>
+        <script src="~/fonts/font-awesome/js/all.js" type="text/javascript"></script>
 
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
@@ -31,22 +31,11 @@
         <nav class="navbar navbar-expand-sm" style="margin-left: 200px; background-color:#00144f;">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                @{
-                    if (ViewBag.user != null)
-                    {
-                        <p class="text-white">Seja Bem-Vindo, @ViewBag.user.NomeLogon</p>
-                        <button class="btn my-2 my-sm-0" type="button" data-toggle="modal" data-target="#logoutForm"><i class="fas fa-user-times fa-2x text-white"></i></button>
-                    }
-                    else
-                    {
-                        <button class="btn my-2 my-sm-0" type="button" data-toggle="modal" data-target="#loginForm"><i class="fas fa-user fa-2x text-white"></i></button>
-                    }
-                }
-
+                <p class="text-white">Seja Bem-Vindo, @ViewBag.user.NomeLogon</p>
+                <button class="btn my-2 my-sm-0" type="button" data-toggle="modal" data-target="#logoutForm"><i class="fas fa-user-times fa-2x text-white"></i></button>
             </form>
         </nav>
     </header>
@@ -64,36 +53,28 @@
     <partial name="_CookieConsentPartial" />
     <main role="main" class="pb-3">
         <div class="main">
-            <div class="modal fade" id="loginForm">
+            <div class="modal fade" id="logoutForm">
                 <div class="modal-dialog">
                     <div class="modal-content">
 
                         <!-- Modal Header -->
                         <div class="modal-header">
-                            <h4 class="modal-title">Login</h4>
+                            <h4 class="modal-title">Logout</h4>
                             <button type="button" class="close" data-dismiss="modal" style="font-size:25px;">&times;</button>
                         </div>
 
                         <!-- Modal body -->
                         <div class="modal-body">
-                            <form>
+                            <form method="post">
                                 <div class="row">
-
                                     <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label name="nomeLogon" class="control-label">Usuario: </label>
-                                            <input name="nomeLogon" class="form-control" />
-                                        </div>
+                                        <p>Você tem certeza?</p>
                                     </div>
-                                    <div class="col-md-12">
-
-                                        <div class="form-group">
-                                            <label name="Senha" class="control-label">Senha: </label>
-                                            <input name="Senha" class="form-control" type="password" />
-                                        </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" asp-controller="Home" asp-action="Logout" class="btn btn-block"><i class="fas fa-check fa-5x" style="color:green"></i></button>
                                     </div>
-                                    <div class="col-md-12">
-                                        <button asp-controller="Home" asp-action="Logon" method="post" class="btn btn-primary btn-block" type="submit">Login</button>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-block"><i class="fas fa-times fa-5x" style="color:red"></i></button>
                                     </div>
 
                                 </div>
@@ -102,43 +83,8 @@
                     </div>
                 </div>
             </div>
-
-            <div class="main">
-                <div class="modal fade" id="logoutForm">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-
-                            <!-- Modal Header -->
-                            <div class="modal-header">
-                                <h4 class="modal-title">Logout</h4>
-                                <button type="button" class="close" data-dismiss="modal" style="font-size:25px;">&times;</button>
-                            </div>
-
-                            <!-- Modal body -->
-                            <div class="modal-body">
-                                <form method="post">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <p>Você tem certeza?</p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <button type="submit" asp-controller="Home" asp-action="Logout" class="btn btn-block"><i class="fas fa-check fa-5x" style="color:green"></i></button>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <button class="btn btn-block"><i class="fas fa-times fa-5x" style="color:red"></i></button>
-                                        </div>
-
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             @RenderBody()
         </div>
-
     </main>
 
     <!--<footer class="border-top footer text-muted"></footer>-->
