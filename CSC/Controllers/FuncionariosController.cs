@@ -57,8 +57,13 @@ namespace CSC.Controllers
         [HttpPost]
         public async Task<IActionResult> Editar(Funcionario obj)
         {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                return View(obj);
+            }
             await _funcionarioServices.UpdateAsync(obj);
-            return View(nameof(Index));
+            return RedirectToAction("Index");
 
         }
 
@@ -78,8 +83,13 @@ namespace CSC.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Funcionario obj)
         {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                return View(); ;
+            }
             await _funcionarioServices.InsertAsync(obj);
-            return View(nameof(Index));
+            return RedirectToAction("Index");
         }
     }
 }

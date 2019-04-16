@@ -26,8 +26,8 @@ namespace CSC.Controllers
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
-                var listUser = await _userServices.FindAllAsync();
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                var listUser = await _userServices.FindAllAsync();
                 return View(listUser);
             }
             else
@@ -47,9 +47,17 @@ namespace CSC.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var listFunc = await _funcionarioServices.FindFuncionariosWithNoUsers();
-            var ViewModel = new UserFormViewModel() { Funcionarios = listFunc };
-            return View(ViewModel);
+            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
+            {
+                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                var listFunc = await _funcionarioServices.FindFuncionariosWithNoUsers();
+                var ViewModel = new UserFormViewModel() { Funcionarios = listFunc };
+                return View(ViewModel);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
 
         [HttpPost]
@@ -57,6 +65,7 @@ namespace CSC.Controllers
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
+
                 await _userServices.InsertUserAsync(user);
                 return RedirectToAction("Index");
             }

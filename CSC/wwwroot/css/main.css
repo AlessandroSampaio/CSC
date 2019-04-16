@@ -172,7 +172,7 @@ iframe {
 .login100-form-title {
   font-family: Ubuntu-Bold;
   font-size: 30px;
-  color: #403866;
+  color: #00144F;
   line-height: 1.2;
   text-transform: uppercase;
   text-align: center;
@@ -219,7 +219,7 @@ iframe {
   top: -1px;
   left: -1px;
   pointer-events: none;
-  border: 1px solid #827ffe;
+  border: 1px solid #00144f;
   border-radius: 3px;
 
   visibility: hidden;
@@ -325,34 +325,32 @@ iframe {
 }
 
 .login100-form-btn {
-  font-family: Ubuntu-Bold;
-  font-size: 16px;
-  color: #fff;
-  line-height: 1.2;
-  text-transform: uppercase;
-
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 20px;
-  width: 100%;
-  height: 62px;
-  background-color: #827ffe;
-  border-radius: 3px;
-
-  -webkit-transition: all 0.4s;
-  -o-transition: all 0.4s;
-  -moz-transition: all 0.4s;
-  transition: all 0.4s;
+    font-family: Ubuntu-Bold;
+    font-size: 16px;
+    color: #fff;
+    line-height: 1.2;
+    text-transform: uppercase;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    width: 100%;
+    height: 62px;
+    background-color: #00144f;
+    border-radius: 3px;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
 }
 
-.login100-form-btn:hover {
-  background-color: #403866;
-}
+    .login100-form-btn:hover {
+        background-color: #145fd8;
+    }
 
 
 /*------------------------------------------------------------------

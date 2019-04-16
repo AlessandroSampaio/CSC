@@ -10,7 +10,7 @@ namespace CSC.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Campo deve ser preenchido")]
         public string Nome { get; set; }
         [Required]
         [Display(Name ="Data de Admissão")]

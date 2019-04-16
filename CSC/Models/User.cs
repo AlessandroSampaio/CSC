@@ -11,12 +11,11 @@ namespace CSC.Models
     {
         public int Id { get; set; }
         [Display(Name = "Usuario")]
-        [Required]
+        [Required(ErrorMessage = "O campo usuário não pode estar em branco!")]
         [Remote(action: "VerifyLogon", controller: "Home", AdditionalFields = nameof(Senha))]
         public string NomeLogon { get; set; }
-        [Required]
+        [Required(ErrorMessage = "O campo senha não pode estar em branco!")]
         public string Senha { get; set; }
-        //[Required]
         public Funcionario Funcionario { get; set; }
         public int FuncionarioId { get; set; }
 

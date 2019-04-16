@@ -41,7 +41,7 @@
 
 /* Add an active class to the active dropdown button */
 .active {
-    background-color: green;
+    background-color: #145fd8;
     color: white;
 }
 
