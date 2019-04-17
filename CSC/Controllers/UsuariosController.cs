@@ -7,6 +7,7 @@ using CSC.Models.ViewModel;
 using CSC.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CSC.Controllers
 {
@@ -87,6 +88,20 @@ namespace CSC.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
+        }
+
+        public async Task<IActionResult> AlterarSenha(int Id, string Senha)
+        {
+            try
+            {
+                User user = await _userServices.FindByIdAsync(Id);
+                user.Senha = _userServices.GetHash(Senha);
+                await _userServices.UpdateAsync(user);
+            }
+            catch (DbUpdateConcurrencyException e) {
+                return View("Error", e.Message);
+            }
+            return Json(true);
         }
     }
 }

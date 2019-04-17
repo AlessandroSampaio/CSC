@@ -63,5 +63,18 @@ namespace CSC.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateAsync(User obj)
+        {
+            bool hasAny = await _context.User.AnyAsync(x => x.Id == obj.Id);
+            try
+            {
+                _context.Update(obj);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                throw e;
+            }
+        }
     }
 }

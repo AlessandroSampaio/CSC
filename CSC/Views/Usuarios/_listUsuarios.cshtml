@@ -1,49 +1,100 @@
 ﻿@model IEnumerable<CSC.Models.User>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-        </div>
-        <table class="table table-sm table-hover">
-            <thead class="thead-dark rounded">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.NomeLogon)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Funcionario.Nome)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Funcionario.Admissao)
-                    </th>
-                    <th>
-
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (User item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NomeLogon)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Funcionario.Nome)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Funcionario.Admissao)
-                        </td>
-                        <td>
-                            <a asp-action="Editar" asp-route-id="@item.Id"><i class="fas fa-pen"></i></a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+<div class="row">
+    <div class="col-md-12">
     </div>
-    <div class="float-right">
-        <a asp-controller="Usuarios" asp-action="Create" class="btn btn-primary">Novo</a>
+    <table class="table table-sm table-hover">
+        <thead class="thead-dark rounded">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.NomeLogon)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Funcionario.Nome)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Funcionario.Admissao)
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (User item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NomeLogon)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Funcionario.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Funcionario.Admissao)
+                    </td>
+                    <td>
+                        <button class="btn my-2 my-sm-0 open-modal" type="button" data-id="@item.Id" data-toggle="modal" data-target="#PasswordForm">
+                            <i class="fas fa-key"></i>
+                        </button>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="float-right">
+    <a asp-controller="Usuarios" asp-action="Create" class="btn btn-primary">Novo</a>
+</div>
+<div class="modal fade" id="PasswordForm">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" name="id" id="UserID" value="" class="form-control" />
+                    <div class="row">
+                        <div class="col-12">
+                            <label><b>Nova senha</b></label>
+                            <input class="form-control" type="password" id="NovaSenha" name="Senha" />
+                            <br />
+                            <input id="btnSalvarSenha" type="button" value="Salvar" class="btn btn-primary btn-block" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
+<script>
+    $(document).on("click", ".open-modal", function (e) {
+        $("#UserID").val($(this).data('id'));
+        $("#NovaSenha").val("");
+    });
+
+    $("#btnSalvarSenha").on("click", function () {
+        var filtro = {
+            Id: $("#UserID").val(),
+            Senha: $("#NovaSenha").val()
+        };
+        SalvarSenha(filtro);
+    });
+
+    function SalvarSenha(filtro) {
+        $.ajax({
+            url: '/Usuarios/AlterarSenha',
+            type: 'POST',
+            cache: false,
+            async: true,
+            dataType: "Json",
+            data: filtro
+        })
+            .done(function (result) {
+                $('#myAlert').fadeTo(2000, 500).slideUp(500, function () {
+                    $("#myAlert").slideUp(500);
+                });
+                $('#PasswordForm').modal('hide');
+            })
+    }
+</script>
