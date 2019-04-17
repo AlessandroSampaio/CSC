@@ -6,6 +6,7 @@ namespace CSC.Models
 {
     public class Inventario
     {
+        [Required]
         public int ClienteID { get; set; }
         [Required] 
         public Software Software { get; set; }

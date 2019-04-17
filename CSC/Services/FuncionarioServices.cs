@@ -62,7 +62,7 @@ namespace CSC.Services
 
         public async Task<List<Funcionario>> FindFuncionariosWithNoUsers()
         {
-            return await _context.Funcionario.Where(f => !_context.User.Any(u => u.Funcionario.Id == f.Id)).ToListAsync();
+            return await _context.Funcionario.Where(f => !_context.User.Any(u => u.Funcionario.Id == f.Id) && f.Demissao==null).ToListAsync();
         }
 
     }

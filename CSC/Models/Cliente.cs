@@ -1,16 +1,17 @@
 ﻿using CSC.Models.Enums;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSC.Models
 {
     public class Cliente
     {
         public int Id { get; set; }
+        [Required]
         public string CNPJ { get; set; }
+        [Required]
         public string RazaoSocial { get; set; }
+        [Required]
         public string NomeFantasia { get; set; }
         public DateTime DataInicio { get; set; }
         public PessoaStatus Status { get; set; }
@@ -19,9 +20,5 @@ namespace CSC.Models
         public int Numero { get; set; }
         public string Bairro { get; set; }
         public string Cidade { get; set; }
-
-
-
-
     }
 }

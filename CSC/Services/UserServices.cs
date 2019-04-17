@@ -39,6 +39,7 @@ namespace CSC.Services
         public async Task<User> FindByIdAsync(int id)
         {
             return await _context.User
+                .Include(user => user.Funcionario)
                 .FirstOrDefaultAsync(f => f.Id == id);
         }
 

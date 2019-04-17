@@ -17,7 +17,7 @@
 );
 
 $(function () {
-    $('input[type=text]').keyup(function () {
+    $('.input-Capitalize').keyup(function () {
         $(this).val($(this).val().toUpperCase());
     });
 });

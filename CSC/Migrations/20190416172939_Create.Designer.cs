@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CSC.Migrations
 {
     [DbContext(typeof(CSCContext))]
-    [Migration("20190409140232_Usuario")]
-    partial class Usuario
+    [Migration("20190416172939_Create")]
+    partial class Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,7 +28,8 @@ namespace CSC.Migrations
 
                     b.Property<string>("CEP");
 
-                    b.Property<string>("CNPJ");
+                    b.Property<string>("CNPJ")
+                        .IsRequired();
 
                     b.Property<string>("Cidade");
 
@@ -36,11 +37,13 @@ namespace CSC.Migrations
 
                     b.Property<string>("Logradouro");
 
-                    b.Property<string>("NomeFantasia");
+                    b.Property<string>("NomeFantasia")
+                        .IsRequired();
 
                     b.Property<int>("Numero");
 
-                    b.Property<string>("RazaoSocial");
+                    b.Property<string>("RazaoSocial")
+                        .IsRequired();
 
                     b.Property<int>("Status");
 
@@ -61,13 +64,24 @@ namespace CSC.Migrations
                     b.Property<string>("Nome")
                         .IsRequired();
 
-                    b.Property<string>("Veiculo")
-                        .IsRequired()
-                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)));
+                    b.Property<bool>("Veiculo");
 
                     b.HasKey("Id");
 
                     b.ToTable("Funcionario");
+                });
+
+            modelBuilder.Entity("CSC.Models.Inventario", b =>
+                {
+                    b.Property<int>("ClienteID");
+
+                    b.Property<int>("Software");
+
+                    b.Property<int>("Quantidade");
+
+                    b.HasKey("ClienteID", "Software");
+
+                    b.ToTable("Inventario");
                 });
 
             modelBuilder.Entity("CSC.Models.User", b =>
@@ -75,24 +89,35 @@ namespace CSC.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Senha");
+                    b.Property<int>("FuncionarioId");
 
-                    b.Property<int?>("funcionarioId");
+                    b.Property<string>("NomeLogon")
+                        .IsRequired();
 
-                    b.Property<string>("nomeLogon");
+                    b.Property<string>("Senha")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
-                    b.HasIndex("funcionarioId");
+                    b.HasIndex("FuncionarioId");
 
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("CSC.Models.Inventario", b =>
+                {
+                    b.HasOne("CSC.Models.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("CSC.Models.User", b =>
                 {
-                    b.HasOne("CSC.Models.Funcionario", "funcionario")
+                    b.HasOne("CSC.Models.Funcionario", "Funcionario")
                         .WithMany()
-                        .HasForeignKey("funcionarioId");
+                        .HasForeignKey("FuncionarioId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

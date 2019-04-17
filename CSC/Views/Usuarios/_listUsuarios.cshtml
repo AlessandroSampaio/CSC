@@ -16,6 +16,9 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Funcionario.Admissao)
                     </th>
+                    <th>
+
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -30,6 +33,9 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Funcionario.Admissao)
+                        </td>
+                        <td>
+                            <a asp-action="Editar" asp-route-id="@item.Id"><i class="fas fa-pen"></i></a>
                         </td>
                     </tr>
                 }

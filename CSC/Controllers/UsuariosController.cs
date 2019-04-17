@@ -65,9 +65,23 @@ namespace CSC.Controllers
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
-
                 await _userServices.InsertUserAsync(user);
                 return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Editar(int id)
+        {
+            User user = await _userServices.FindByIdAsync(id);
+            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
+            {
+                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                return View(user);
             }
             else
             {
