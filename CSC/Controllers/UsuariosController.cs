@@ -103,5 +103,20 @@ namespace CSC.Controllers
             }
             return Json(true);
         }
+
+        public async Task<IActionResult> AlterarNomeLogon(int Id, string NomeLogon)
+        {
+            try
+            {
+                User user = await _userServices.FindByIdAsync(Id);
+                user.NomeLogon = NomeLogon;
+                await _userServices.UpdateAsync(user);
+
+            }catch(DbUpdateConcurrencyException e)
+            {
+                return View("Error", e.Message);
+            }
+            return Json(true);
+        }
     }
 }
