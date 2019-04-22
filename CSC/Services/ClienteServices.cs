@@ -26,5 +26,10 @@ namespace CSC.Services
             return await _context.Cliente.Where(c => c.RazaoSocial.Contains(_name)).OrderBy(c => c.RazaoSocial).ToListAsync();
         }
 
+        public async Task InsertAsync(Cliente cliente)
+        {
+            _context.Cliente.Add(cliente);
+            await _context.SaveChangesAsync();
+        }
     }
 }

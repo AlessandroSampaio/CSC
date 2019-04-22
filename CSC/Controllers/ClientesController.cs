@@ -1,4 +1,5 @@
-﻿using CSC.Services;
+﻿using CSC.Models;
+using CSC.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -51,6 +52,18 @@ namespace CSC.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Novo(Cliente cliente)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                return View(); ;
+            }
+            await _clienteServices.InsertAsync(cliente);
+            return RedirectToAction("Index");
         }
     }
 }
