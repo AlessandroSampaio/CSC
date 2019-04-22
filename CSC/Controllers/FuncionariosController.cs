@@ -67,7 +67,7 @@ namespace CSC.Controllers
 
         }
 
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Novo()
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
@@ -81,7 +81,7 @@ namespace CSC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Funcionario obj)
+        public async Task<IActionResult> Novo(Funcionario obj)
         {
             if (!ModelState.IsValid)
             {

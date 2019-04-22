@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CSC.Models;
+﻿using CSC.Models;
 using CSC.Models.ViewModel;
 using CSC.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace CSC.Controllers
 {
@@ -46,7 +43,7 @@ namespace CSC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Novo()
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
@@ -62,7 +59,7 @@ namespace CSC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(User user)
+        public async Task<IActionResult> Novo(User user)
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
@@ -98,7 +95,8 @@ namespace CSC.Controllers
                 user.Senha = _userServices.GetHash(Senha);
                 await _userServices.UpdateAsync(user);
             }
-            catch (DbUpdateConcurrencyException e) {
+            catch (DbUpdateConcurrencyException e)
+            {
                 return View("Error", e.Message);
             }
             return Json(true);
@@ -112,7 +110,8 @@ namespace CSC.Controllers
                 user.NomeLogon = NomeLogon;
                 await _userServices.UpdateAsync(user);
 
-            }catch(DbUpdateConcurrencyException e)
+            }
+            catch (DbUpdateConcurrencyException e)
             {
                 return View("Error", e.Message);
             }

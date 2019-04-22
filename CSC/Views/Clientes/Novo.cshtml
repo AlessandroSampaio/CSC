@@ -1,0 +1,33 @@
+﻿@model CSC.Models.Cliente
+
+@{
+    ViewData["Title"] = "Novo";
+}
+
+<h2>Cliente</h2>
+<h4>Novo</h4>
+
+<hr />
+
+<div class="container-fluid">
+    <form asp-action="Novo">
+        <div class="row">
+            <div class="col-2">
+                <label asp-for="CNPJ"></label>
+                <input asp-for="CNPJ" class="form-control" />
+            </div>
+            <div class="col-5">
+                <label asp-for="RazaoSocial"></label>
+                <input asp-for="RazaoSocial" class="form-control" />
+            </div>
+            <div class="col-5">
+                <label asp-for="NomeFantasia"></label>
+                <input asp-for="NomeFantasia" class="form-control" />
+            </div>
+        </div>
+        <div class="row">
+            
+        </div>
+
+    </form>
+</div>
