@@ -6,8 +6,8 @@
 <hr />
 
 <div class="container-fluid">
-    <form asp-action="Create">
-        <div class="row">
+    <form asp-action="Create" class="was-validated">
+        <div class="form-row">
             <div class="col-10">
                 <label asp-for="Nome"></label>
                 <input asp-for="Nome" class="form-control input-Capitalize" />
@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="form-row">
             <div class="col-4">
                 <label asp-for="Admissao" class="control-label"></label>
                 <input asp-for="Admissao" class="form-control" />
