@@ -6,7 +6,7 @@
     z-index: 1; /* Stay on top */
     top: 0; /* Stay at the top */
     left: 0;
-    background-color: #00144f;
+    background-color: #022444;
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 20px;
     margin-top: 64px;
@@ -41,15 +41,15 @@
 
 /* Add an active class to the active dropdown button */
 .active {
-    background-color: #145fd8;
+    background-color: #014582;
     color: white;
 }
 
 /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
 .dropdown-container {
-display: none;
-background-color: #00144f;
-padding-left: 8px;
+    display: none;
+    background-color: #022444;
+    padding-left: 8px;
 }
 
 /* Optional: Style the caret down icon */

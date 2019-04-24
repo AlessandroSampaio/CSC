@@ -9,8 +9,6 @@ namespace CSC.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = " ")]
-        [StringLength(14, MinimumLength = 11, ErrorMessage = "Tamanho inválido" )]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "Somente números")]
         public string CNPJ { get; set; }
 
         [Required]
@@ -29,8 +27,6 @@ namespace CSC.Models
 
         public string Logradouro { get; set; }
 
-        [StringLength(9,ErrorMessage ="CEP INVALIDO")]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "Somente números")]
         public string CEP { get; set; }
 
         public int Numero { get; set; }
@@ -38,5 +34,10 @@ namespace CSC.Models
         public string Bairro { get; set; }
 
         public string Cidade { get; set; }
+
+        public string Telefone { get; set; }
+
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
     }
 }

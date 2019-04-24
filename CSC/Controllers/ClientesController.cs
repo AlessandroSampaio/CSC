@@ -60,7 +60,7 @@ namespace CSC.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                return View(); ;
+                return View(cliente);
             }
             await _clienteServices.InsertAsync(cliente);
             return RedirectToAction("Index");

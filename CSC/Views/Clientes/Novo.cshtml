@@ -6,26 +6,29 @@
 <hr />
 
 <div class="container-fluid">
-    <form asp-action="Novo">
+    <form asp-action="Novo" id="novo">
         <div class="form-row">
             <div class="col-sm-2">
                 <label asp-for="CNPJ" class="col-form-label col-form-label-sm"></label>
-                <input asp-for="CNPJ" class="form-control form-control-sm"  />
+                <input asp-for="CNPJ" class="form-control form-control-sm" id="cnpj" />
                 <span asp-validation-for="CNPJ" class="text-danger" style="font-size:12px;"></span>
             </div>
             <div class="col-sm-5">
                 <label asp-for="RazaoSocial" class="col-form-label col-form-label-sm"></label>
                 <input asp-for="RazaoSocial" class="form-control form-control-sm input-Capitalize" />
+                <span asp-validation-for="RazaoSocial" class="text-danger" style="font-size:12px;"></span>
             </div>
             <div class="col-sm-5">
                 <label asp-for="NomeFantasia" class="col-form-label col-form-label-sm"></label>
                 <input asp-for="NomeFantasia" class="form-control form-control-sm input-Capitalize" />
+                <span asp-validation-for="NomeFantasia" class="text-danger" style="font-size:12px;"></span>
             </div>
         </div>
         <div class="form-row">
             <div class="col-sm-2">
                 <label asp-for="CEP" class="col-form-label col-form-label-sm"></label>
-                <input asp-for="CEP" class="form-control form-control-sm" />
+                <input asp-for="CEP" class="form-control form-control-sm" id="cep" />
+                <span asp-validation-for="CEP" class="text-danger" style="font-size:12px;"></span>
             </div>
             <div class="col-sm-4">
                 <label asp-for="Logradouro" class="col-form-label col-form-label-sm"></label>
@@ -46,8 +49,21 @@
         </div>
         <div class="form-row">
             <div class="col-sm-2">
+                <label asp-for="Telefone" class="col-form-label col-form-label-sm"></label>
+                <input asp-for="Telefone" class="form-control form-control-sm" />
+                <span asp-validation-for="Telefone" class="text-danger" style="font-size:12px;"></span>
+            </div>
+            <div class="col-sm-3">
+                <label asp-for="Email" class="col-form-label col-form-label-sm"></label>
+                <input asp-for="Email" class="form-control form-control-sm" />
+                <span asp-validation-for="Email" class="text-danger" style="font-size:12px;"></span>
+            </div>
+            <div class="col-sm-2">
                 <label asp-for="DataInicio" class="col-form-label col-form-label-sm"></label>
-                <input asp-for="DataInicio" type="date" class="form-control form-control-sm input-Capitalize" />
+                <div class="input-group date">
+                    <input asp-for="DataInicio" type="text" class="form-control form-control-sm" />
+                    <span class="input-group-addon" style="position:absolute; right:5px;"><i class="fa fa-calendar"></i></span>
+                </div>
             </div>
             <div class="col-sm-2">
                 <label asp-for="Status" class="col-form-label col-form-label-sm"></label>
@@ -63,3 +79,48 @@
 
     </form>
 </div>
+
+
+@section Scripts {
+    <script type="text/javascript" src="~/lib/jquery-mask/jquery.mask.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#cnpj').mask('00.000.000/0000-00', { reverse: true });
+            $('#cep').mask('00000-000');
+            $('#DataInicio').mask('00/00/0000');
+            $('#Numero').mask('000000');
+
+            var options = {
+                onKeyPress: function (Telefone, e, field, options) {
+                    var masks = ['(00) 0000-0000', '(00) 00000-0000'];
+                    var mask = (Telefone.length > 13) ? masks[1] : masks[0];
+                    $('#Telefone').mask(mask, options);
+                }
+            };
+
+            $('#Telefone').mask('(00) 0000-0000', options);
+
+            $('.input-group.date').datepicker({
+                format: "dd/mm/yyyy",
+                clearBtn: true,
+                language: "pt-BR",
+                keyboardNavigation: false,
+                autoclose: true,
+                todayHighlight: true
+            });
+
+
+            $("#novo").submit(function () {
+                $('#cnpj').unmask();
+                $('#cep').unmask();
+                $('#Numero').unmask();
+                $('#Telefone').unmask();
+            });
+
+
+        });
+
+        
+    </script>
+}
