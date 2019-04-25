@@ -41,12 +41,12 @@ namespace CSC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Novo()
+        public async Task<IActionResult> Novo(Cliente cliente)
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                return View();
+                return View(cliente);
             }
             else
             {
@@ -55,7 +55,7 @@ namespace CSC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Novo(Cliente cliente)
+        public async Task<IActionResult> SalvarNovo(Cliente cliente)
         {
             if (!ModelState.IsValid)
             {
@@ -64,6 +64,13 @@ namespace CSC.Controllers
             }
             await _clienteServices.InsertAsync(cliente);
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult ConsultaCNPJ(string _cnpj)
+        {
+            Cliente cliente = _clienteServices.ConsultaWS(_cnpj);
+            return RedirectToAction("Novo", cliente);
         }
     }
 }

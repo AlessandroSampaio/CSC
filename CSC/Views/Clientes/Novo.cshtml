@@ -110,7 +110,6 @@
                 todayHighlight: true
             });
 
-
             $("#novo").submit(function () {
                 $('#cnpj').unmask();
                 $('#cep').unmask();
@@ -119,8 +118,14 @@
             });
 
 
-        });
+            $('#cnpj').focusout(function () {
+                if ($('#cnpj').val().length == 18) {
+                    var cnpj = $('#cnpj').val();
+                    getClientData(cnpj);
+                }
+            });
 
-        
+
+        });
     </script>
 }

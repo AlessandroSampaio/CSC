@@ -1,4 +1,5 @@
 ﻿using CSC.Models.Enums;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -9,13 +10,16 @@ namespace CSC.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = " ")]
+        [JsonProperty("cnpj")]
         public string CNPJ { get; set; }
 
         [Required]
+        [JsonProperty("nome")]
         [Display(Name = "Razão Social")]
         public string RazaoSocial { get; set; }
 
         [Required]
+        [JsonProperty("fantasia")]
         [Display(Name = "Fantasia")]
         public string NomeFantasia { get; set; }
 
@@ -23,18 +27,25 @@ namespace CSC.Models
         [DataType(DataType.Date)]
         public DateTime DataInicio { get; set; }
 
+        [JsonIgnore]
         public PessoaStatus Status { get; set; }
 
+        [JsonProperty("logradouro")]
         public string Logradouro { get; set; }
 
+        [JsonProperty("cep")]
         public string CEP { get; set; }
 
-        public int Numero { get; set; }
+        [JsonProperty("numero")]
+        public int? Numero { get; set; }
 
+        [JsonProperty("bairro")]
         public string Bairro { get; set; }
 
+        [JsonProperty("municipio")]
         public string Cidade { get; set; }
 
+        [JsonProperty("telefone")]
         public string Telefone { get; set; }
 
         [DataType(DataType.EmailAddress)]
