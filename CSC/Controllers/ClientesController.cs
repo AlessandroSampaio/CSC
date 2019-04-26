@@ -2,6 +2,7 @@
 using CSC.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace CSC.Controllers
@@ -24,10 +25,12 @@ namespace CSC.Controllers
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                ViewBag.erro = TempData["Error"];
                 return View();
             }
             else
             {
+                
                 return RedirectToAction("Login", "Home");
             }
         }
@@ -69,8 +72,16 @@ namespace CSC.Controllers
         [HttpPost]
         public async Task<IActionResult> ConsultaCNPJ(string _cnpj)
         {
-            Cliente cliente = await _clienteServices.ConsultaWS(_cnpj);
-            return RedirectToAction("Novo", cliente);
+            try
+            {
+                Cliente cliente = await _clienteServices.ConsultaWS(_cnpj);
+                return RedirectToAction("Novo", cliente);
+            } catch (NotImplementedException e)
+            {
+                TempData["Error"] = e.Message.Replace('á','a');
+                return RedirectToAction("index");
+            }
+
         }
     }
 }

@@ -35,7 +35,6 @@
 
 /* On mouse-over */
 .sidenav a:hover, .dropdown-btn:hover {
-    /*background-color: #5f27cd;*/
     opacity: 0.7;
     transition: ease-in-out;
 }
@@ -83,4 +82,8 @@ input-validation-error:focus {
 
 .btn-primary:hover {
     background-color: #3c22b7;
+}
+
+.hide{
+    display:none;
 }

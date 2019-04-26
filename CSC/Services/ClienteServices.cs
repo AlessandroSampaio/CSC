@@ -49,7 +49,15 @@ namespace CSC.Services
                 var response = client.GetAsync(endpoint).Result;
                 using(HttpContent content = response.Content)
                 {
+                    
+
                     JsonRetorno = await content.ReadAsStringAsync();
+
+                    Dictionary<string, string> dic = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonRetorno);
+                    if(dic["status"] == "ERROR")
+                    {
+                        throw new NotImplementedException(dic["message"]);
+                    }
                     return JsonConvert.DeserializeObject<Cliente>(JsonRetorno);
                 }
             }            
