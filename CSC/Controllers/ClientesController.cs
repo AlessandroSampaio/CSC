@@ -67,9 +67,9 @@ namespace CSC.Controllers
         }
 
         [HttpPost]
-        public IActionResult ConsultaCNPJ(string _cnpj)
+        public async Task<IActionResult> ConsultaCNPJ(string _cnpj)
         {
-            Cliente cliente = _clienteServices.ConsultaWS(_cnpj);
+            Cliente cliente = await _clienteServices.ConsultaWS(_cnpj);
             return RedirectToAction("Novo", cliente);
         }
     }

@@ -6,10 +6,16 @@
     z-index: 1; /* Stay on top */
     top: 0; /* Stay at the top */
     left: 0;
-    background-color: #022444;
+    background-color: #f9fafc;
     overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 20px;
-    margin-top: 64px;
+    margin-top: 56px;
+    box-sizing: border-box;
+    border-right: 1px ridge #808080;
+}
+
+
+.sidenav button {
+    border-style: none;
 }
 
 /* Style the sidenav links and the dropdown button */
@@ -17,9 +23,8 @@
     padding: 6px 8px 6px 16px;
     text-decoration: none;
     font-size: 20px;
-    color: #f1f1f1;
+    color: black;
     display: block;
-    border: none;
     background: none;
     width: 100%;
     text-align: left;
@@ -27,9 +32,12 @@
     outline: none;
 }
 
+
 /* On mouse-over */
 .sidenav a:hover, .dropdown-btn:hover {
-    color: #f1f1f1;
+    /*background-color: #5f27cd;*/
+    opacity: 0.7;
+    transition: ease-in-out;
 }
 
 /* Main content */
@@ -41,23 +49,15 @@
 
 /* Add an active class to the active dropdown button */
 .active {
-    background-color: #014582;
-    color: white;
+    background-color: #dbdde0;
 }
 
 /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
 .dropdown-container {
     display: none;
-    background-color: #022444;
+    background-color: transparent;
     padding-left: 8px;
 }
-
-/* Optional: Style the caret down icon */
-.fa-caret-down {
-    float: right;
-    padding-right: 8px;
-}
-
 
 .input-validation-error {
     border-color: #dc3545;
@@ -70,4 +70,17 @@
 
 input-validation-error:focus {
     border-color: #ff0000;
+}
+
+.navbar button {
+    padding: 0;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #341f97;
+}
+
+.btn-primary:hover {
+    background-color: #3c22b7;
 }

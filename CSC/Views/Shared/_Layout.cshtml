@@ -16,6 +16,7 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.min.js"></script>
         <script src="~/fonts/font-awesome/js/all.js" type="text/javascript"></script>
+        <script type="text/javascript" src="~/lib/jquery-mask/jquery.mask.min.js"></script>
 
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
@@ -32,9 +33,10 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm" style="margin-left: 200px; background-color: #022444;">
+        <nav class="navbar navbar-expand-sm navbar-light" style="background-color: #341f97;">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
+                    <a asp-controller="home" asp-action="index" class="btn btn-block text-white">Start</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -45,7 +47,7 @@
     </header>
 
     <div class="sidenav">
-        <button class="dropdown-btn"><i class="fas fa-portrait"></i> Pessoas</button>
+        <button class="dropdown-btn"><i class="fas fa-portrait"></i> Pessoas <i class="fas fa-caret-down"></i></button>
         <div class="dropdown-container">
             <a asp-controller="Funcionarios" asp-action="Index" class="text-left"><i class="fas fa-user-tie"></i> Funcionario</a>
             <a asp-controller="Usuarios" asp-action="Index" class="text-left"><i class="fas fa-user-secret"></i> Usuario</a>

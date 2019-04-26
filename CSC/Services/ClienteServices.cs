@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace CSC.Services
@@ -35,26 +36,23 @@ namespace CSC.Services
             await _context.SaveChangesAsync();
         }
 
-        public Cliente ConsultaWS(string _cnpj)
+        public async Task<Cliente> ConsultaWS(string _cnpj)
         {
             _cnpj = _cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
 
             string endpoint = "https://www.receitaws.com.br/v1/cnpj/" + _cnpj;
-            string method = "GET";
+            
+            string JsonRetorno = string.Empty;
 
-            HttpWebRequest request = WebRequest.CreateHttp(endpoint);
-            request.Method = method;
-
-            using (StreamReader responseStream = new StreamReader(request.GetResponse().GetResponseStream()))
+            using (HttpClient client = new HttpClient())
             {
-                string dadosRecuperados = responseStream.ReadToEnd();
-                return JsonConvert.DeserializeObject<Cliente>(dadosRecuperados);
-            }
-        }
-
-        private Cliente Json(string v)
-        {
-            throw new NotImplementedException();
+                var response = client.GetAsync(endpoint).Result;
+                using(HttpContent content = response.Content)
+                {
+                    JsonRetorno = await content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<Cliente>(JsonRetorno);
+                }
+            }            
         }
     }
 }
