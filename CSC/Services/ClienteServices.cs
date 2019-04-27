@@ -1,4 +1,5 @@
 ﻿using CSC.Models;
+using CSC.Models.ErrorModels;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
@@ -53,10 +54,10 @@ namespace CSC.Services
 
                     JsonRetorno = await content.ReadAsStringAsync();
 
-                    Dictionary<string, string> dic = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonRetorno);
-                    if(dic["status"] == "ERROR")
+                    ErrorModel error = JsonConvert.DeserializeObject<ErrorModel>(JsonRetorno);
+                    if(error.status == "ERROR")
                     {
-                        throw new NotImplementedException(dic["message"]);
+                        throw new NotImplementedException(error.message);
                     }
                     return JsonConvert.DeserializeObject<Cliente>(JsonRetorno);
                 }
