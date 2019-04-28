@@ -22,7 +22,7 @@
 
 
 function listFuncionarios(filtro) {
-
+    /*
     $.ajax({
         url: '/Clientes/Listagem',
         type: 'POST',
@@ -35,6 +35,6 @@ function listFuncionarios(filtro) {
             $('#content').html(result);
         }).fail(function (xhr) {
             console.log('error :' + xhr.statusText);
-        })
+        })*/
 }
 

@@ -1,47 +1,5 @@
 ﻿@model IEnumerable<CSC.Models.Cliente>
 
-<table class="table table-sm table-hover">
-    <thead class="thead-dark rounded">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CNPJ)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RazaoSocial)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(itemModel => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(itemModel => item.CNPJ)
-                </td>
-                <td>
-                    @Html.DisplayFor(itemModel => item.RazaoSocial)
-                </td>
-                <td>
-                    @Html.DisplayFor(itemModel => item.Status)
-                </td>
 
-                <td>
-                    <a asp-action="Editar" asp-route-id="@item.Id"><i class="fas fa-pen"></i></a>
-                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash"></i></a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 
 

@@ -1,4 +1,7 @@
-﻿<div id="myAlert" class="alert alert-success alert-dismissible fade show" role="alert" style="padding:0.5rem 1rem; margin-bottom: 0rem; display:none">
+﻿@model IEnumerable<CSC.Models.Cliente>
+
+
+<div id="myAlert" class="alert alert-success alert-dismissible fade show" role="alert" style="padding:0.5rem 1rem; margin-bottom: 0rem; display:none">
     <p id="error" class="text-center" style="font-size:18px"></p>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -17,7 +20,49 @@
 </div>
 <br />
 <div id="content" class="container-fluid">
-    <div class="spinner-grow text-primary"></div>
+    <table class="table table-sm table-hover" id="ListClientTable">
+        <thead class="thead-dark rounded">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CNPJ)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RazaoSocial)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(itemModel => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(itemModel => item.CNPJ)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(itemModel => item.RazaoSocial)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(itemModel => item.Status)
+                    </td>
+
+                    <td>
+                        <a asp-action="Editar" asp-route-id="@item.Id"><i class="fas fa-pen"></i></a>
+                        <a asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 
 <button class="btn btn-primary float-right" data-toggle="modal" data-target="#NovoCliente">Novo</button>
@@ -53,6 +98,16 @@
 
 @section Scripts {
     <script type="text/javascript" src="~/js/IndexCliente.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#ListClientTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'excel', 'pdf'
+                ]
+            });
+        });
+    </script>
 
     @if (ViewBag.erro != null)
     {
