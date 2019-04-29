@@ -24,7 +24,8 @@ namespace CSC.Controllers
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                return View();
+                var listFuncionario = _funcionarioServices.FindAll();
+                return View(listFuncionario);
             }
             else
             {
@@ -32,12 +33,12 @@ namespace CSC.Controllers
             }
         }
 
-        public async Task<IActionResult> Listagem(string _name)
+    /*    public async Task<IActionResult> Listagem(string _name)
         {
             if (_name == null) { _name = ""; }
             var listFuncionario = await _funcionarioServices.FindByNameAsync(_name);
             return PartialView("_listFuncionarios", listFuncionario);
-        }
+        }*/
 
         public async Task<IActionResult> Editar(int id)
         {

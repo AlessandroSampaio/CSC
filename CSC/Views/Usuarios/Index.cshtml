@@ -1,26 +1,155 @@
-﻿<div id="myAlert" class="alert alert-success alert-dismissible fade show" role="alert" style="padding:0.5rem 1rem; margin-bottom: 0rem; display:none">
-    Alterado com sucesso
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-<br />
+﻿@model IEnumerable<CSC.Models.User>
 
-<div class="form-row">
-    <div class="col-1"></div>
-    <div class="col-10">
-        <form id="srch" class="form-inline">
-            <label class="mr-sm-2">Nome: </label>
-            <input id="nameSearch" type="text" class="form-control col mb-2 mr-sm-2  input-Capitalize" />
-            <button id="btnPesquisar" type="button" class="btn btn-primary mb-2">Pesquisar</button>
-        </form>
+<table class="table table-sm table-hover" id="TbUsuarios">
+    <thead class="thead-dark rounded">
+        <tr>
+            <th>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeLogon)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Funcionario.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Funcionario.Admissao)
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (User item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeLogon)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Funcionario.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Funcionario.Admissao)
+                </td>
+                <td>
+                    <button class="btn my-2 my-sm-0 open-modal" type="button" data-id="@item.Id" data-toggle="modal" data-target="#UserForm">
+                        <i class="fas fa-user-edit"></i>
+                    </button>
+                    <button class="btn my-2 my-sm-0 open-modal" type="button" data-id="@item.Id" data-toggle="modal" data-target="#PasswordForm">
+                        <i class="fas fa-key"></i>
+                    </button>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="float-right">
+    <a asp-controller="Usuarios" asp-action="Create" class="btn btn-primary">Novo</a>
+</div>
+<div class="modal fade" id="PasswordForm">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" name="id" id="PswID" value="" class="form-control" />
+                    <div class="row">
+                        <div class="col-12">
+                            <label><b>Nova senha</b></label>
+                            <input class="form-control" type="password" id="NovaSenha" name="Senha" />
+                            <br />
+                            <input id="btnSalvarSenha" type="button" value="Salvar" class="btn btn-primary btn-block" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
-<div id="content" class="container-fluid">
-    <div class="spinner-grow text-primary"></div>
+
+<div class="modal fade" id="UserForm">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" name="id" id="UserID" value="" class="form-control" />
+                    <div class="row">
+                        <div class="col-12">
+                            <label><b>Novo Logon</b></label>
+                            <input class="form-control" type="text" id="NovoUser" name="NomeLogon" />
+                            <br />
+                            <input id="btnSalvarUser" type="button" value="Salvar" class="btn btn-primary btn-block" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
-
 @section Scripts {
-    <script type="text/javascript" src="~/js/IndexUsuario.js"></script>
+    <script type="text/javascript" src="~/js/tables.js"></script>
 }
+
+<script>
+    $(document).on("click", ".open-modal", function (e) {
+        $("input[name = id]").val($(this).data('id'));
+        $("#NovoUser").val("");
+        $("#NovaSenha").val("");
+    });
+    $("#btnSalvarSenha").on("click", function () {
+        var filtro = {
+            Id: $("#PswID").val(),
+            Senha: $("#NovaSenha").val()
+        };
+        SalvarSenha(filtro);
+    });
+    function SalvarSenha(filtro) {
+        $.ajax({
+            url: '/Usuarios/AlterarSenha',
+            type: 'POST',
+            cache: false,
+            async: true,
+            dataType: "Json",
+            data: filtro
+        })
+            .done(function () {
+                $('#myAlert').fadeTo(2000, 500).slideUp(500, function () {
+                    $("#myAlert").slideUp(500);
+                });
+                $('#PasswordForm').modal('hide');
+            })
+    }
+    $("#btnSalvarUser").on("click", function () {
+        var filtro = {
+            Id: $("#UserID").val(),
+            NomeLogon: $("#NovoUser").val()
+        };
+        SalvarUser(filtro);
+
+    });
+    function SalvarUser(filtro) {
+        $.ajax({
+            url: '/Usuarios/AlterarNomeLogon',
+            type: 'POST',
+            cache: false,
+            async: true,
+            dataType: "Json",
+            data: filtro
+        })
+            .done(function () {
+                $('#myAlert').fadeTo(2000, 500).slideUp(500, function () {
+                    $("#myAlert").slideUp(500);
+                });
+                $('#UserForm').modal('hide');
+            })
+    }
+    $("#UserForm").on('hidden.bs.modal', function () {
+        listUsuarios();
+    });
+</script>

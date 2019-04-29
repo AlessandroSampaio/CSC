@@ -45,7 +45,9 @@ namespace CSC.Services
 
         public async Task<List<User>> FindAllAsync()
         {
-            return await _context.User.ToListAsync();
+            return await _context.User
+                .Include(user => user.Funcionario)
+                .ToListAsync();
         }
 
         public async Task<List<User>> FindByNameAsync(string _name)

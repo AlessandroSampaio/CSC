@@ -1,23 +1,57 @@
-﻿@model IEnumerable<CSC.Models.Funcionario>;
+﻿@model IEnumerable<CSC.Models.Funcionario>
 
+<table class="table table-sm table-hover" id="TbFuncionarios">
+    <thead class="thead-dark rounded">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Admissao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Demissao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Veiculo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Admissao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Demissao)
+                </td>
+                <td>
+                    @if (item.Veiculo)
+                    {
+                        <i class="fas fa-check" style="color: green;"></i>
+                    }
+                    else
+                    {
+                        <i class="fas fa-times" style="color: red;"></i>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Editar" asp-route-id="@item.Id"><i class="fas fa-pen"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
-<br />
-<div class="form-row">
-    <div class="col-1"></div>
-    <div class="col-10">
-        <form id="srch" class="form-inline">
-            <label class="mr-sm-2">Nome: </label>
-            <input id="nameSearch" type="text" class="form-control col mb-2 mr-sm-2  input-Capitalize" />
-            <button id="btnPesquisar" type="button" class="btn btn-primary mb-2">Pesquisar</button>
-
-        </form>
-    </div>
-</div>
-<div id="content" class="container-fluid">
-    <div class="spinner-grow text-primary"></div>
-</div>
-
+<a asp-action="Novo" class="btn btn-primary float-right">Novo</a>
 
 @section Scripts {
-    <script type="text/javascript" src="~/js/IndexFuncionario.js"></script>
+    <script type="text/javascript" src="~/js/tables.js"></script>
 }
