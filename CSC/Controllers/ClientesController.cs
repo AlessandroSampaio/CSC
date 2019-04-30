@@ -26,7 +26,8 @@ namespace CSC.Controllers
             {
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
                 ViewBag.erro = TempData["Error"];
-                return View();
+                var listClientes = await _clienteServices.FindAllAsync();
+                return View(listClientes);
             }
             else
             {
@@ -35,13 +36,13 @@ namespace CSC.Controllers
             }
         }
 
-        public async Task<IActionResult> Listagem(string _name)
+        /*public async Task<IActionResult> Listagem(string _name)
         {
             if (_name == null)
                 _name = "";
             var list = await _clienteServices.FindByNameAsync(_name);
             return PartialView("_listClientes", list);
-        }
+        }*/
 
         [HttpGet]
         public async Task<IActionResult> Novo(Cliente cliente)
@@ -49,8 +50,8 @@ namespace CSC.Controllers
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                ViewBag.cnpjWS = TempData["cnpjWS"];
-                return View(cliente);
+                //ViewBag.cnpjWS = TempData["cnpjWS"];
+                return View(/*cliente*/);
             }
             else
             {

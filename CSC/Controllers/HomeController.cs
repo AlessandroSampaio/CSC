@@ -2,6 +2,7 @@
 using CSC.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace CSC.Controllers
@@ -10,6 +11,7 @@ namespace CSC.Controllers
     {
         public readonly UserServices _UserServices;
         const string SessionUserID = "_UserID";
+        const string SessionUserTime = "_LogonTime";
 
 
         public HomeController(UserServices UserServices)
@@ -31,6 +33,7 @@ namespace CSC.Controllers
             }
             user = _UserServices.ValidUser(user);
             HttpContext.Session.SetInt32(SessionUserID, user.Id);
+            HttpContext.Session.SetString(SessionUserTime, DateTime.Now.ToString());
             return  RedirectToAction("Index");
         }
 
@@ -66,5 +69,23 @@ namespace CSC.Controllers
             HttpContext.Session.Remove(SessionUserID);
             return RedirectToAction("Login");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> SessionTime()
+        {
+            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
+            {
+                ViewBag.user = await _UserServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                TimeSpan TimeLogon = DateTime.Now - DateTime.Parse(HttpContext.Session.GetString(SessionUserTime).ToString());
+                
+                return Json(TimeLogon.Minutes);
+            }
+            else
+            {
+                return RedirectToAction(nameof(Login));
+            }
+        }
+
+
     }
 }

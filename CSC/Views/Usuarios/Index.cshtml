@@ -52,6 +52,8 @@
 <div class="float-right">
     <a asp-controller="Usuarios" asp-action="Create" class="btn btn-primary">Novo</a>
 </div>
+
+<!-- modal para atualização de senha -->
 <div class="modal fade" id="PasswordForm">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -72,6 +74,7 @@
     </div>
 </div>
 
+<!-- modal para atualização de login -->
 <div class="modal fade" id="UserForm">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -95,61 +98,3 @@
 @section Scripts {
     <script type="text/javascript" src="~/js/tables.js"></script>
 }
-
-<script>
-    $(document).on("click", ".open-modal", function (e) {
-        $("input[name = id]").val($(this).data('id'));
-        $("#NovoUser").val("");
-        $("#NovaSenha").val("");
-    });
-    $("#btnSalvarSenha").on("click", function () {
-        var filtro = {
-            Id: $("#PswID").val(),
-            Senha: $("#NovaSenha").val()
-        };
-        SalvarSenha(filtro);
-    });
-    function SalvarSenha(filtro) {
-        $.ajax({
-            url: '/Usuarios/AlterarSenha',
-            type: 'POST',
-            cache: false,
-            async: true,
-            dataType: "Json",
-            data: filtro
-        })
-            .done(function () {
-                $('#myAlert').fadeTo(2000, 500).slideUp(500, function () {
-                    $("#myAlert").slideUp(500);
-                });
-                $('#PasswordForm').modal('hide');
-            })
-    }
-    $("#btnSalvarUser").on("click", function () {
-        var filtro = {
-            Id: $("#UserID").val(),
-            NomeLogon: $("#NovoUser").val()
-        };
-        SalvarUser(filtro);
-
-    });
-    function SalvarUser(filtro) {
-        $.ajax({
-            url: '/Usuarios/AlterarNomeLogon',
-            type: 'POST',
-            cache: false,
-            async: true,
-            dataType: "Json",
-            data: filtro
-        })
-            .done(function () {
-                $('#myAlert').fadeTo(2000, 500).slideUp(500, function () {
-                    $("#myAlert").slideUp(500);
-                });
-                $('#UserForm').modal('hide');
-            })
-    }
-    $("#UserForm").on('hidden.bs.modal', function () {
-        listUsuarios();
-    });
-</script>
