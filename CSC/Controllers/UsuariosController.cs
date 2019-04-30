@@ -24,6 +24,7 @@ namespace CSC.Controllers
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
+                ViewBag.Controller = "Usuarios";
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
                 var listUser = await _userServices.FindAllAsync();
                 return View(listUser);
@@ -47,6 +48,7 @@ namespace CSC.Controllers
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
+                ViewBag.Controller = "Usuarios / Novo";
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
                 var listFunc = await _funcionarioServices.FindFuncionariosWithNoUsers();
                 var ViewModel = new UserFormViewModel() { Funcionarios = listFunc };

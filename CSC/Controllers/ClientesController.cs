@@ -24,6 +24,7 @@ namespace CSC.Controllers
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
+                ViewBag.Controller = "Cliente";
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
                 ViewBag.erro = TempData["Error"];
                 var listClientes = await _clienteServices.FindAllAsync();

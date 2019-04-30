@@ -1,0 +1,54 @@
+﻿@model CSC.Models.ViewModel.UserFormViewModel
+
+
+<h1>Create</h1>
+
+<h4>User</h4>
+<hr />
+<div class="container-fluid">
+    <form method="post">
+        <div asp-validation-summary="All" class="text-danger">
+            <div class="row">
+                <div class="col-4 col-md-4 col-sm-4">
+                    <div class="form-group">
+                        <label asp-for="User.NomeLogon"></label>
+                        <input type="text" asp-for="User.NomeLogon" class="form-control" />
+                        <span asp-validation-for="User.NomeLogon" class="alert-danger"></span>
+                    </div>
+                </div>
+                <div class="col-4 col-md-4 col-sm-4">
+                    <div class="form-group">
+                        <label asp-for="User.Senha"></label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                            </div>
+                            <input asp-for="User.Senha" type="password" class="form-control pwstrength" data-indicator="pwindicator">
+                        </div>
+                        <div id="pwindicator" class="pwindicator">
+                            <div class="bar"></div>
+                            <div class="label"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 col-md-4 col-sm-4">
+                    <div class="form-group">
+                        <label asp-for="User.FuncionarioId"></label>
+                        <select asp-for="User.FuncionarioId" asp-items="@(new SelectList(Model.Funcionarios, "Id", "Nome"))" class="form-control"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8"></div>
+                <div class="col-4 col-md-4 col-sm-4">
+                    <div class="float-right  align-self-center">
+                        <input type="submit" value="Novo" class="btn btn-primary" />
+                        <a asp-action="Index" class="btn btn-danger">Voltar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

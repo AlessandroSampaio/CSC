@@ -23,6 +23,7 @@ namespace CSC.Controllers
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
+                ViewBag.Controller = "Funcionarios";
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
                 var listFuncionario = _funcionarioServices.FindAll();
                 return View(listFuncionario);
@@ -72,6 +73,7 @@ namespace CSC.Controllers
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
+                ViewBag.Controller = "Funcionarios \\ Novo";
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
                 return View();
             }
