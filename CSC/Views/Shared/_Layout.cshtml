@@ -40,7 +40,7 @@
 
                     <li class="dropdown">
                         <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user" id="btnUserLogonInfo">
-                            <img alt="image" src="../dist/img/avatar/avatar-1.png" width="30" class="rounded-circle mr-1">
+                            <img alt="image" src="~/dist/img/avatar/avatar-1.png" width="30" class="rounded-circle mr-1">
                             <div class="d-sm-none d-lg-inline-block">Olá, @ViewBag.user.NomeLogon</div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -72,7 +72,7 @@
                     </div>
                     <ul class="sidebar-menu">
                         <li class="menu-header">Geral</li>
-                        <li class="nav-link"><a href="#" class="nav-link"><span>Painel de Controle</span></a></li>
+                        <li class="nav-link"><a asp-controller="Home" asp-action="Index" class="nav-link"><span>Painel de Controle</span></a></li>
                         <li class="menu-header">Pessoas</li>
                         <li class="nav-link"><a class="nav-link" asp-controller="Funcionarios" asp-action="Index"><span>Funcionarios</span></a></li>
                         <li class="nav-link"><a class="nav-link" asp-controller="Usuarios" asp-action="Index">Usuarios</a></li>
@@ -86,13 +86,12 @@
                 <section class="section">
                     <div class="section-header">
                         <h1>@ViewBag.Controller</h1>
-                        
                     </div>
-
                     <div class="section-body">
                         @RenderBody()
                     </div>
                 </section>
+                @RenderSection("Modals", required: false)
             </div>
             <footer class="main-footer">
                 <div class="footer-left">
@@ -111,7 +110,6 @@
     <script src="~/lib/tooltip/tooltip.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/lib/jquery-nicescroll/jquery.nicescroll.min.js"></script>
-    <script src="~/lib/moment/moment-with-locales.js"></script>
     <script src="~/dist/js/stisla.js"></script>
 
     <!-- Plugins -->
@@ -127,6 +125,9 @@
     <script type="text/javascript" src="~/lib/jquery-datatables/ColReorder/js/dataTables.colReorder.min.js"></script>
     <script type="text/javascript" src="~/lib/jquery-datatables/FixedHeader/js/dataTables.fixedHeader.min.js"></script>
     <script type="text/javascript" src="~/lib/jquery-datatables/RowReorder/js/dataTables.rowReorder.min.js"></script>
+    <script type="text/javascript" src="~/lib/moment/moment-with-locales.js"></script>
+    <script type="text/javascript" src="~/lib/moment/datetime-moment.js"></script>
+
 
     <!-- Template JS File -->
     <script src="~/dist/js/scripts.js"></script>

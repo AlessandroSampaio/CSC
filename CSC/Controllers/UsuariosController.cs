@@ -36,11 +36,10 @@ namespace CSC.Controllers
         }
 
 
-        public async Task<IActionResult> Listagem(string _name)
+        public async Task<IActionResult> Listagem()
         {
-            if (_name == null) { _name = ""; }
-            var listUsuarios = await _userServices.FindByNameAsync(_name);
-            return PartialView("_listUsuarios", listUsuarios);
+            var listUsuarios = await _userServices.FindAllAsync();
+            return Json(listUsuarios);
         }
 
         [HttpGet]

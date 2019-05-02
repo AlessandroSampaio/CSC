@@ -4,6 +4,7 @@
     <thead class="thead-dark rounded">
         <tr>
             <th>
+                id
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NomeLogon)
@@ -15,37 +16,40 @@
                 @Html.DisplayNameFor(model => model.Funcionario.Admissao)
             </th>
             <th>
-
+                @Html.DisplayNameFor(model => model.Funcionario.Demissao)
+            </th>
+            <th>
+                Ações
             </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (User item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NomeLogon)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Funcionario.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Funcionario.Admissao)
-                </td>
-                <td>
-                    <button class="btn my-2 my-sm-0 open-modal" type="button" data-id="@item.Id" data-toggle="modal" data-target="#UserForm">
-                        <i class="fas fa-user-edit"></i>
-                    </button>
-                    <button class="btn my-2 my-sm-0 open-modal" type="button" data-id="@item.Id" data-toggle="modal" data-target="#PasswordForm">
-                        <i class="fas fa-key"></i>
-                    </button>
+        <!-- foreach (User item in Model)
+            {
+                <tr>
+                    <td>
+                        Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        Html.DisplayFor(modelItem => item.NomeLogon)
+                    </td>
+                    <td>
+                        Html.DisplayFor(modelItem => item.Funcionario.Nome)
+                    </td>
+                    <td>
+                        Html.DisplayFor(modelItem => item.Funcionario.Admissao)
+                    </td>
+                    <td>
+                        <button class="btn my-2 my-sm-0 open-modal" type="button" data-id="item.Id" data-toggle="modal" data-target="#UserForm">
+                            <i class="fas fa-user-edit"></i>
+                        </button>
+                        <button class="btn my-2 my-sm-0 open-modal" type="button" data-id="item.Id" data-toggle="modal" data-target="#PasswordForm">
+                            <i class="fas fa-key"></i>
+                        </button>
 
-                </td>
-            </tr>
-        }
+                    </td>
+                </tr>
+            }-->
     </tbody>
 </table>
 
@@ -53,48 +57,52 @@
     <a asp-controller="Usuarios" asp-action="Create" class="btn btn-primary">Novo</a>
 </div>
 
-<!-- modal para atualização de senha -->
-<div class="modal fade" id="PasswordForm">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body">
-                <form>
-                    <input type="hidden" name="id" id="PswID" value="" class="form-control" />
-                    <div class="row">
-                        <div class="col-12">
-                            <label><b>Nova senha</b></label>
-                            <input class="form-control" type="password" id="NovaSenha" name="Senha" />
-                            <br />
-                            <input id="btnSalvarSenha" type="button" value="Salvar" class="btn btn-primary btn-block" />
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+@section Modals{
+    <!-- modal para atualização de senha -->
 
-<!-- modal para atualização de login -->
-<div class="modal fade" id="UserForm">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body">
-                <form>
-                    <input type="hidden" name="id" id="UserID" value="" class="form-control" />
-                    <div class="row">
-                        <div class="col-12">
-                            <label><b>Novo Logon</b></label>
-                            <input class="form-control" type="text" id="NovoUser" name="NomeLogon" />
-                            <br />
-                            <input id="btnSalvarUser" type="button" value="Salvar" class="btn btn-primary btn-block" />
+    <div class="modal fade" tabindex="-1" role="dialog" id="PasswordForm">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" name="id" id="PswID" value="" class="form-control" />
+                        <div class="row">
+                            <div class="col-12">
+                                <label><b>Nova senha</b></label>
+                                <input class="form-control" type="password" id="NovaSenha" name="Senha" />
+                                <br />
+                                <input id="btnSalvarSenha" type="button" value="Salvar" class="btn btn-primary btn-block" />
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+    <!-- modal para atualização de login -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="UserForm">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" name="id" id="UserID" value="" class="form-control" />
+                        <div class="row">
+                            <div class="col-12">
+                                <label><b>Novo Logon</b></label>
+                                <input class="form-control" type="text" id="NovoUser" name="NomeLogon" />
+                                <br />
+                                <input id="btnSalvarUser" type="button" value="Salvar" class="btn btn-primary btn-block" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 @section Scripts {
     <script type="text/javascript" src="~/js/tables.js"></script>
+    <script type="text/javascript" src="~/js/UserModals.js"></script>
 }
