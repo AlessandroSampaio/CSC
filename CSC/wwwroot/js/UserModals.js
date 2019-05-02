@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
     $(document).on("click", ".open-modal", function (e) {
-        $("input[name = id]").val($(this).data('id'));
+       // $("input[name = id]").val($(this).data('id'));
         $("#NovoUser").val("");
         $("#NovaSenha").val("");
     });

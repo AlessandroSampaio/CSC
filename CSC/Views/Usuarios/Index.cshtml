@@ -1,22 +1,22 @@
 ﻿@model IEnumerable<CSC.Models.User>
 
-<table class="table table-sm table-hover" id="TbUsuarios">
+<table class="table table-sm table-hover row-border" id="TbUsuarios">
     <thead class="thead-dark rounded">
         <tr>
             <th>
-                id
+                Id
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NomeLogon)
+                Logon
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Funcionario.Nome)
+                Funcionario
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Funcionario.Admissao)
+                Admissao
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Funcionario.Demissao)
+                Demissao
             </th>
             <th>
                 Ações
@@ -24,32 +24,7 @@
         </tr>
     </thead>
     <tbody>
-        <!-- foreach (User item in Model)
-            {
-                <tr>
-                    <td>
-                        Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td>
-                        Html.DisplayFor(modelItem => item.NomeLogon)
-                    </td>
-                    <td>
-                        Html.DisplayFor(modelItem => item.Funcionario.Nome)
-                    </td>
-                    <td>
-                        Html.DisplayFor(modelItem => item.Funcionario.Admissao)
-                    </td>
-                    <td>
-                        <button class="btn my-2 my-sm-0 open-modal" type="button" data-id="item.Id" data-toggle="modal" data-target="#UserForm">
-                            <i class="fas fa-user-edit"></i>
-                        </button>
-                        <button class="btn my-2 my-sm-0 open-modal" type="button" data-id="item.Id" data-toggle="modal" data-target="#PasswordForm">
-                            <i class="fas fa-key"></i>
-                        </button>
-
-                    </td>
-                </tr>
-            }-->
+       
     </tbody>
 </table>
 
