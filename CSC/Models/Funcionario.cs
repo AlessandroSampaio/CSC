@@ -13,9 +13,9 @@ namespace CSC.Models
         [Required(ErrorMessage = "Campo deve ser preenchido")]
         public string Nome { get; set; }
         [Required]
-        [Display(Name ="Data de Admissão")]
-        [DataType (DataType.Date)]
-        public DateTime Admissao  { get; set; }
+        [Display(Name = "Data de Admissão")]
+        [DataType(DataType.Date)]
+        public DateTime Admissao { get; set; }
         [Display(Name = "Data de Demissão")]
         [DataType(DataType.Date)]
         public DateTime? Demissao { get; set; }

@@ -48,21 +48,31 @@
             url: '/Usuarios/Listagem',
             dataSrc: ''
         },
-        "columns": [
-            { "data": "id"},
-            { "data": "nomeLogon"},
-            { "data": "funcionario.nome" },
-            { "data": "funcionario.admissao" },
-            { "data": "funcionario.demissao" }
-        ],
-        autoWidth: true,
-        columnDefs: [{
-            "targets": 5,
-            "data": null,
-            "defaultContent": '<button class="btn my-2 my-sm-0 open-modal" type="button" data-toggle="modal" data-target="#UserForm"><i class= "fas fa-user-edit" ></i></button><button class="btn my-2 my-sm-0 open-modal" type="button" data-toggle="modal" data-target="#PasswordForm"><i class="fas fa-key"></i></button>',
-            order: false
-        }]
-    });
+            "columns": [
+                { "data": "Id" },
+                { "data": "NomeLogon" },
+                { "data": "Funcionario.Nome" },
+                { "data": "Funcionario.Admissao" },
+                { "data": "Funcionario.Demissao" }
+            ],
+            autoWidth: true,
+            columnDefs:
+                [
+                    {
+                        "targets": 5,
+                        "data": null,
+                        "defaultContent": '<button class="btn my-2 my-sm-0 open-modal" type="button" data-toggle="modal" data-target="#UserForm"><i class= "fas fa-user-edit" ></i></button><button class="btn my-2 my-sm-0 open-modal" type="button" data-toggle="modal" data-target="#PasswordForm"><i class="fas fa-key"></i></button>',
+                        order: false
+                    },
+                    {
+                        "targets": 3//,
+                        /* render: function (data) {
+                             return data.substr(0, 10);
+                         }*/
+
+                    }
+                ]
+        });
 
     $('#TbUsuarios').on('click', 'button', function () {
         var data = tableUser.row($(this).parents('tr')).data();

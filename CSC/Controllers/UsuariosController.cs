@@ -4,6 +4,7 @@ using CSC.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace CSC.Controllers
@@ -13,6 +14,7 @@ namespace CSC.Controllers
         public readonly FuncionarioServices _funcionarioServices;
         public readonly UserServices _userServices;
         const string SessionUserID = "_UserID";
+        private JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { DateFormatString = "dd/MM/yyy" };
 
         public UsuariosController(UserServices userServices, FuncionarioServices funcionarioServices)
         {
@@ -37,9 +39,9 @@ namespace CSC.Controllers
 
 
         public async Task<IActionResult> Listagem()
-        {
+        {    
             var listUsuarios = await _userServices.FindAllAsync();
-            return Json(listUsuarios);
+            return Json(listUsuarios, SerializerSettings);
         }
 
         [HttpGet]
