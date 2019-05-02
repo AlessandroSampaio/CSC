@@ -2,6 +2,7 @@
 using CSC.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace CSC.Controllers
@@ -11,6 +12,7 @@ namespace CSC.Controllers
         public readonly FuncionarioServices _funcionarioServices;
         public readonly UserServices _userServices;
         const string SessionUserID = "_UserID";
+        private JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { DateFormatString = "dd/MM/yyyy" };
 
 
         public FuncionariosController(FuncionarioServices funcionarioServices, UserServices userServices)
@@ -25,8 +27,7 @@ namespace CSC.Controllers
             {
                 ViewBag.Controller = "Funcionarios";
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                var listFuncionario = _funcionarioServices.FindAll();
-                return View(listFuncionario);
+                return View();
             }
             else
             {
@@ -34,12 +35,11 @@ namespace CSC.Controllers
             }
         }
 
-    /*    public async Task<IActionResult> Listagem(string _name)
+        public IActionResult Listagem()
         {
-            if (_name == null) { _name = ""; }
-            var listFuncionario = await _funcionarioServices.FindByNameAsync(_name);
-            return PartialView("_listFuncionarios", listFuncionario);
-        }*/
+            var listFuncionario = _funcionarioServices.FindAll();
+            return Json(listFuncionario, SerializerSettings);
+        }
 
         public async Task<IActionResult> Editar(int id)
         {

@@ -28,8 +28,7 @@ namespace CSC.Controllers
             {
                 ViewBag.Controller = "Usuarios";
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                var listUser = await _userServices.FindAllAsync();
-                return View(listUser);
+                return View();
             }
             else
             {

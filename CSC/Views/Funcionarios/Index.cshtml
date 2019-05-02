@@ -4,35 +4,37 @@
     <thead class="thead-dark rounded">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Nome)
+               Id
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Admissao)
+                Nome
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Demissao)
+                Admissao
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Veiculo)
+                Veiculo
             </th>
-            <th></th>
+            <th>
+                Ações
+            </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+      <!--  foreach (var item in Model)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
+                    Html.DisplayFor(modelItem => item.Nome)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Admissao)
+                    Html.DisplayFor(modelItem => item.Admissao)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Demissao)
+                    Html.DisplayFor(modelItem => item.Demissao)
                 </td>
                 <td>
-                    @if (item.Veiculo)
+                    if (item.Veiculo)
                     {
                         <i class="fas fa-check" style="color: green;"></i>
                     }
@@ -42,15 +44,16 @@
                     }
                 </td>
                 <td>
-                    <a asp-action="Editar" asp-route-id="@item.Id"><i class="fas fa-pen"></i></a>
-                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash"></i></a>
+                    <a asp-action="Editar" asp-route-id="item.Id"><i class="fas fa-pen"></i></a>
+                    <a asp-action="Delete" asp-route-id="item.Id"><i class="fas fa-trash"></i></a>
                 </td>
             </tr>
         }
+          -->
     </tbody>
 </table>
 
-<a asp-action="Novo" class="btn btn-primary float-right">Novo</a>
+<!--<a asp-action="Novo" class="btn btn-primary float-right">Novo</a>-->
 @section Scripts {
     <script type="text/javascript" src="~/js/tables.js"></script>
 }
