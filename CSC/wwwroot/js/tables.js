@@ -1,30 +1,7 @@
 ﻿$(document).ready(function () {
 
-    /*$('#TbFuncionarios').DataTable({
-        dom: '<"top"B>',
-        buttons: [{
-            extend: 'collection',
-            className: "btn-primary",
-            text: 'Export',
-            buttons:
-                [
-                    { extend: "excel", className: "btn-block" },
-                    { extend: "pdf", className: "btn-block" },
-                    { extend: "print", className: "btn-block" }],
-        },
-        {
-            text: 'Novo',
-            className: 'btn-primary',
-            action: function (e, dt, button, config) {
-                window.location.href = '/Funcionarios/Novo/';
-            }
-        }
-        ]
-    });
-    */
-
     //Nova Tabela de Funcionarios
-    var tableFuncioarios = $('#TbFuncionarios').DataTable({
+    var tableFuncionarios = $('#TbFuncionarios').DataTable({
         dom: '<"top"B>',
         buttons: [{
             extend: 'collection',
@@ -52,7 +29,8 @@
             { "data": "Id" },
             { "data": "Nome" },
             { "data": "Admissao" },
-            { "data": "Veiculo" }
+            { "data": "Veiculo" },
+            { "data": "Id" }
         ],
         autoWidth: true,
         columnDefs:
@@ -69,9 +47,12 @@
                     }
                 },
                 {
-                    "targets": 4,
-                    "data": null,
-                    "defaultContent": '<a href="Editar"><i class="fas fa-pen"></i></a>',
+                    targets: 4,
+                    data: "Id",
+                    "render": function (data) {
+                        return '<a href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>';
+                    },
+                    //'<a href="Editar"><i class="fas fa-pen"></i></a>',
                     searchable: false,
                     orderable: false
                 }

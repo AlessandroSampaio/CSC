@@ -14,7 +14,7 @@ namespace CSC.Controllers
         public readonly FuncionarioServices _funcionarioServices;
         public readonly UserServices _userServices;
         const string SessionUserID = "_UserID";
-        private JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { DateFormatString = "dd/MM/yyy" };
+        private readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { DateFormatString = "dd/MM/yyy" };
 
         public UsuariosController(UserServices userServices, FuncionarioServices funcionarioServices)
         {

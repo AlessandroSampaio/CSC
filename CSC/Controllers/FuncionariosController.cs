@@ -12,7 +12,7 @@ namespace CSC.Controllers
         public readonly FuncionarioServices _funcionarioServices;
         public readonly UserServices _userServices;
         const string SessionUserID = "_UserID";
-        private JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { DateFormatString = "dd/MM/yyyy" };
+        private readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { DateFormatString = "dd/MM/yyyy" };
 
 
         public FuncionariosController(FuncionarioServices funcionarioServices, UserServices userServices)
@@ -53,7 +53,6 @@ namespace CSC.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-
         }
 
         [HttpPost]
@@ -66,7 +65,6 @@ namespace CSC.Controllers
             }
             await _funcionarioServices.UpdateAsync(obj);
             return RedirectToAction("Index");
-
         }
 
         public async Task<IActionResult> Novo()
