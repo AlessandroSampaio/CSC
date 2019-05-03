@@ -129,7 +129,7 @@
             text: 'Novo',
             className: 'btn-primary',
             action: function (e, dt, button, config) {
-                window.location.href = '/Funcionarios/Novo/';
+                $('#NovoCliente').modal('show');
             }
         }
         ],

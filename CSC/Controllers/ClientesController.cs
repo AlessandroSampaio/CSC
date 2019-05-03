@@ -49,8 +49,9 @@ namespace CSC.Controllers
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                //ViewBag.cnpjWS = TempData["cnpjWS"];
-                return View(/*cliente*/);
+                ViewBag.cnpjWS = TempData["cnpjWS"];
+                ViewBag.Controller = "Clientes \\ Novo";
+                return View(cliente);
             }
             else
             {
@@ -76,7 +77,7 @@ namespace CSC.Controllers
             try
             {
                 Cliente cliente = await _clienteServices.ConsultaWS(_cnpj);
-                cliente.DataInicio = DateTime.UtcNow;
+                cliente.DataInicio = DateTime.Now.Date;
                 TempData["cnpjWS"] = "true";
                 return RedirectToAction("Novo", cliente);
             } catch (NotImplementedException e)
