@@ -1,5 +1,6 @@
 ﻿using CSC.Models.Enums;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -27,7 +28,8 @@ namespace CSC.Models
         [DataType(DataType.Date)]
         public DateTime DataInicio { get; set; }
 
-        [JsonIgnore]
+        [JsonProperty("SituacaoCadastro")]
+        [JsonConverter(typeof(StringEnumConverter))]
         public PessoaStatus Status { get; set; }
 
         [JsonProperty("logradouro")]

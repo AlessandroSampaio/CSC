@@ -113,25 +113,59 @@
         tableUser.ajax.reload();
     })
 
-    $('#TbClientes').dataTable({
+    var tableClientes = $('#TbClientes').DataTable({
         dom: '<"top"B>',
         buttons: [{
             extend: 'collection',
             className: "btn-primary",
-            text: 'Export',
+            text: 'Exportar',
             buttons:
                 [
                     { extend: "excel", className: "btn-block" },
                     { extend: "pdf", className: "btn-block" },
-                    { extend: "print", className: "btn-block" }],
+                    { extend: "print", className: "btn-block" }]
         },
         {
             text: 'Novo',
-            className: "btn-primary",
+            className: 'btn-primary',
             action: function (e, dt, button, config) {
-                window.location.href = '/Clientes/Novo/';
+                window.location.href = '/Funcionarios/Novo/';
             }
         }
-        ]
+        ],
+        ajax: {
+            url: '/Clientes/Listagem',
+            dataSrc: ''
+        },
+        "columns": [
+            { "data": "Id" },
+            { "data": "cnpj" },
+            { "data": "nome" },
+            { "data": "SituacaoCadastro" },
+            { "data": "Id" }
+        ],
+        autoWidth: true,
+        columnDefs:
+            [
+                {
+                    targets: 3,
+                    data: "SitucaoCadastro",
+                    render: function (data) {
+                        if (data == "Ativo") {
+                            return '<div class="badge badge-success">Ativo</div>'
+                        }
+                        return '<div class="badge badge-danger">Inativo</div>'
+                    }
+                },
+                {
+                    targets: 4,
+                    data: "Id",
+                    "render": function (data) {
+                        return '<a href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>';
+                    },
+                    searchable: false,
+                    orderable: false
+                }
+            ]
     });
 });

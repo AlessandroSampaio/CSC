@@ -16,7 +16,9 @@ namespace CSC.Models
         public string NomeLogon { get; set; }
         [Required(ErrorMessage = "O campo senha não pode estar em branco!")]
         public string Senha { get; set; }
+        [Display(Name = "Funcionario")]
         public Funcionario Funcionario { get; set; }
+        [Display(Name = "Funcionario")]
         public int FuncionarioId { get; set; }
 
         public User() { }

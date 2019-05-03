@@ -2,6 +2,7 @@
 using CSC.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace CSC.Controllers
         public readonly ClienteServices _clienteServices;
         public readonly UserServices _userServices;
         const string SessionUserID = "_UserID";
+        private readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { DateFormatString = "dd/MM/yyyy" };
 
         public ClientesController(UserServices userServices, ClienteServices clienteServices)
         {
@@ -27,23 +29,19 @@ namespace CSC.Controllers
                 ViewBag.Controller = "Cliente";
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
                 ViewBag.erro = TempData["Error"];
-                var listClientes = await _clienteServices.FindAllAsync();
-                return View(listClientes);
+                return View();
             }
             else
             {
-                
                 return RedirectToAction("Login", "Home");
             }
         }
 
-        /*public async Task<IActionResult> Listagem(string _name)
+        public async Task<IActionResult> Listagem()
         {
-            if (_name == null)
-                _name = "";
-            var list = await _clienteServices.FindByNameAsync(_name);
-            return PartialView("_listClientes", list);
-        }*/
+            var list = await _clienteServices.FindAllAsync();
+            return Json(list, SerializerSettings);
+        }
 
         [HttpGet]
         public async Task<IActionResult> Novo(Cliente cliente)
