@@ -43,41 +43,11 @@ namespace CSC.Controllers
             return Json(list, SerializerSettings);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Novo(Cliente cliente)
-        {
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
-            {
-                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                ViewBag.cnpjWS = TempData["cnpjWS"];
-                ViewBag.Controller = "Clientes \\ Novo";
-                return View(cliente);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> SalvarNovo(Cliente cliente)
-        {
-            if (!ModelState.IsValid)
-            {
-                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                return View("Novo", cliente);
-            }
-            await _clienteServices.InsertAsync(cliente);
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ConsultaCNPJ(string _cnpj)
+        /*public async Task<IActionResult> ConsultaCNPJ(string _cnpj)
         {
             try
             {
                 Cliente cliente = await _clienteServices.ConsultaWS(_cnpj);
-                cliente.DataInicio = DateTime.Now.Date;
                 TempData["cnpjWS"] = "true";
                 return RedirectToAction("Novo", cliente);
             } catch (NotImplementedException e)
@@ -85,7 +55,39 @@ namespace CSC.Controllers
                 TempData["Error"] = e.Message.Replace('á','a');
                 return RedirectToAction("index");
             }
+        }*/
 
+        public async Task<IActionResult> Novo(string _doc)
+        {
+            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
+            {
+                try
+                {
+                    ViewBag.Controller = "Cliente \\ Novo";
+                    ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                    Cliente cliente;
+                    _doc = _doc.Replace(".", "").Replace("-", "").Replace("/", "");
+                    if (_doc.Length < 14)
+                    {
+                        ViewBag.cnpjWS = "true";
+                        ViewBag.Type = 'f';
+                        cliente = new Cliente { CNPJ = _doc };
+                        return View(cliente);
+                    }
+                    ViewBag.Type = 'j';
+                    cliente = await _clienteServices.ConsultaWS(_doc);
+                    TempData["cnpjWS"] = "true";
+                    return View(cliente);
+                }
+                catch (NotImplementedException e)
+                {
+                    throw e;
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
     }
 }

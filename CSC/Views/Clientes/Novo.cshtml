@@ -80,6 +80,7 @@
 @section Scripts {
 
     <script type="text/javascript">
+        var tipoPessoa = "@ViewBag.Type";
         var cnpjWS = @ViewBag.cnpjWS;
         $(document).ready(function () {
             function RetornaDataHoraAtual() {
@@ -106,7 +107,12 @@
                 todayHighlight: true
             });
 
-            $('#cnpj').mask('00.000.000/0000-00', { reverse: true });
+            if (tipoPessoa == "f") {
+                $('#cnpj').mask('000.000.000-00', { reverse: true });
+            } else {
+                $('#cnpj').mask('00.000.000/0000-00', { reverse: true });
+            }
+
             $('#cep').mask('00000-000');
             $('#Numero').mask('000000');
             $('#DataInicio').mask('00/00/0000');
