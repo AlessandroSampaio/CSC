@@ -36,11 +36,32 @@ namespace CSC.Services
             return await _context.Cliente.Where(c => c.RazaoSocial.Contains(_name)).OrderBy(c => c.RazaoSocial).ToListAsync();
         }
 
+        public async Task<Cliente> FindByIdAsync(int id)
+        {
+            return await _context.Cliente
+                .FirstOrDefaultAsync(f => f.Id == id);
+        }
+
         public async Task InsertAsync(Cliente cliente)
         {
             _context.Cliente.Add(cliente);
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateAsync(Cliente obj)
+        {
+            bool hasAny = await _context.Cliente.AnyAsync(x => x.Id == obj.Id);
+            try
+            {
+                _context.Update(obj);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                throw e;
+            }
+        }
+
 
         public async Task<Cliente> ConsultaWS(string _cnpj)
         {

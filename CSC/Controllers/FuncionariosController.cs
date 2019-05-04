@@ -45,6 +45,7 @@ namespace CSC.Controllers
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
+                ViewBag.Controller = "Funcionarios \\ Editar";
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
                 Funcionario func = await _funcionarioServices.FindByIdAsync(id);
                 return View(func);

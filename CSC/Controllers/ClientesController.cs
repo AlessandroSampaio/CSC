@@ -97,5 +97,34 @@ namespace CSC.Controllers
             return cliente == null ? Json(false) : Json(true);
         }
 
+        public async Task<IActionResult> Editar(int id)
+        {
+            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
+            {
+                ViewBag.Controller = "Clientes \\ Editar";
+                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                Cliente cliente = await _clienteServices.FindByIdAsync(id);
+                if (cliente.CNPJ.Length == 11) { ViewBag.Type = 'f'; }
+                else { ViewBag.Type = 'j'; }
+
+                return View(cliente);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Editar(Cliente obj)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                return View(obj);
+            }
+            await _clienteServices.UpdateAsync(obj);
+            return RedirectToAction("Index");
+        }
     }
 }
