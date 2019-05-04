@@ -39,7 +39,7 @@
                             <div class="col-12">
                                 <label><b>Cpf</b></label>
                                 <input class="form-control" type="text" id="NovoCpf" name="_doc" />
-                                <span class="text-danger"></span>
+                                <span id="ValidPF" class="text-danger"></span>
                                 <br />
                                 <input id="btnNovaPessoaFisica" type="submit" value="Incluir" class="btn btn-primary btn-block" />
                             </div>
@@ -51,6 +51,7 @@
                             <div class="col-12">
                                 <label><b>Cnpj </b>:</label>
                                 <input class="form-control" type="text" id="NovoCnpj" name="_doc" />
+                                <span id="ValidPJ" class="text-danger"></span>
                                 <br />
                                 <input id="btnNovoCliente" type="submit" value="Incluir" class="btn btn-primary btn-block" />
                             </div>
@@ -66,5 +67,4 @@
 @section Scripts {
     <script src="~/js/tables.js"></script>
     <script src="~/js/ClienteModal.js"></script>
-        
 }
