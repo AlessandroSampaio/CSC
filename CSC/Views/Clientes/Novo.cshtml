@@ -1,7 +1,7 @@
 ﻿@model CSC.Models.Cliente
 
 <div class="container-fluid">
-    <form asp-action="SalvarNovo" id="novo" method="post">
+    <form asp-action="Salvar" id="novo" method="post">
         <div class="form-row">
             <div class="col-sm-2">
 
@@ -83,20 +83,6 @@
         var tipoPessoa = "@ViewBag.Type";
         var cnpjWS = @ViewBag.cnpjWS;
         $(document).ready(function () {
-            function RetornaDataHoraAtual() {
-                var dNow = new Date();
-                if (dNow.getDate() <= 9) {
-                    var localdate = '0' + dNow.getDate() + '/' + (dNow.getMonth() + 1) + '/' + dNow.getFullYear();
-                } else {
-                    var localdate = dNow.getDate() + '/' + (dNow.getMonth() + 1) + '/' + dNow.getFullYear();
-                }
-                if (dNow.getMonth() <= 9) {
-                    var localdate = dNow.getDate() + '/0' + (dNow.getMonth() + 1) + '/' + dNow.getFullYear();
-                } else {
-                    var localdate = dNow.getDate() + '/' + (dNow.getMonth() + 1) + '/' + dNow.getFullYear();
-                }
-                return localdate;
-            }
 
             $('.input-group.date').datepicker({
                 format: "dd/mm/yyyy",
@@ -104,8 +90,11 @@
                 language: "pt-BR",
                 keyboardNavigation: false,
                 autoclose: true,
-                todayHighlight: true
+                todayHighlight: true,
+                
             });
+            $('.input-group.date').datepicker('setUTCDate', new Date());
+
 
             if (tipoPessoa == "f") {
                 $('#cnpj').mask('000.000.000-00', { reverse: true });
@@ -116,9 +105,8 @@
             $('#cep').mask('00000-000');
             $('#Numero').mask('000000');
             $('#DataInicio').mask('00/00/0000');
-            $('#DataInicio').val(RetornaDataHoraAtual);
             
-            
+
             var options = {
                 onKeyPress: function (Telefone, e, field, options) {
                     var masks = ['(00) 0000-0000', '(00) 00000-0000'];
@@ -127,7 +115,7 @@
                 }
             };
             $('#Telefone').mask('(00) 0000-0000', options);
-            
+
             $("#novo").submit(function () {
                 $('#cnpj').removeAttr('disabled');
                 $('#cnpj').unmask();
@@ -140,6 +128,4 @@
             }
         });
     </script>
-
-
 }

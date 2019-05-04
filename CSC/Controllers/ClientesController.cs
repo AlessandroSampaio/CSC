@@ -57,6 +57,7 @@ namespace CSC.Controllers
             }
         }*/
 
+        [HttpPost]
         public async Task<IActionResult> Novo(string _doc)
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
@@ -76,7 +77,7 @@ namespace CSC.Controllers
                     }
                     ViewBag.Type = 'j';
                     cliente = await _clienteServices.ConsultaWS(_doc);
-                    TempData["cnpjWS"] = "true";
+                    ViewBag.cnpjWS = "true";
                     return View(cliente);
                 }
                 catch (NotImplementedException e)
@@ -88,6 +89,18 @@ namespace CSC.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Salvar(Cliente cliente)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                return View("Novo", cliente);
+            }
+            await _clienteServices.InsertAsync(cliente);
+            return RedirectToAction("Index");
         }
     }
 }
