@@ -43,20 +43,6 @@ namespace CSC.Controllers
             return Json(list, SerializerSettings);
         }
 
-        /*public async Task<IActionResult> ConsultaCNPJ(string _cnpj)
-        {
-            try
-            {
-                Cliente cliente = await _clienteServices.ConsultaWS(_cnpj);
-                TempData["cnpjWS"] = "true";
-                return RedirectToAction("Novo", cliente);
-            } catch (NotImplementedException e)
-            {
-                TempData["Error"] = e.Message.Replace('á','a');
-                return RedirectToAction("index");
-            }
-        }*/
-
         [HttpPost]
         public async Task<IActionResult> Novo(string _doc)
         {
@@ -102,5 +88,14 @@ namespace CSC.Controllers
             await _clienteServices.InsertAsync(cliente);
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public async Task<JsonResult> ConsultaCliente(string _doc)
+        {
+            _doc = _doc.Replace(".", "").Replace("/", "").Replace("-", "");
+            Cliente cliente = await _clienteServices.FindByDocAsync(_doc);
+            return cliente == null ? Json(false) : Json(true);
+        }
+
     }
 }

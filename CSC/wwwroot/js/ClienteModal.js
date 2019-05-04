@@ -15,7 +15,6 @@
         $('#FormPessoaFisica').addClass('hide');
         $('#NovoCnpj').val('');
         $('#NovoCpf').val('');
-        tableClientes.ajax.reload();
     });
 
     $('#NovoCpf').mask('000.000.000-00');
@@ -27,17 +26,40 @@
             event.preventDefault();
             $("#ValidPF").text("Cpf Inválido!").show().fadeOut(3000);
         } else {
-            return;
+            var consulta = ConsultaCliente(cpf);
+            if (consulta == true) {
+                event.preventDefault();
+                $("#ValidPF").text("Cpf já cadastrado!").show().fadeOut(5000);
+            }
         }
     });
     $('#FormPessoaJuridica').submit(function (event) {
         var cnpj = $('#NovoCnpj').val();
         if (!valida_cnpj(cnpj)) {
             event.preventDefault();
-            $("#ValidPJ").text("Cnpj Inválido!").show().fadeOut(3000);
+            $("#ValidPJ").text("Cnpj Inválido!").show().fadeOut(5000);
         } else {
-            return;
+            var consulta = ConsultaCliente(cnpj);
+            if (consulta == true) {
+                event.preventDefault();
+                $("#ValidPJ").text("Cnpj já cadastrado!").show().fadeOut(5000);
+            }
         }
     });
 
+    function ConsultaCliente(doc) {
+        var validacao = null;
+        $.ajax({
+            url: '/Clientes/ConsultaCliente',
+            async: false,
+            cache: false,
+            data: { _doc: doc },
+            dataType: 'Json',
+            type: 'POST',
+            success: function (result) {
+                validacao = result;
+            }
+        });
+        return validacao;
+    }
 });

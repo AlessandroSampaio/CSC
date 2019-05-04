@@ -26,6 +26,11 @@ namespace CSC.Services
             return await _context.Cliente.OrderBy(c => c.RazaoSocial).ToListAsync();
         }
 
+        public async Task<Cliente> FindByDocAsync(string _doc)
+        {
+            return await _context.Cliente.Where(c => c.CNPJ == _doc).FirstOrDefaultAsync();
+        }
+
         public async Task<List<Cliente>> FindByNameAsync(string _name)
         {
             return await _context.Cliente.Where(c => c.RazaoSocial.Contains(_name)).OrderBy(c => c.RazaoSocial).ToListAsync();

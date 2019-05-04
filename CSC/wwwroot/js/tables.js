@@ -52,7 +52,6 @@
                     "render": function (data) {
                         return '<a href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>';
                     },
-                    //'<a href="Editar"><i class="fas fa-pen"></i></a>',
                     searchable: false,
                     orderable: false
                 }
@@ -167,5 +166,9 @@
                     orderable: false
                 }
             ]
+    });
+
+    $('#NovoCliente').on('hidden.bs.modal', function () {
+        tableClientes.ajax.reload();
     });
 });
