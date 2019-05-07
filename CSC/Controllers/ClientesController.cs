@@ -1,9 +1,13 @@
 ﻿using CSC.Models;
+using CSC.Models.Enums;
 using CSC.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CSC.Controllers
@@ -125,6 +129,60 @@ namespace CSC.Controllers
             }
             await _clienteServices.UpdateAsync(obj);
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Inventario(int id)
+        {
+            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
+            {
+                ViewBag.Controller = "Clientes \\ Inventario";
+                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                ViewBag.SelectListItem = Enum.GetValues(typeof(Software)).Cast<Software>().Select(v => new SelectListItem
+                {
+                    Text = v.ToString(),
+                    Value = ((int)v).ToString()
+                }).ToList();
+
+                Cliente cliente = await _clienteServices.FindByIdAsync(id);
+                return View(cliente);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Inventario(List<Inventario> inventarios)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                return View(inventarios);
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> InventarioListagem(int id)
+        {
+            var list = await _clienteServices.FindInventariosAsync(id);
+            return Json(list, SerializerSettings);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddInventario(int id, Software software, int quantidade)
+        {
+            Inventario inv = new Inventario
+            {
+                ClienteID = id,
+                Cliente = await _clienteServices.FindByIdAsync(id),
+                Software = software,
+                Quantidade = quantidade
+            };
+            await _clienteServices.SaveInventario(inv);
+            return Json(true);
         }
     }
 }

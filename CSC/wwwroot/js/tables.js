@@ -1,6 +1,5 @@
 ﻿$(document).ready(function () {
 
-    //Nova Tabela de Funcionarios
     var tableFuncionarios = $('#TbFuncionarios').DataTable({
         dom: '<"top"B>',
         buttons: [{
@@ -58,7 +57,6 @@
             ]
     });
 
-    //Nova DataTableUser usando Ajax
     var tableUser = $('#TbUsuarios').DataTable({
         dom: '<"top"B>',
         buttons: [{
@@ -103,14 +101,29 @@
             ]
     });
 
-    $('#TbUsuarios').on('click', 'button', function () {
-        var data = tableUser.row($(this).parents('tr')).data();
-        $("input[name = id]").val(data["id"]);
+    var tableInventario = $('#TbInventario').DataTable({
+        dom: '<"top"B>',
+        buttons: [
+        {
+            text: '<i class="fas fa-plus"></i>',
+            className: 'btn-success',
+            action: function (e, dt, button, config) {
+                $('#InsertTable').modal('show');;
+            }
+        }
+        ],
+        ajax: {
+            url: '/Clientes/InventarioListagem',
+            dataSrc: '',
+            type: 'post',
+            data: { 'id': $('#Id').val() }
+        },
+        "columns": [
+            { "data": "Software" },
+            { "data": "Quantidade" }
+        ],
+        autoWidth: true
     });
-
-    $('#UserForm').on('hidden.bs.modal', function () {
-        tableUser.ajax.reload();
-    })
 
     var tableClientes = $('#TbClientes').DataTable({
         dom: '<"top"B>',
@@ -160,7 +173,8 @@
                     targets: 4,
                     data: "Id",
                     "render": function (data) {
-                        return '<a href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>';
+                        return '<a href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>' +
+                            '<a href="Inventario\\' + data + '"><i class="fas fa-clipboard-list"></i></a>';
                     },
                     searchable: false,
                     orderable: false
@@ -168,7 +182,39 @@
             ]
     });
 
+    $('#TbUsuarios').on('click', 'button', function () {
+        var data = tableUser.row($(this).parents('tr')).data();
+        $("input[name = id]").val(data["id"]);
+    });
+
+    $('#UserForm').on('hidden.bs.modal', function () {
+        tableUser.ajax.reload();
+    })
+
     $('#NovoCliente').on('hidden.bs.modal', function () {
         tableClientes.ajax.reload();
+    });
+
+    $('#InserTableContent').on('submit', function (event) {
+        event.preventDefault();
+        let obj = {
+            id: $('#Id').val(),
+            software: $('#SoftwareList option:selected').text(),
+            quantidade: $('#Quantidade').val()
+        };
+
+        $.ajax({
+            url: '/Clientes/AddInventario',
+            type: 'post',
+            data: obj,
+            success: function (e) {
+                $('#Quantidade').val("")
+                $('#InsertTable').modal('hide');
+                tableInventario.ajax.reload();
+            },
+            fail: function (e) { console.log(e) }
+        });
+
+        
     });
 });

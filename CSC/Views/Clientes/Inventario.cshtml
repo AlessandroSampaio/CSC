@@ -1,0 +1,70 @@
+﻿@model CSC.Models.Cliente
+
+<div class="container-fluid">
+    <div class="form-row">
+        <input asp-for="Id" type="hidden" />
+        <div class="col-sm-2">
+            <label asp-for="CNPJ" class="col-form-label col-form-label-sm"></label>
+            <input asp-for="CNPJ" class="form-control form-control-sm" id="cnpj" disabled />
+        </div>
+        <div class="col-sm-5">
+            <label asp-for="RazaoSocial" class="col-form-label col-form-label-sm"></label>
+            <input asp-for="RazaoSocial" class="form-control form-control-sm input-Capitalize" disabled />
+        </div>
+        <div class="col-sm-2">
+            <label asp-for="DataInicio" class="col-form-label col-form-label-sm"></label>
+            <div class="input-group date">
+                <input asp-for="DataInicio" type="text" class="form-control form-control-sm" disabled />
+                <span class="input-group-addon" style="position:absolute; right:5px;"><i class="fa fa-calendar"></i></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<table class="table table-sm table-hover" id="TbInventario">
+    <thead>
+        <tr>
+            <th>Software</th>
+            <th>Quantidade de licenças</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<a asp-controller="Clientes" asp-action="Index" class="btn btn-danger">Voltar</a>
+
+@section Modals{
+    <!-- modal para atualização de senha -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="InsertTable">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form id="InserTableContent">
+                        <div class="container-fluid">
+                            <div class="form-row">
+                                <div class="col-6 col-sm-6">
+                                    <select id="SoftwareList" asp-items="@ViewBag.SelectListItem" class="form-control"></select>
+                                </div>
+                                <div class="col-6 col-sm-6">
+                                    <input type="number" name="Quantidade" class="form-control" id="Quantidade" />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-row">
+                                <input type="submit" class="btn btn-block btn-success" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/tables.js"></script>
+    <script type="text/javascript">$('#cnpj').mask('000.000.000-00');</script>
+}

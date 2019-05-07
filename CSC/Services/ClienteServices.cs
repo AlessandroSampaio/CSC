@@ -4,9 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -34,6 +32,35 @@ namespace CSC.Services
         public async Task<List<Cliente>> FindByNameAsync(string _name)
         {
             return await _context.Cliente.Where(c => c.RazaoSocial.Contains(_name)).OrderBy(c => c.RazaoSocial).ToListAsync();
+        }
+
+        public async Task<List<Inventario>> FindInventariosAsync(int id)
+        {
+            return await _context.Inventario.Where(i => i.ClienteID == id)
+                .Include(c => c.Cliente)
+                .ToListAsync();
+        }
+
+        public async Task SaveInventario(Inventario inventario)
+        {
+            try
+            {
+                if (_context.Inventario.Any(x => x.Cliente == inventario.Cliente && x.Software == inventario.Software))
+                {
+
+                    _context.Update(inventario);
+
+                }
+                else
+                {
+                    _context.Inventario.Add(inventario);
+                }
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                throw e;
+            }
         }
 
         public async Task<Cliente> FindByIdAsync(int id)
@@ -68,26 +95,26 @@ namespace CSC.Services
             _cnpj = _cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
 
             string endpoint = "https://www.receitaws.com.br/v1/cnpj/" + _cnpj;
-            
+
             string JsonRetorno = string.Empty;
 
             using (HttpClient client = new HttpClient())
             {
                 var response = client.GetAsync(endpoint).Result;
-                using(HttpContent content = response.Content)
+                using (HttpContent content = response.Content)
                 {
-                    
+
 
                     JsonRetorno = await content.ReadAsStringAsync();
 
                     ErrorModel error = JsonConvert.DeserializeObject<ErrorModel>(JsonRetorno);
-                    if(error.status == "ERROR")
+                    if (error.status == "ERROR")
                     {
                         throw new NotImplementedException(error.message);
                     }
                     return JsonConvert.DeserializeObject<Cliente>(JsonRetorno);
                 }
-            }            
+            }
         }
     }
 }
