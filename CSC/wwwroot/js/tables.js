@@ -1,4 +1,38 @@
 ﻿$(document).ready(function () {
+    var tableAtendimentos = $('#TbAtendimentos').DataTable({
+        dom: '<"top"B>',
+        buttons: [{
+            extend: 'collection',
+            className: "btn-primary",
+            text: 'Exportar',
+            buttons:
+                [
+                    { extend: "excel", className: "btn-block" },
+                    { extend: "pdf", className: "btn-block" },
+                    { extend: "print", className: "btn-block" }]
+        },
+        {
+            text: 'Novo',
+            className: 'btn-primary',
+            action: function (e, dt, button, config) {
+                window.location.href = '/Atendimentos/Novo/';
+            }
+        }
+        ],
+        ajax: {
+            url: '/Atendimentos/Listagem',
+            dataSrc: ''
+        },
+        columns: [
+            { "data": "Id" },
+            { "data": "Funcionario.Nome" },
+            { "data": "Cliente.RazaoSocial" },
+            { "data": "Abertura" },
+            { "data": "Status" }
+        ],
+        autoWidth: true
+
+    });
 
     var tableFuncionarios = $('#TbFuncionarios').DataTable({
         dom: '<"top"B>',
@@ -198,7 +232,7 @@
             url: '/Clientes/RemoveInventario',
             type: 'post',
             data: inv,
-            success: function (data) {
+            success: function () {
                 tableInventario.ajax.reload();
             }
         });

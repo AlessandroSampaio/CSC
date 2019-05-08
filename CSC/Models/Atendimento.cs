@@ -1,8 +1,5 @@
 ﻿using CSC.Models.Enums;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CSC.Models
 {
@@ -15,8 +12,6 @@ namespace CSC.Models
         public DateTime Encerramento { get; set; }
         public AtendimentoStatus Status { get; set; }
         public TipoAtendimento AtendimentoTipo { get; set; }
-        public int OrigemID { get; set; }
-
-
+        public int? OrigemID { get; set; }
     }
 }

@@ -14,5 +14,6 @@ namespace CSC.Models
         public DbSet<Cliente> Cliente { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Inventario> Inventario { get; set; }
+        public DbSet<Atendimento> Atendimento { get; set; }
     }
 }
