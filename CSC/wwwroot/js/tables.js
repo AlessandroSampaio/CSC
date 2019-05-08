@@ -239,8 +239,8 @@
     });
 
     $('#TbUsuarios').on('click', 'button', function () {
-        let data = tableUser.row($(this).parents('tr')).data();
-        $("input[name = id]").val(data["id"]);
+        var data = tableUser.row($(this).parents('tr')).data();
+        $("input[name = id]").val(data["Id"]);
     });
 
     $('#UserForm').on('hidden.bs.modal', function () {

@@ -1,0 +1,36 @@
+﻿@model CSC.Models.Atendimento
+
+<div class="container-fluid">
+    <form asp-action="Salvar" id="novo" method="post">
+        <div class="form-row">
+            <div class="col-sm-2">
+                <label asp-for="Id" class="col-form-label col-form-label-sm"></label>
+                <input asp-for="Id" class="form-control form-control-sm" id="cnpj" disabled />
+            </div>
+            <div class="col-sm-3">
+                <label asp-for="Funcionario.Nome" class="col-form-label col-form-label-sm"></label>
+                <input asp-for="Funcionario.Nome" class="form-control form-control-sm input-Capitalize" disabled/>
+            </div>
+            <div class="col-sm-5">
+                <label asp-for="Cliente.RazaoSocial" class="col-form-label col-form-label-sm"></label>
+                <input asp-for="Cliente.RazaoSocial" class="form-control form-control-sm input-Capitalize" disabled />
+            </div>
+            <div class="col-sm-2">
+                <label asp-for="Abertura" class="col-form-label col-form-label-sm"></label>
+                <input asp-for="Abertura" type="date" class="form-control form-control-sm" disabled />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-12 col-sm-12">
+                <textarea wrap="soft" rows="10" cols="142" maxlength="255"></textarea>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-sm-12 text-right">
+                <input type="submit" value="Gravar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-danger">Voltar</a>
+            </div>
+        </div>
+
+    </form>
+</div>
