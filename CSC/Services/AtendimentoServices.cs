@@ -16,7 +16,16 @@ namespace CSC.Services
 
         public Task<List<Atendimento>> FindAllAsync()
         {
-            return _context.Atendimento.ToListAsync();
+            return _context.Atendimento
+                .Include(c => c.Cliente)
+                .Include(f => f.Funcionario)
+                .ToListAsync();
+        }
+
+        public async Task InsertAsync(Atendimento atendimento)
+        {
+            _context.Atendimento.Add(atendimento);
+            await _context.SaveChangesAsync();
         }
     }
 }

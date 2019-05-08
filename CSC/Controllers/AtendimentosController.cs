@@ -1,8 +1,12 @@
 ﻿using CSC.Models;
+using CSC.Models.Enums;
 using CSC.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CSC.Controllers
@@ -50,9 +54,16 @@ namespace CSC.Controllers
                 User user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
                 ViewBag.Controller = "Atendimentos \\ Novo";
                 ViewBag.user = user;
+                ViewBag.TipoAtendimento = Enum.GetValues(typeof(TipoAtendimento)).Cast<TipoAtendimento>().Select(v => new SelectListItem
+                {
+                    Text = v.ToString(),
+                    Value = ((int)v).ToString()
+                }).ToList();
                 Atendimento atendimento = new Atendimento {
                     Funcionario = user.Funcionario,
-                    Cliente = await _clienteServices.FindByIdAsync(12)
+                    FuncionarioId = user.FuncionarioId,
+                    Cliente = await _clienteServices.FindByIdAsync(12),
+                    ClienteId = 12
                 };
                 return View(atendimento);
             }
@@ -60,6 +71,18 @@ namespace CSC.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Novo(Atendimento atendimento)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                return View(atendimento);
+            }
+            await _atendimentoServices.InsertAsync(atendimento);
+            return RedirectToAction("Index");
         }
     }
 }

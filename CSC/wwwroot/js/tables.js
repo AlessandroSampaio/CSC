@@ -26,7 +26,7 @@
         columns: [
             { "data": "Id" },
             { "data": "Funcionario.Nome" },
-            { "data": "Cliente.RazaoSocial" },
+            { "data": "Cliente.nome" },
             { "data": "Abertura" },
             { "data": "Status" }
         ],

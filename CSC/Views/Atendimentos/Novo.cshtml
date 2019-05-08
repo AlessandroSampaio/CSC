@@ -5,15 +5,17 @@
         <div class="form-row">
             <div class="col-sm-2">
                 <label asp-for="Id" class="col-form-label col-form-label-sm"></label>
-                <input asp-for="Id" class="form-control form-control-sm" id="cnpj" disabled />
+                <input asp-for="Id" class="form-control form-control-sm" disabled />
             </div>
             <div class="col-sm-3">
                 <label asp-for="Funcionario.Nome" class="col-form-label col-form-label-sm"></label>
                 <input asp-for="Funcionario.Nome" class="form-control form-control-sm input-Capitalize" disabled/>
+                <input asp-for="FuncionarioId" type="hidden" />
             </div>
             <div class="col-sm-5">
                 <label asp-for="Cliente.RazaoSocial" class="col-form-label col-form-label-sm"></label>
                 <input asp-for="Cliente.RazaoSocial" class="form-control form-control-sm input-Capitalize" disabled />
+                <input asp-for="ClienteId" type="hidden" />
             </div>
             <div class="col-sm-2">
                 <label asp-for="Abertura" class="col-form-label col-form-label-sm"></label>
@@ -21,11 +23,20 @@
             </div>
         </div>
         <div class="form-row">
-            <div class="col-12 col-sm-12">
-                <textarea wrap="soft" rows="10" cols="142" maxlength="255"></textarea>
+            <div class="col-3 col-sm-3">
+                <label asp-for="AtendimentoTipo" class="col-form-label col-form-label-sm"></label>
+                <select asp-for="AtendimentoTipo" asp-items="@ViewBag.TipoAtendimento" class="form-control"></select>
+                <br />
+                <label asp-for="Status" class="col-form-label col-form-label-sm"></label>
+                <input asp-for="Status" class="form-control form-control-sm" disabled />
+            </div>
+            <div class="col-9 col-sm-9">
+               <label asp-for="Detalhes" class="col-form-label col-form-label-sm"></label>
+                <textarea asp-for="Detalhes" class="form-control form-control-sm" rows="10" maxlength="255" style="height: 200px !important"></textarea>
             </div>
         </div>
         <div class="form-row">
+            <label>&nbsp;</label>
             <div class="col-sm-12 text-right">
                 <input type="submit" value="Gravar" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-danger">Voltar</a>
