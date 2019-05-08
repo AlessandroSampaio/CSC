@@ -41,6 +41,12 @@ namespace CSC.Services
                 .ToListAsync();
         }
 
+        public async Task RemoveInventario(Inventario inv)
+        {
+            _context.Inventario.Remove(inv);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task SaveInventario(Inventario inventario)
         {
             try

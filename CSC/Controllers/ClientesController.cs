@@ -184,5 +184,13 @@ namespace CSC.Controllers
             await _clienteServices.SaveInventario(inv);
             return Json(true);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveInventario(Inventario inv)
+        {
+            
+            await _clienteServices.RemoveInventario(inv);
+            return Json(true);
+        }
     }
 }

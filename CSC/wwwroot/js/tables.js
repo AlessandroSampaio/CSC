@@ -122,7 +122,17 @@
             { "data": "Software" },
             { "data": "Quantidade" }
         ],
-        autoWidth: true
+        autoWidth: true,
+        columnDefs: [
+            {
+                targets: 2,
+                data: $('#Id').val(),
+                render: function (data) {
+                    return '<button class="btn btn-danger"><i class="fas fa-minus"></i></button>'
+
+                }
+            }
+        ]
     });
 
     var tableClientes = $('#TbClientes').DataTable({
@@ -182,8 +192,20 @@
             ]
     });
 
+    $('#TbInventario').on('click', 'button', function () {
+        let inv = tableInventario.row($(this).parents('tr')).data();
+        $.ajax({
+            url: '/Clientes/RemoveInventario',
+            type: 'post',
+            data: inv,
+            success: function (data) {
+                tableInventario.ajax.reload();
+            }
+        });
+    });
+
     $('#TbUsuarios').on('click', 'button', function () {
-        var data = tableUser.row($(this).parents('tr')).data();
+        let data = tableUser.row($(this).parents('tr')).data();
         $("input[name = id]").val(data["id"]);
     });
 
