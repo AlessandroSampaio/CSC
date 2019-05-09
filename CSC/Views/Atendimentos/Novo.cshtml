@@ -26,7 +26,14 @@
                 <label asp-for="Status" class="col-form-label col-form-label-sm"></label>
                 <input asp-for="Status" class="form-control form-control-sm" disabled />
                 <br />
-                <button class="btn btn-block btn-primary" type="button" data-toggle="modal" data-target="#LicenseModal">Licenças</button>
+                <div class="form-row">
+                    <div class="col-6 col-sm-6">
+                        <button class="btn btn-block btn-primary" type="button" data-toggle="modal" data-target="#LicenseModal">Licenças</button>
+                    </div>
+                    <div class="col-6 col-sm-6">
+                        <button class="btn btn-block btn-primary" type="button" data-toggle="modal" data-target="#HistoryModal">Historico <span id="HistoricoBadge" class="badge badge-light"></span></button>
+                    </div>
+                </div>
             </div>
             <div class="col-9 col-sm-9">
                 <label asp-for="Detalhes" class="col-form-label col-form-label-sm"></label>
@@ -49,12 +56,32 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
-                    <table class="table table-sm table-hover" id="TbInventario">
+                    <table class="table table-sm table-hover" style="width:100%;" id="TbLicencas">
                         <thead>
                             <tr>
                                 <th>Software</th>
                                 <th>Quantidade de licenças</th>
-                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="HistoryModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <table class="table table-sm table-hover" style="width:100%;" id="TbHistory">
+                        <thead>
+                            <tr>
+                                <th>Funcionario</th>
+                                <th>Cliente</th>
+                                <th>Tipo</th>
+                                <th>Status</th>
+                                <th>Detalhes</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -65,6 +92,6 @@
     </div>
 }
 
-@section Scripts{ 
-    <script type="text/javascript" src="~/js/tables.js"></script>
+@section Scripts{
+    <script type="text/javascript" src="~/js/Atendimentos_Novo.js"></script>
 }

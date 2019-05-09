@@ -84,5 +84,21 @@ namespace CSC.Controllers
             await _atendimentoServices.InsertAsync(atendimento);
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public async Task<int> Notificacoes(int id)
+        {
+            var list = await _atendimentoServices.FindByClientAsync(id);
+            return list.Where(a => a.Status == AtendimentoStatus.Aberto).Count();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AtendimentoHistorico(int id)
+        {
+            var list = await _atendimentoServices.FindByClientAsync(id);
+            list.OrderBy(a => a.Status);
+            return Json(list, SerializerSettings);
+        }
+
     }
 }

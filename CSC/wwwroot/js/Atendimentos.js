@@ -1,4 +1,4 @@
-﻿$(document).ready(function(){
+﻿$(document).ready(function () {
     var tableAtendimentos = $('#TbAtendimentos').DataTable({
         dom: '<"top"B>',
         buttons: [{
@@ -30,7 +30,19 @@
             { "data": "Abertura" },
             { "data": "Status" }
         ],
-        autoWidth: true
+        autoWidth: true,
+        columnDefs:
+            [
+                {
+                    targets: 4,
+                    data: "Status",
+                    render: function (data) {
+                        if (data == "Aberto") {
+                            return '<div class="badge badge-success">Aberto</div>'
+                        }
+                        return '<div class="badge badge-danger">Fechado</div>'
+                    }
+                }]
 
     });
 });

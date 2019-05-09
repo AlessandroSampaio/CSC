@@ -1,6 +1,7 @@
 ﻿using CSC.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CSC.Services
@@ -17,6 +18,15 @@ namespace CSC.Services
         public Task<List<Atendimento>> FindAllAsync()
         {
             return _context.Atendimento
+                .Include(c => c.Cliente)
+                .Include(f => f.Funcionario)
+                .ToListAsync();
+        }
+
+        public Task<List<Atendimento>> FindByClientAsync(int id)
+        {
+            return _context.Atendimento
+                .Where(c => c.ClienteId== id)
                 .Include(c => c.Cliente)
                 .Include(f => f.Funcionario)
                 .ToListAsync();
