@@ -1,4 +1,66 @@
-﻿$(document).ready(function(){
+﻿$(document).ready(function () {
+
+    var tableClientes = $('#TbClientes').DataTable({
+        dom: '<"top"B>',
+        buttons: [{
+            extend: 'collection',
+            className: "btn-primary",
+            text: 'Exportar',
+            buttons:
+                [
+                    { extend: "excel", className: "btn-block" },
+                    { extend: "pdf", className: "btn-block" },
+                    { extend: "print", className: "btn-block" }]
+        },
+        {
+            text: 'Novo',
+            className: 'btn-primary',
+            action: function (e, dt, button, config) {
+                $('#NovoCliente').modal('show');
+            }
+        }
+        ],
+        ajax: {
+            url: '/Clientes/Listagem',
+            dataSrc: ''
+        },
+        "columns": [
+            { "data": "Id" },
+            { "data": "cnpj" },
+            { "data": "nome" },
+            { "data": "SituacaoCadastro" },
+            { "data": "Id" }
+        ],
+        autoWidth: true,
+        columnDefs:
+            [
+                {
+                    targets: 3,
+                    data: "SitucaoCadastro",
+                    render: function (data) {
+                        if (data == "Ativo") {
+                            return '<div class="badge badge-success">Ativo</div>'
+                        }
+                        return '<div class="badge badge-danger">Inativo</div>'
+                    }
+                },
+                {
+                    targets: 4,
+                    data: "Id",
+                    "render": function (data) {
+                        return '<a href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>' +
+                            '<a href="Inventario\\' + data + '"><i class="fas fa-clipboard-list"></i></a>';
+                    },
+                    searchable: false,
+                    orderable: false
+                }
+            ]
+    });
+
+    $('#NovoCliente').on('hidden.bs.modal', function () {
+        tableClientes.ajax.reload();
+    });
+
     $('#btnPessoaJuridica').on('click', function () {
         $('#PessoaOpcao').addClass('hide');
         $('#FormPessoaJuridica').removeClass('hide');
@@ -18,6 +80,7 @@
     });
 
     $('#NovoCpf').mask('000.000.000-00');
+
     $('#NovoCnpj').mask('00.000.000/0000-00');
 
     $('#FormPessoaFisica').submit(function (event) {
@@ -33,6 +96,7 @@
             }
         }
     });
+
     $('#FormPessoaJuridica').submit(function (event) {
         var cnpj = $('#NovoCnpj').val();
         if (!valida_cnpj(cnpj)) {

@@ -3,14 +3,10 @@
 <div class="container-fluid">
     <form asp-action="Salvar" id="novo" method="post">
         <div class="form-row">
-            <div class="col-sm-2">
-                <label asp-for="Id" class="col-form-label col-form-label-sm"></label>
-                <input asp-for="Id" class="form-control form-control-sm" disabled />
-            </div>
             <div class="col-sm-3">
                 <label asp-for="Funcionario.Nome" class="col-form-label col-form-label-sm"></label>
-                <input asp-for="Funcionario.Nome" class="form-control form-control-sm input-Capitalize" disabled/>
-                <input asp-for="FuncionarioId" type="hidden" />
+                <input asp-for="Funcionario.Nome" class="form-control form-control-sm input-Capitalize" disabled />
+                <input asp-for="FuncionarioId" type="hidden" id="Id" />
             </div>
             <div class="col-sm-5">
                 <label asp-for="Cliente.RazaoSocial" class="col-form-label col-form-label-sm"></label>
@@ -29,10 +25,12 @@
                 <br />
                 <label asp-for="Status" class="col-form-label col-form-label-sm"></label>
                 <input asp-for="Status" class="form-control form-control-sm" disabled />
+                <br />
+                <button class="btn btn-block btn-primary" type="button" data-toggle="modal" data-target="#LicenseModal">Licenças</button>
             </div>
             <div class="col-9 col-sm-9">
-               <label asp-for="Detalhes" class="col-form-label col-form-label-sm"></label>
-                <textarea asp-for="Detalhes" class="form-control form-control-sm" rows="10" maxlength="255" style="height: 200px !important"></textarea>
+                <label asp-for="Detalhes" class="col-form-label col-form-label-sm"></label>
+                <textarea asp-for="Detalhes" class="form-control form-control-sm" rows="10" maxlength="255" style="height: 200px !important; resize:none"></textarea>
             </div>
         </div>
         <div class="form-row">
@@ -45,3 +43,28 @@
 
     </form>
 </div>
+
+@section Modals{
+    <div class="modal fade" id="LicenseModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <table class="table table-sm table-hover" id="TbInventario">
+                        <thead>
+                            <tr>
+                                <th>Software</th>
+                                <th>Quantidade de licenças</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{ 
+    <script type="text/javascript" src="~/js/tables.js"></script>
+}
