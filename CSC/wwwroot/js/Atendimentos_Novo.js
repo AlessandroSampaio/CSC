@@ -48,6 +48,7 @@
         });
         setTimeout(AttBadges, 1000);
     }());
-}
 
-);
+    $('#novo').on('submit', function (e) {
+    });
+});
