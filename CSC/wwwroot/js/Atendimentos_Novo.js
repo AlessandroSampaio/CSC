@@ -48,6 +48,4 @@
         });
         setTimeout(AttBadges, 1000);
     }());
-}
-
-);
+});

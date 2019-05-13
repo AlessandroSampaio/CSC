@@ -34,7 +34,7 @@ namespace CSC.Controllers
             user = _UserServices.ValidUser(user);
             HttpContext.Session.SetInt32(SessionUserID, user.Id);
             HttpContext.Session.SetString(SessionUserTime, DateTime.Now.ToString());
-            return  RedirectToAction("Index");
+            return RedirectToAction("Index");
         }
 
         [AcceptVerbs("Get", "Post")]
@@ -60,7 +60,6 @@ namespace CSC.Controllers
             {
                 return RedirectToAction(nameof(Login));
             }
-           
         }
 
         [HttpPost]
@@ -78,7 +77,7 @@ namespace CSC.Controllers
             {
                 ViewBag.user = await _UserServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
                 TimeSpan TimeLogon = DateTime.Now - DateTime.Parse(HttpContext.Session.GetString(SessionUserTime).ToString());
-                
+
                 return Json(TimeLogon.Minutes);
             }
             else
