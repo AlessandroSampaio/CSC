@@ -60,14 +60,12 @@ namespace CSC.Controllers
                     _doc = _doc.Replace(".", "").Replace("-", "").Replace("/", "");
                     if (_doc.Length < 14)
                     {
-                        ViewBag.cnpjWS = "true";
                         ViewBag.Type = 'f';
                         cliente = new Cliente { CNPJ = _doc };
                         return View(cliente);
                     }
                     ViewBag.Type = 'j';
                     cliente = await _clienteServices.ConsultaWS(_doc);
-                    ViewBag.cnpjWS = "true";
                     return View(cliente);
                 }
                 catch (NotImplementedException e)

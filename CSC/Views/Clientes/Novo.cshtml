@@ -81,7 +81,6 @@
 
     <script type="text/javascript">
         var tipoPessoa = "@ViewBag.Type";
-        var cnpjWS = @ViewBag.cnpjWS;
         $(document).ready(function () {
 
             $('.input-group.date').datepicker({
@@ -123,9 +122,7 @@
                 $('#Numero').unmask();
                 $('#Telefone').unmask();
             });
-            if (cnpjWS == true) {
-                $('#cnpj').attr('disabled', 'disabled');
-            }
+            $('#cnpj').attr('disabled', 'disabled');
         });
     </script>
 }
