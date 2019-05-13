@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CSC.Models;
+﻿using CSC.Models;
 using CSC.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace CSC
 {
@@ -29,19 +24,11 @@ namespace CSC
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-<<<<<<< HEAD
-               // options.CheckConsentNeeded = context => true;
-                //options.MinimumSameSitePolicy = SameSiteMode.None;
-=======
-                options.CheckConsentNeeded = context => false;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
->>>>>>> e2f8161470d302a27199c299108b3b6de17e58f0
             });
 
-           services.AddDbContext<CSCContext>(options =>
-                    options.UseMySql(Configuration.GetConnectionString("CSCContext"),
-                    builder => builder.MigrationsAssembly("CSC")));
+            services.AddDbContext<CSCContext>(options =>
+                     options.UseMySql(Configuration.GetConnectionString("CSCContext"),
+                     builder => builder.MigrationsAssembly("CSC")));
 
             services.AddScoped<ClienteServices>();
             services.AddScoped<FuncionarioServices>();
@@ -73,7 +60,6 @@ namespace CSC
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            //app.UseCookiePolicy();
             app.UseSession();
 
             app.UseMvc(routes =>
