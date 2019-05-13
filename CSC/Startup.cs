@@ -30,8 +30,13 @@ namespace CSC
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+<<<<<<< HEAD
                // options.CheckConsentNeeded = context => true;
                 //options.MinimumSameSitePolicy = SameSiteMode.None;
+=======
+                options.CheckConsentNeeded = context => false;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+>>>>>>> e2f8161470d302a27199c299108b3b6de17e58f0
             });
 
            services.AddDbContext<CSCContext>(options =>
@@ -46,7 +51,7 @@ namespace CSC
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

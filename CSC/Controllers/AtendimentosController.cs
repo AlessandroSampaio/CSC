@@ -47,7 +47,7 @@ namespace CSC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Novo()
+        public async Task<IActionResult> Novo(int ClienteId)
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
@@ -62,8 +62,9 @@ namespace CSC.Controllers
                 Atendimento atendimento = new Atendimento {
                     Funcionario = user.Funcionario,
                     FuncionarioId = user.FuncionarioId,
-                    Cliente = await _clienteServices.FindByIdAsync(12),
-                    ClienteId = 12
+                    Cliente = await _clienteServices.FindByIdAsync(ClienteId),
+                    ClienteId = ClienteId,
+                    Abertura = DateTime.Now.Date
                 };
                 return View(atendimento);
             }

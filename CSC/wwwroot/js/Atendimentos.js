@@ -14,8 +14,8 @@
         {
             text: 'Novo',
             className: 'btn-primary',
-            action: function (e, dt, button, config) {
-                window.location.href = '/Atendimentos/Novo/';
+            action: function () {
+                $('#ClientSelect').modal('show');
             }
         }
         ],
@@ -44,5 +44,41 @@
                     }
                 }]
 
+    });
+
+    var tableClientes = $('#TbClientes').DataTable({
+        dom: '<"top"f>',
+        ajax: {
+            url: '/Clientes/Listagem',
+            dataSrc: ''
+        },
+        "columns": [
+            { "data": "Id" },
+            { "data": "cnpj" },
+            { "data": "nome" },
+            { "data": "SituacaoCadastro" },
+        ],
+        autoWidth: true,
+        columnDefs:
+            [
+                {
+                    targets: 3,
+                    data: "SitucaoCadastro",
+                    render: function (data) {
+                        if (data == "Ativo") {
+                            return '<div class="badge badge-success">Ativo</div>'
+                        }
+                        return '<div class="badge badge-danger">Inativo</div>'
+                    }
+                }
+            ]
+    });
+
+    $('#TbClientes tbody').on('dblclick', 'tr', function () {
+        var data = tableClientes.row(this).data();
+        console.log(data);
+        console.log(data['Id']);
+        var url = "/Atendimentos/Novo?ClienteId=" + data['Id'];
+        window.location.href = url;
     });
 });

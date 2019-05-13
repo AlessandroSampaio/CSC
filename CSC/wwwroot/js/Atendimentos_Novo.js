@@ -48,4 +48,10 @@
         });
         setTimeout(AttBadges, 1000);
     }());
+<<<<<<< HEAD
+=======
+
+    $('#novo').on('submit', function (e) {
+    });
+>>>>>>> e2f8161470d302a27199c299108b3b6de17e58f0
 });
