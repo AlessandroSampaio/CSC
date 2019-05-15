@@ -4,6 +4,7 @@ using CSC.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Middleware;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,6 @@ namespace CSC.Controllers
             {
                 ViewBag.Controller = "Cliente";
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                ViewBag.erro = TempData["Error"];
                 return View();
             }
             else
@@ -68,9 +68,9 @@ namespace CSC.Controllers
                     cliente = await _clienteServices.ConsultaWS(_doc);
                     return View(cliente);
                 }
-                catch (NotImplementedException e)
+                catch (Exception e)
                 {
-                    throw e;
+                    throw new HttpStatusCodeException(StatusCodes.Status500InternalServerError, e.Message);
                 }
             }
             else
@@ -82,13 +82,21 @@ namespace CSC.Controllers
         [HttpPost]
         public async Task<IActionResult> Salvar(Cliente cliente)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                return View("Novo", cliente);
+                ModelState.Remove("DataInicio");
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                    return View(cliente);
+                }
+                _clienteServices.Insert(cliente);
+                return RedirectToAction("Index");
             }
-            await _clienteServices.InsertAsync(cliente);
-            return RedirectToAction("Index");
+            catch (Exception e)
+            {
+                throw new HttpStatusCodeException(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
 
         [HttpPost]
@@ -120,6 +128,7 @@ namespace CSC.Controllers
         [HttpPost]
         public async Task<IActionResult> Editar(Cliente obj)
         {
+            ModelState.Remove("DataInicio");
             if (!ModelState.IsValid)
             {
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
@@ -186,7 +195,7 @@ namespace CSC.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveInventario(Inventario inv)
         {
-            
+
             await _clienteServices.RemoveInventario(inv);
             return Json(true);
         }

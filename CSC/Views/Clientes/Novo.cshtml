@@ -55,10 +55,11 @@
                 <span asp-validation-for="Email" class="text-danger" style="font-size:12px;"></span>
             </div>
             <div class="col-sm-2">
-                <label asp-for="DataInicio" class="col-form-label col-form-label-sm"></label>
+                <label  class="col-form-label col-form-label-sm">Data de Contrato</label>
                 <div class="input-group date">
-                    <input asp-for="DataInicio" type="text" class="form-control form-control-sm" />
+                    <input asp-for="dataInicio" type="text" class="form-control form-control-sm" required/>
                     <span class="input-group-addon" style="position:absolute; right:5px;"><i class="fa fa-calendar"></i></span>
+                    <span asp-validation-for="dataInicio" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-sm-2">
@@ -78,10 +79,10 @@
 
 
 @section Scripts {
-
     <script type="text/javascript">
         var tipoPessoa = "@ViewBag.Type";
         $(document).ready(function () {
+            $('#cnpj').attr('disabled', 'disabled');
 
             $('.input-group.date').datepicker({
                 format: "dd/mm/yyyy",
@@ -115,14 +116,16 @@
             };
             $('#Telefone').mask('(00) 0000-0000', options);
 
-            $("#novo").submit(function () {
+            $("#novo").on('submit', function (event) {
+                event.preventDefault();
                 $('#cnpj').removeAttr('disabled');
                 $('#cnpj').unmask();
                 $('#cep').unmask();
                 $('#Numero').unmask();
                 $('#Telefone').unmask();
+                this.submit();
             });
-            $('#cnpj').attr('disabled', 'disabled');
+            
         });
     </script>
 }

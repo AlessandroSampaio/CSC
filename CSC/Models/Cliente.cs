@@ -3,6 +3,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 
 namespace CSC.Models
 {
@@ -25,7 +27,6 @@ namespace CSC.Models
         public string NomeFantasia { get; set; }
 
         [Display(Name = "Data de Contrato")]
-        [DataType(DataType.Date)]
         public DateTime DataInicio { get; set; }
 
         [JsonProperty("SituacaoCadastro")]
@@ -52,5 +53,12 @@ namespace CSC.Models
 
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
+        [NotMapped]
+        public string dataInicio
+        {
+            get { return DataInicio.Day < 10 ? '0' + DataInicio.ToString("dd/MM/yyyy") : DataInicio.ToString("dd/MM/yyyy"); }
+            set { DataInicio = DateTime.ParseExact(value, "dd/MM/yyyy", CultureInfo.InvariantCulture); }
+        }
     }
 }

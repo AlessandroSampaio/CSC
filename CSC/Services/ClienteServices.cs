@@ -75,10 +75,16 @@ namespace CSC.Services
                 .FirstOrDefaultAsync(f => f.Id == id);
         }
 
-        public async Task InsertAsync(Cliente cliente)
+        public void Insert (Cliente cliente)
         {
-            _context.Cliente.Add(cliente);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Cliente.Add(cliente);
+                _context.SaveChanges();
+            }catch(DbUpdateException e)
+            {
+                throw e;
+            }
         }
 
         public async Task UpdateAsync(Cliente obj)
@@ -87,7 +93,7 @@ namespace CSC.Services
             try
             {
                 _context.Update(obj);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
             catch (DbUpdateConcurrencyException e)
             {
