@@ -48,7 +48,10 @@
                     targets: 5,
                     data: "Id",
                     "render": function (data) {
-                        return '<a href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>';
+                        return '<div class="btn-group btn-group-justified">'+
+                        '<a class="btn btn-primary" title="Editar" href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>' +
+                            '<button class="btn btn-primary" title="Transferir Atendimento"><i class="fas fa-angle-double-right"></i></button>' +
+                            '<button class="btn btn-primary" title="Encerrar Atendimento"><i class="fas fa-check"></i></button></div>';
                     },
                     searchable: false,
                     orderable: false

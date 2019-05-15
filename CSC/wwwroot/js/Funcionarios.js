@@ -48,7 +48,7 @@
                     targets: 4,
                     data: "Id",
                     "render": function (data) {
-                        return '<a href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>';
+                        return '<div class="btn-group btn-group-justified"><a class="btn btn-primary" title="Editar" href="Editar\\' + data + '"><i class="fas fa-pen"></i></a></div>';
                     },
                     searchable: false,
                     orderable: false
