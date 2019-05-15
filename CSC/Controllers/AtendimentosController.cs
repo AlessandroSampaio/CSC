@@ -36,7 +36,6 @@ namespace CSC.Controllers
                 ViewBag.user = user;
                 ViewBag.Controller = "Atendimentos";
                 var list = _funcionarioServices.FindAll().ToList();
-                list.Remove(user.Funcionario);
                 ViewBag.Funcionarios = list.Select(v => new SelectListItem
                 {
                     Text = v.Nome,

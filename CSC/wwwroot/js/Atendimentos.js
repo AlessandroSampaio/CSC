@@ -32,7 +32,7 @@
             { "data": "Cliente.nome" },
             { "data": "Abertura" },
             { "data": "Status" },
-            { "data": "Id" } 
+            { "data": "Id" }
         ],
         autoWidth: true,
         columnDefs:
@@ -110,8 +110,9 @@
         if (data['Status'] != 'Aberto') {
             alert('Impossivel transferir esse atendimento!');
         } else {
-            AtdTransfer = data['Id'];
+            AtdTransfer = data;
             $('#FuncionarioOrigem').val(data["Funcionario"]["Nome"]);
+            $("#funcDestino option[value='" + data["FuncionarioId"] + "']").remove();
             $('#TransferirAtendimento').modal('show');
         }
     });
@@ -127,11 +128,12 @@
             async: true,
             cache: false,
             data: {
-                'atdId': AtdTransfer,
+                'atdId': AtdTransfer['Id'],
                 'funcionarioDestino': FuncionarioDestino
             },
             dataType: 'Json',
             success: function () {
+                $("#funcDestino").append('<option value="' + AtdTransfer['FuncionarioId'] + '">' + AtdTransfer['Funcionario']['Nome'] + '</option>');
                 $('body').css('cursor', 'default');
                 AtdTransfer = null;
                 alert("Transferido com sucesso!");
@@ -139,5 +141,9 @@
                 tableAtendimentos.ajax.reload();
             }
         });
+    });
+
+    $('#TransferirAtendimento').on("hidden.bs.modal", function () {
+        $("#funcDestino").append('<option value="' + AtdTransfer['FuncionarioId'] + '">' + AtdTransfer['Funcionario']['Nome'] + '</option>');
     });
 });
