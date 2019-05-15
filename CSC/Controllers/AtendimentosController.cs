@@ -86,6 +86,40 @@ namespace CSC.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Editar(int id)
+        {
+            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
+            {
+                User user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                ViewBag.Controller = "Atendimentos \\ Novo";
+                ViewBag.user = user;
+                ViewBag.TipoAtendimento = Enum.GetValues(typeof(TipoAtendimento)).Cast<TipoAtendimento>().Select(v => new SelectListItem
+                {
+                    Text = v.ToString(),
+                    Value = ((int)v).ToString()
+                }).ToList();
+                Atendimento atendimento = await _atendimentoServices.FindByIDAsync(id);
+                return View(atendimento);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Editar(Atendimento obj)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                return View(obj);
+            }
+            await _atendimentoServices.UpdateAsync(obj);
+            return RedirectToAction("Index");
+        }
+
         [HttpPost]
         public async Task<int> Notificacoes(int id)
         {

@@ -28,7 +28,8 @@
             { "data": "Funcionario.Nome" },
             { "data": "Cliente.nome" },
             { "data": "Abertura" },
-            { "data": "Status" }
+            { "data": "Status" },
+            { "data": "Id" }
         ],
         autoWidth: true,
         columnDefs:
@@ -42,7 +43,18 @@
                         }
                         return '<div class="badge badge-danger">Fechado</div>'
                     }
-                }]
+                },
+                {
+                    targets: 5,
+                    data: "Id",
+                    "render": function (data) {
+                        return '<a href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>';
+                    },
+                    searchable: false,
+                    orderable: false
+                }
+
+            ]
 
     });
 
@@ -56,7 +68,7 @@
             { "data": "Id" },
             { "data": "cnpj" },
             { "data": "nome" },
-            { "data": "SituacaoCadastro" },
+            { "data": "SituacaoCadastro" }
         ],
         autoWidth: true,
         columnDefs:

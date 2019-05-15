@@ -1,5 +1,6 @@
 ﻿using CSC.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,6 +24,14 @@ namespace CSC.Services
                 .ToListAsync();
         }
 
+        public async Task<Atendimento> FindByIDAsync(int id)
+        {
+            return await _context.Atendimento.Where(a => a.Id == id)
+                .Include(c => c.Cliente)
+                .Include(f => f.Funcionario)
+                .FirstOrDefaultAsync();
+        }
+
         public Task<List<Atendimento>> FindByClientAsync(int id)
         {
             return _context.Atendimento
@@ -37,5 +46,21 @@ namespace CSC.Services
             _context.Atendimento.Add(atendimento);
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateAsync(Atendimento atendimento)
+        {
+            bool hasAny = _context.Atendimento.Any(a => a.Id == atendimento.Id);
+            if(hasAny)
+            {
+                _context.Atendimento.Update(atendimento);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new NullReferenceException();
+            }
+        }
+        
+        
     }
 }

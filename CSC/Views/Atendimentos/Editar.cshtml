@@ -1,7 +1,7 @@
 ﻿@model CSC.Models.Atendimento
 
 <div class="container-fluid">
-    <form asp-action="Salvar" id="novo" method="post">
+    <form asp-action="Editar" method="post">
         <div class="form-row">
             <div class="col-sm-3">
                 <label asp-for="Funcionario.Nome" class="col-form-label col-form-label-sm"></label>
@@ -15,7 +15,7 @@
             </div>
             <div class="col-sm-2">
                 <label asp-for="Abertura" class="col-form-label col-form-label-sm"></label>
-                <input asp-for="Abertura" type="date" class="form-control form-control-sm" readonly />
+                <input asp-for="Abertura" type="date" class="form-control form-control-sm" disabled />
             </div>
         </div>
         <div class="form-row">
