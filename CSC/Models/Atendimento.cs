@@ -22,5 +22,11 @@ namespace CSC.Models
         public TipoAtendimento AtendimentoTipo { get; set; }
         public int? OrigemID { get; set; }
         public string Detalhes { get; set; }
+
+
+        public Atendimento()
+        {
+
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
 
     var tableClientes = $('#TbClientes').DataTable({
-        dom: '<"top"B>',
+        dom: '<"top"Bf>',
         buttons: [{
             extend: 'collection',
             className: "btn-primary",
@@ -28,6 +28,7 @@
             { "data": "Id" },
             { "data": "cnpj" },
             { "data": "nome" },
+            { "data": "telefone" },
             { "data": "SituacaoCadastro" },
             { "data": "Id" }
         ],
@@ -35,7 +36,7 @@
         columnDefs:
             [
                 {
-                    targets: 3,
+                    targets: 4,
                     data: "SitucaoCadastro",
                     render: function (data) {
                         if (data == "Ativo") {
@@ -45,7 +46,7 @@
                     }
                 },
                 {
-                    targets: 4,
+                    targets: 5,
                     data: "Id",
                     "render": function (data) {
                         return '<div class="btn-group btn-group-justified">' +

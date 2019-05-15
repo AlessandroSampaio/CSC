@@ -34,6 +34,43 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="TransferirAtendimento">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4>Transferência de Atendimento</h4>
+                    <form>
+                        <div class="row">
+                            <div class="col-12">
+                                <label class="col-form-label">De:</label>
+                                <input type="text" class="form-control text-center" id="FuncionarioOrigem" name="FuncinarioOrigem" readonly />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <i class="fas fa-angle-double-down fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label class="col-form-label">Para:</label>
+                                <select id="funcDestino" asp-items="@ViewBag.Funcionarios" class="form-control"></select>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <button id="btnTransferir" type="button" class="btn btn-block btn-primary">Transferir</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 }
 
 @section Scripts {

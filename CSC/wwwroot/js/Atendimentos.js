@@ -1,4 +1,7 @@
 ﻿$(document).ready(function () {
+
+    var AtdTransfer;
+
     var tableAtendimentos = $('#TbAtendimentos').DataTable({
         dom: '<"top"B>',
         buttons: [{
@@ -29,7 +32,7 @@
             { "data": "Cliente.nome" },
             { "data": "Abertura" },
             { "data": "Status" },
-            { "data": "Id" }
+            { "data": "Id" } 
         ],
         autoWidth: true,
         columnDefs:
@@ -40,18 +43,24 @@
                     render: function (data) {
                         if (data == "Aberto") {
                             return '<div class="badge badge-success">Aberto</div>'
+                        } else {
+                            if (data == "Transferido") {
+                                return '<div class="badge badge-warning">Transferido</div>'
+                            } else {
+                                return '<div class="badge badge-danger">Fechado</div>'
+                            }
                         }
-                        return '<div class="badge badge-danger">Fechado</div>'
+
                     }
                 },
                 {
                     targets: 5,
                     data: "Id",
                     "render": function (data) {
-                        return '<div class="btn-group btn-group-justified">'+
-                        '<a class="btn btn-primary" title="Editar" href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>' +
-                            '<button class="btn btn-primary" title="Transferir Atendimento"><i class="fas fa-angle-double-right"></i></button>' +
-                            '<button class="btn btn-primary" title="Encerrar Atendimento"><i class="fas fa-check"></i></button></div>';
+                        return '<div class="btn-group btn-group-justified">' +
+                            '<a class="btn btn-primary" title="Editar" href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>' +
+                            '<button class="btn btn-primary transferir" title="Transferir Atendimento"><i class="fas fa-angle-double-right"></i></button>' +
+                            '<button class="btn btn-primary finalizar" title="Encerrar Atendimento"><i class="fas fa-check"></i></button></div>';
                     },
                     searchable: false,
                     orderable: false
@@ -91,9 +100,40 @@
 
     $('#TbClientes tbody').on('dblclick', 'tr', function () {
         var data = tableClientes.row(this).data();
-        console.log(data);
-        console.log(data['Id']);
         var url = "/Atendimentos/Novo?ClienteId=" + data['Id'];
         window.location.href = url;
+    });
+
+    $('#TbAtendimentos').on('click', '.transferir', function () {
+        var data = tableAtendimentos.row($(this).parents('tr')).data();
+        console.log(data);
+        if (data['Status'] != 'Aberto') {
+            alert('Impossivel transferir esse atendimento!');
+        } else {
+            AtdTransfer = data['Id'];
+            $('#FuncionarioOrigem').val(data["Funcionario"]["Nome"]);
+            $('#TransferirAtendimento').modal('show');
+        }
+    });
+
+    $('#btnTransferir').on('click', function () {
+        var FuncionarioDestino = $('#funcDestino').val();
+        console.log(FuncionarioDestino);
+        console.log(AtdTransfer);
+        $.ajax({
+            url: '/Atendimentos/TransferirAtendimento',
+            type: 'post',
+            async: false,
+            cache: true,
+            data: {
+                'atdId': AtdTransfer,
+                'funcionarioDestino': FuncionarioDestino
+            },
+            dataType: 'Json',
+            success: function () {
+                AtdTransfer = null;
+            }
+
+        });
     });
 });
