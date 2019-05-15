@@ -3,7 +3,7 @@
     var AtdTransfer;
 
     var tableAtendimentos = $('#TbAtendimentos').DataTable({
-        dom: '<"top"B>',
+        dom: '<"top"Bf><"botton"p>',
         buttons: [{
             extend: 'collection',
             className: "btn-primary",
@@ -117,23 +117,27 @@
     });
 
     $('#btnTransferir').on('click', function () {
+        $('body').css('cursor', 'progress');
         var FuncionarioDestino = $('#funcDestino').val();
         console.log(FuncionarioDestino);
         console.log(AtdTransfer);
         $.ajax({
             url: '/Atendimentos/TransferirAtendimento',
             type: 'post',
-            async: false,
-            cache: true,
+            async: true,
+            cache: false,
             data: {
                 'atdId': AtdTransfer,
                 'funcionarioDestino': FuncionarioDestino
             },
             dataType: 'Json',
             success: function () {
+                $('body').css('cursor', 'default');
                 AtdTransfer = null;
+                alert("Transferido com sucesso!");
+                $('#TransferirAtendimento').modal('hide');
+                tableAtendimentos.ajax.reload();
             }
-
         });
     });
 });
