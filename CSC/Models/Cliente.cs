@@ -39,7 +39,7 @@ namespace CSC.Models
         [JsonProperty("cep")]
         public string CEP { get; set; }
 
-        [JsonProperty("numero")]
+        [JsonIgnore]
         public int? Numero { get; set; }
 
         [JsonProperty("bairro")]
@@ -53,6 +53,22 @@ namespace CSC.Models
 
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
+        [JsonProperty("numero")]
+        [NotMapped]
+        public string numero
+        {
+            get { return Numero.ToString(); }
+            set
+            {
+                if (value.Equals("SN") || value==null ) { Numero = 0; }
+                else
+                {
+                    Numero = Convert.ToInt32(value);
+                }
+            }
+        }
+
 
         [NotMapped]
         public string dataInicio
