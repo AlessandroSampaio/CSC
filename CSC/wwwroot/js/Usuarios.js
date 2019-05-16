@@ -28,14 +28,13 @@
             { "data": "Id" },
             { "data": "NomeLogon" },
             { "data": "Funcionario.Nome" },
-            { "data": "Funcionario.Admissao" },
-            { "data": "Funcionario.Demissao" }
+            { "data": "Funcionario.Admissao" }
         ],
         autoWidth: true,
         columnDefs:
             [
                 {
-                    "targets": 5,
+                    "targets": 4,
                     "data": null,
                     "defaultContent": '<div class="btn-group btn-group-justified"><button class="btn btn-primary open-modal" title="Alterar Logon" type="button" data-toggle="modal" data-target="#UserForm"><i class="fas fa-user-edit"></i></button><button class="btn btn-primary open-modal" title="Alterar Senha" type="button" data-toggle="modal" data-target="#PasswordForm"><i class="fas fa-key"></i></button></div>',
                     order: false

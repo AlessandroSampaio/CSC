@@ -50,13 +50,27 @@
                     data: "Id",
                     "render": function (data) {
                         return '<div class="btn-group btn-group-justified">' +
-                        '<a class="btn btn-primary" title="Editar" href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>' +
-                            '<a class="btn btn-primary" title="Inventário de Licenças" href="Inventario\\' + data + '"><i class="fas fa-clipboard-list"></i></a></div>';
+                            '<a class="btn btn-primary" title="Editar" href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>' +
+                            '<a class="btn btn-primary" title="Inventário de Licenças" href="Inventario\\' + data + '"><i class="fas fa-clipboard-list"></i></a>' +
+                            '<button class="btn btn-primary inativar" title="Inativar"><i class="fas fa-times"></i></button>' +
+                            '</div > ';
                     },
                     searchable: false,
                     orderable: false
                 }
             ]
+    });
+
+    $('#TbClientes').on('click', '.inativar', function () {
+        var data = tableClientes.row($(this).parents('tr')).data();
+        console.log(data);
+        if (data['SituacaoCadastro'] != "Ativo") {
+
+            SWALBloqueio("Cliente já inativo!");
+        }
+        else {
+            SWALInativarFunc(data['Id']);
+        }
     });
 
     $('#NovoCliente').on('hidden.bs.modal', function () {
@@ -113,6 +127,10 @@
         }
     });
 
+    setInterval(function () {
+        tableClientes.ajax.reload(null, false); 
+    }, 30000);
+
     function ConsultaCliente(doc) {
         var validacao = null;
         $.ajax({
@@ -129,3 +147,36 @@
         return validacao;
     }
 });
+
+
+function SWALInativarFunc(id) {
+    swal({
+        text: 'Deseja realmente inativar o funcionario?',
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+    })
+        .then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: '/Clientes/Inativar',
+                    type: 'post',
+                    data: { 'id': id },
+                    async: true,
+                    cache: false,
+                    success: function (e) {
+                        return swal('Cliente inativado com sucesso!', { icon: 'success' });
+                    },
+                });
+            } else { null }
+        });
+};
+
+function SWALBloqueio(mensagem) {
+    swal({
+        text: mensagem,
+        icon: 'error',
+        button: true
+    })
+
+}

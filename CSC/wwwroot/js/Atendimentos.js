@@ -181,4 +181,10 @@
     $('#TransferirAtendimento').on("hidden.bs.modal", function () {
         $("#funcDestino").append('<option value="' + AtdTransfer['FuncionarioId'] + '">' + AtdTransfer['Funcionario']['Nome'] + '</option>');
     });
+
+
+    setInterval(function () {
+        tableClientes.ajax.reload(null, false);
+        tableAtendimentos.ajax.reload(null, false);
+    }, 30000);
 });

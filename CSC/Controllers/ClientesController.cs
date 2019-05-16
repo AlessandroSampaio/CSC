@@ -199,5 +199,13 @@ namespace CSC.Controllers
             await _clienteServices.RemoveInventario(inv);
             return Json(true);
         }
+
+        [HttpPost]
+        public async Task Inativar(int id)
+        {
+            Cliente cliente = await _clienteServices.FindByIdAsync(id);
+            cliente.Status = PessoaStatus.Inativo;
+            await _clienteServices.UpdateAsync(cliente);
+        }
     }
 }

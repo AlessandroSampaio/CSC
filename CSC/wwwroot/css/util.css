@@ -2986,3 +2986,7 @@
 .hide {
     display: none;
 }
+
+tr {
+    cursor: pointer;
+}

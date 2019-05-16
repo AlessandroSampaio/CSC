@@ -1,6 +1,5 @@
 ﻿$(document).ready(function () {
-    var trDemissao = null;
-
+    
     var tableFuncionarios = $('#TbFuncionarios').DataTable({
         dom: '<"top"B>fp',
         buttons: [{
@@ -77,6 +76,10 @@
             ]
     });
 
+    setInterval(function () {
+        tableFuncionarios.ajax.reload(null, false);
+    }, 30000);
+
     $('#TbFuncionarios').on('click', '.inativar', function () {
         var data = tableFuncionarios.row($(this).parents('tr')).data();
         console.log(data);
@@ -84,7 +87,11 @@
             
             SWALBloqueio("Usuario já inativo!");
         }
-        else { SWALInativarFunc(data['Id']); }
+        else {
+            SWALInativarFunc(data['Id']);
+            setTimeout(2000);
+            tableFuncionarios.ajax.reload();
+        }
     });
 });
 
