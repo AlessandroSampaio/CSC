@@ -88,11 +88,7 @@ namespace CSC.Controllers
         [HttpPost]
         public async Task<IActionResult> Novo(Atendimento atendimento)
         {
-            if (!ModelState.IsValid)
-            {
-                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                return View(atendimento);
-            }
+          
             await _atendimentoServices.InsertAsync(atendimento);
             return RedirectToAction("Index");
         }

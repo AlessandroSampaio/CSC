@@ -3,6 +3,7 @@ using CSC.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using System.Threading.Tasks;
 
 namespace CSC.Controllers
@@ -92,6 +93,14 @@ namespace CSC.Controllers
             }
             await _funcionarioServices.InsertAsync(obj);
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task Inativar(int id)
+        {
+            Funcionario func = await _funcionarioServices.FindByIdAsync(id);
+            func.Demissao = DateTime.Now.Date;
+            await _funcionarioServices.UpdateAsync(func);
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿$(document).ready(function () {
+    var trDemissao = null;
+
     var tableFuncionarios = $('#TbFuncionarios').DataTable({
-        dom: '<"top"B>',
+        dom: '<"top"B>fp',
         buttons: [{
             extend: 'collection',
             className: "btn-primary",
@@ -28,6 +30,7 @@
             { "data": "Nome" },
             { "data": "Admissao" },
             { "data": "Veiculo" },
+            { "data": "Demissao" },
             { "data": "Id" }
         ],
         autoWidth: true,
@@ -46,13 +49,74 @@
                 },
                 {
                     targets: 4,
+                    data: "Demissao",
+                    render: function (data) {
+                        if (data == null) {
+                            return '<div class="badge badge-success">Ativo</div>'
+                        }
+                        else {
+                            return '<div class="badge badge-danger">Inativo</div>'
+                        }
+                    }
+                },
+                {
+                    targets: 5,
                     data: "Id",
-                    "render": function (data) {
-                        return '<div class="btn-group btn-group-justified"><a class="btn btn-primary" title="Editar" href="Editar\\' + data + '"><i class="fas fa-pen"></i></a></div>';
+                    render: function (data) {
+
+
+
+                        return '<div class="btn-group btn-group-justified">' +
+                            '<a class="btn btn-primary" title="Editar" href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>' +
+                            '<button class="btn btn-primary inativar"><i class="fas fa-user-times"></i></button>  ' +
+                            '</div>';
                     },
                     searchable: false,
                     orderable: false
                 }
             ]
     });
+
+    $('#TbFuncionarios').on('click', '.inativar', function () {
+        var data = tableFuncionarios.row($(this).parents('tr')).data();
+        console.log(data);
+        if (data['Demissao'] != null) {
+            
+            SWALBloqueio("Usuario já inativo!");
+        }
+        else { SWALInativarFunc(data['Id']); }
+    });
 });
+
+
+function SWALInativarFunc(id) {
+    swal({
+        text: 'Deseja realmente inativar o funcionario?',
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+    })
+        .then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: '/Funcionarios/Inativar',
+                    type: 'post',
+                    data: { 'id': id },
+                    async: true,
+                    cache: false,
+                    success: function (e) {
+                        return swal('Funcionario inativado com sucesso!', { icon: 'success' });
+                    },
+                });
+            } else { null }
+        });
+};
+
+function SWALBloqueio(mensagem) {
+    swal({
+        text: mensagem,
+        icon: 'error',
+        button: true
+    })
+
+}
