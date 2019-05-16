@@ -45,7 +45,7 @@
                             return '<div class="badge badge-success">Aberto</div>'
                         } else {
                             if (data == "Transferido") {
-                                return '<div class="badge badge-warning">Transferido</div>'
+                                return '<div class="badge badge-info">Transferido</div>'
                             } else {
                                 return '<div class="badge badge-danger">Fechado</div>'
                             }
@@ -115,6 +115,41 @@
             $("#funcDestino option[value='" + data["FuncionarioId"] + "']").remove();
             $('#TransferirAtendimento').modal('show');
         }
+    });
+
+    $('#TbAtendimentos').on('click', '.finalizar', function () {
+        var data = tableAtendimentos.row($(this).parents('tr')).data();
+        console.log(data);
+        if (data['Status'] != 'Aberto') {
+            alert('Impossivel encerrar esse atendimento!');
+        } else {
+            AtdTransfer = data;
+            $('#EncerrarAtendimento').modal('show');
+        }
+    });
+
+    $('#btnEncerrar').on('click', function () {
+        $('body').css('cursor', 'progress');
+        var detalhes = $('#Detalhes').val();
+        $.ajax({
+            url: '/Atendimentos/EncerrarAtendimento',
+            type: 'post',
+            async: true,
+            cache: false,
+            data: {
+                'atdId': AtdTransfer['Id'],
+                'detalhes': detalhes
+            },
+            dataType: 'Json',
+            success: function (e) {
+                console.log(e);
+                $('body').css('cursor', 'default');
+                AtdTransfer = null;
+                alert("Encerrado com sucesso!");
+                $('#EncerrarAtendimento').modal('hide');
+                tableAtendimentos.ajax.reload();
+            }
+        });
     });
 
     $('#btnTransferir').on('click', function () {

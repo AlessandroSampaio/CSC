@@ -168,5 +168,15 @@ namespace CSC.Controllers
             return Json(true);
         }
 
+        [HttpPost]
+        public async Task<JsonResult> EncerrarAtendimento(int atdId, string detalhes)
+        {
+            Atendimento atd = await _atendimentoServices.FindByIDAsync(atdId);
+            atd.Detalhes += '\n' + detalhes;
+            atd.Status = AtendimentoStatus.Fechado;
+            await _atendimentoServices.UpdateAsync(atd);
+            return Json(true);
+        }
+
     }
 }
