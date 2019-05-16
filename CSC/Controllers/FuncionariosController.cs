@@ -101,6 +101,8 @@ namespace CSC.Controllers
             Funcionario func = await _funcionarioServices.FindByIdAsync(id);
             func.Demissao = DateTime.Now.Date;
             await _funcionarioServices.UpdateAsync(func);
+            User user = await _userServices.FindByFuncionarioIdAsync(func.Id);
+            await _userServices.RemoveUserAsync(user);
         }
     }
 }

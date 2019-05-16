@@ -36,6 +36,17 @@ namespace CSC.Services
                 .FirstOrDefault();
         }
 
+        public async Task<User> FindByFuncionarioIdAsync(int id)
+        {
+            return await _context.User.Where(u => u.FuncionarioId == id).FirstOrDefaultAsync();
+        }
+
+        public async Task RemoveUserAsync(User user)
+        {
+            _context.User.Remove(user);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<User> FindByIdAsync(int id)
         {
             return await _context.User
