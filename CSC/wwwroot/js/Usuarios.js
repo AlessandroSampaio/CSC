@@ -118,7 +118,7 @@ function SWALAlterarSenha(id) {
         if (novoLogon != null) {
             var filtro = {
                 Id: id,
-                NomeLogon: novoLogon
+                Senha: novoLogon
             };
             $.ajax({
                 url: '/Usuarios/AlterarSenha',
@@ -134,7 +134,6 @@ function SWALAlterarSenha(id) {
         }
     });
 }
-
 
 function SWALBloqueio(mensagem) {
     swal({

@@ -66,7 +66,7 @@
 
 
                         return '<div class="btn-group btn-group-justified">' +
-                            '<a class="btn btn-primary" title="Editar" href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>' +
+                            '<a class="btn btn-primary" title="Editar" href="Funcionarios\\Editar\\' + data + '"><i class="fas fa-pen"></i></a>' +
                             '<button class="btn btn-primary inativar"><i class="fas fa-user-times"></i></button>  ' +
                             '</div>';
                     },

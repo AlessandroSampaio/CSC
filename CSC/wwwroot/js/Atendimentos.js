@@ -111,14 +111,18 @@
 
     $('#TbAtendimentos').on('click', '.transferir', function () {
         var data = tableAtendimentos.row($(this).parents('tr')).data();
-        console.log(data);
-        if (data['Status'] != 'Aberto') {
-            alert('Impossivel transferir esse atendimento!');
+        var userLogado = $('#userLogado').val();
+        if (data["FuncionarioId"] == userLogado) {
+            if (data['Status'] != 'Aberto') {
+                SWALBloqueio("Impossivel transferir atendimento, atendimento já encerrado ou transferido!");
+            } else {
+                AtdTransfer = data;
+                $('#FuncionarioOrigem').val(data["Funcionario"]["Nome"]);
+                $("#funcDestino option[value='" + data["FuncionarioId"] + "']").remove();
+                $('#TransferirAtendimento').modal('show');
+            }
         } else {
-            AtdTransfer = data;
-            $('#FuncionarioOrigem').val(data["Funcionario"]["Nome"]);
-            $("#funcDestino option[value='" + data["FuncionarioId"] + "']").remove();
-            $('#TransferirAtendimento').modal('show');
+            SWALBloqueio("Você não tem permissão para realizar esta operação!")
         }
     });
 

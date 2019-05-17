@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
 
     var tableClientes = $('#TbClientes').DataTable({
-        dom: '<"top"Bf>',
+        dom: '<"top"B>fp',
         buttons: [{
             extend: 'collection',
             className: "btn-primary",

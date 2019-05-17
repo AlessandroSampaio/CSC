@@ -18,8 +18,8 @@
                 <input asp-for="Abertura" type="date" class="form-control form-control-sm" readonly />
             </div>
             <div class="col-sm-2">
-                <label asp-for="Solicitante" class="col-form-label col-form-label-sm"></label>
-                <input asp-for="Solicitante" type="text" class="form-control form-control-sm" />
+                <label asp-for="Status" class="col-form-label col-form-label-sm"></label>
+                <input asp-for="Status" class="form-control form-control-sm" disabled />
             </div>
         </div>
         <div class="form-row">
@@ -27,8 +27,8 @@
                 <label asp-for="AtendimentoTipo" class="col-form-label col-form-label-sm"></label>
                 <select asp-for="AtendimentoTipo" asp-items="@ViewBag.TipoAtendimento" class="form-control"></select>
                 <br />
-                <label asp-for="Status" class="col-form-label col-form-label-sm"></label>
-                <input asp-for="Status" class="form-control form-control-sm" disabled />
+                <label asp-for="Solicitante" class="col-form-label col-form-label-sm"></label>
+                <input asp-for="Solicitante" type="text" class="form-control form-control-sm" />
                 <br />
                 <div class="form-row">
                     <div class="col-6 col-sm-6">
