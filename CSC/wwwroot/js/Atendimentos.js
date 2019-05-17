@@ -66,7 +66,8 @@
                     orderable: false
                 }
 
-            ]
+            ],
+        order: [[4, 'asc'],[3, 'asc']]
 
     });
 

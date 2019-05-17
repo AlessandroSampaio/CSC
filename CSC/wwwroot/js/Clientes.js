@@ -74,6 +74,11 @@
     });
 
     $('#NovoCliente').on('hidden.bs.modal', function () {
+        $('#PessoaOpcao').removeClass('hide');
+        $('#FormPessoaJuridica').addClass('hide');
+        $('#FormPessoaFisica').addClass('hide');
+        $('#NovoCnpj').val('');
+        $('#NovoCpf').val('');
         tableClientes.ajax.reload();
     });
 
@@ -85,14 +90,6 @@
     $('#btnPessoaFisica').on('click', function () {
         $('#PessoaOpcao').addClass('hide');
         $('#FormPessoaFisica').removeClass('hide');
-    });
-
-    $('#NovoCliente').on('hidden.bs.modal', function () {
-        $('#PessoaOpcao').removeClass('hide');
-        $('#FormPessoaJuridica').addClass('hide');
-        $('#FormPessoaFisica').addClass('hide');
-        $('#NovoCnpj').val('');
-        $('#NovoCpf').val('');
     });
 
     $('#NovoCpf').mask('000.000.000-00');

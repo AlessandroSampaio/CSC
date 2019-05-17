@@ -61,7 +61,7 @@ namespace CSC.Models
             get { return Numero.ToString(); }
             set
             {
-                if (value.Equals("SN") || value==null ) { Numero = 0; }
+                if (value.Equals("SN") || value==null || value.Equals("")) { Numero = 0; }
                 else
                 {
                     Numero = Convert.ToInt32(value);
