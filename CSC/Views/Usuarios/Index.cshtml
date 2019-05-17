@@ -23,50 +23,6 @@
     </tbody>
 </table>
 
-@section Modals{
-    <!-- modal para atualização de senha -->
-    <div class="modal fade" tabindex="-1" role="dialog" id="PasswordForm">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <form>
-                        <input type="hidden" name="id" id="PswID" value="" class="form-control" />
-                        <div class="row">
-                            <div class="col-12">
-                                <label><b>Nova senha</b></label>
-                                <input class="form-control" type="password" id="NovaSenha" name="Senha" />
-                                <br />
-                                <input id="btnSalvarSenha" type="button" value="Salvar" class="btn btn-primary btn-block" />
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- modal para atualização de login -->
-    <div class="modal fade" tabindex="-1" role="dialog" id="UserForm">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <form>
-                        <input type="hidden" name="id" id="UserID" value="" class="form-control" />
-                        <div class="row">
-                            <div class="col-12">
-                                <label><b>Novo Logon</b></label>
-                                <input class="form-control" type="text" id="NovoUser" name="NomeLogon" />
-                                <br />
-                                <input id="btnSalvarUser" type="button" value="Salvar" class="btn btn-primary btn-block" />
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-}
-
 @section Scripts {
     <script type="text/javascript" src="~/js/Usuarios.js"></script>
 }

@@ -36,69 +36,91 @@
                 {
                     "targets": 4,
                     "data": null,
-                    "defaultContent": '<div class="btn-group btn-group-justified"><button class="btn btn-primary open-modal" title="Alterar Logon" type="button" data-toggle="modal" data-target="#UserForm"><i class="fas fa-user-edit"></i></button><button class="btn btn-primary open-modal" title="Alterar Senha" type="button" data-toggle="modal" data-target="#PasswordForm"><i class="fas fa-key"></i></button></div>',
+                    "defaultContent": '<div class="btn-group btn-group-justified"><button class="btn btn-primary userLogon" title="Alterar Logon" type="button"><i class="fas fa-user-edit"></i></button><button class="btn btn-primary userSenha" title="Alterar Senha" type="button" ><i class="fas fa-key"></i></button></div>',
                     order: false
                 }
             ]
     });
 
-    $('#TbUsuarios').on('click', 'button', function () {
+    $('#TbUsuarios').on('click', '.userLogon', function () {
         var data = tableUser.row($(this).parents('tr')).data();
-        $("input[name = id]").val(data["Id"]);
+        SWALAlterarUser(data["Id"]);
+        tableUser.ajax.reload(null, false);
     });
 
-    $('#UserForm').on('hidden.bs.modal', function () {
-        tableUser.ajax.reload();
+    $('#TbUsuarios').on('click', '.userSenha', function () {
+        var data = tableUser.row($(this).parents('tr')).data();
+        SWALAlterarSenha(data["Id"]);
     });
 
-    $(document).on("click", ".open-modal", function (e) {
-        // $("input[name = id]").val($(this).data('id'));
-        $("#NovoUser").val("");
-        $("#NovaSenha").val("");
-    });
+    setInterval(function () {
+        tableUser.ajax.reload(null, false);
+    }, 25000);
 
-    $("#btnSalvarSenha").on("click", function () {
-        var filtro = {
-            Id: $("#PswID").val(),
-            Senha: $("#NovaSenha").val()
-        };
-        SalvarSenha(filtro);
-    });
-
-    $("#btnSalvarUser").on("click", function () {
-        var filtro = {
-            Id: $("#UserID").val(),
-            NomeLogon: $("#NovoUser").val()
-        };
-        SalvarUser(filtro);
-
-    });
-
-    function SalvarSenha(filtro) {
-        $.ajax({
-            url: '/Usuarios/AlterarSenha',
-            type: 'POST',
-            cache: false,
-            async: true,
-            dataType: "Json",
-            data: filtro
-        })
-            .done(function () {
-                $('#PasswordForm').modal('hide');
-            })
-    }
-
-    function SalvarUser(filtro) {
-        $.ajax({
-            url: '/Usuarios/AlterarNomeLogon',
-            type: 'POST',
-            cache: false,
-            async: true,
-            dataType: "Json",
-            data: filtro
-        })
-            .done(function () {
-                $('#UserForm').modal('hide');
-            })
-    }
 });
+
+function SWALAlterarUser(id) {
+    swal({
+        title: "Alterar logon:",
+        text: "Digite o novo logon :",
+        content: "input",
+        button: {
+            text: "Alterar",
+            closeModal: true
+        },
+    }).then(novoLogon => {
+        if (novoLogon != null) {
+            var filtro = {
+                Id: id,
+                NomeLogon: novoLogon
+            };
+            $.ajax({
+                url: '/Usuarios/AlterarNomeLogon',
+                type: 'POST',
+                cache: false,
+                async: true,
+                dataType: "Json",
+                data: filtro,
+                success: function (e) {
+                    return swal('Logon alterado com sucesso!', { icon: 'success' });
+                },
+            });
+        }
+    });
+}
+
+function SWALAlterarSenha(id) {
+    swal({
+        title: "Alterar Senha:",
+        text: "Digite a nova senha :",
+        content: {
+            element: "input",
+            attributes: {
+                placeholder: "Nova Senha",
+                type: "password",
+            },
+        },
+        button: {
+            text: "Alterar",
+            closeModal: true
+        },
+    }).then(novoLogon => {
+        if (novoLogon != null) {
+            var filtro = {
+                Id: id,
+                NomeLogon: novoLogon
+            };
+            $.ajax({
+                url: '/Usuarios/AlterarSenha',
+                type: 'POST',
+                cache: false,
+                async: true,
+                dataType: "Json",
+                data: filtro,
+                success: function (e) {
+                    return swal('Senha alterada com sucesso!', { icon: 'success' });
+                },
+            });
+        }
+    });
+}
