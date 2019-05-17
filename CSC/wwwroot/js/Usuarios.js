@@ -44,13 +44,23 @@
 
     $('#TbUsuarios').on('click', '.userLogon', function () {
         var data = tableUser.row($(this).parents('tr')).data();
-        SWALAlterarUser(data["Id"]);
+        var userLogado = $('#userLogado').val();
+        if (data["Id"] == userLogado) {
+            SWALAlterarUser(data["Id"]);
+        } else {
+            SWALBloqueio("Acesso Negado!");
+        }
         tableUser.ajax.reload(null, false);
     });
 
     $('#TbUsuarios').on('click', '.userSenha', function () {
         var data = tableUser.row($(this).parents('tr')).data();
-        SWALAlterarSenha(data["Id"]);
+        var userLogado = $('#userLogado').val();
+        if (data["Id"] == userLogado) {
+            SWALAlterarSenha(data["Id"]);
+        } else {
+            SWALBloqueio("Acesso Negado!")
+        }
     });
 
     setInterval(function () {
@@ -123,4 +133,14 @@ function SWALAlterarSenha(id) {
             });
         }
     });
+}
+
+
+function SWALBloqueio(mensagem) {
+    swal({
+        text: mensagem,
+        icon: 'error',
+        button: true
+    })
+
 }

@@ -50,8 +50,8 @@
                     data: "Id",
                     "render": function (data) {
                         return '<div class="btn-group btn-group-justified">' +
-                            '<a class="btn btn-primary" title="Editar" href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>' +
-                            '<a class="btn btn-primary" title="Inventário de Licenças" href="Inventario\\' + data + '"><i class="fas fa-clipboard-list"></i></a>' +
+                            '<a class="btn btn-primary" title="Editar" href="Clientes\\Editar\\' + data + '"><i class="fas fa-pen"></i></a>' +
+                            '<a class="btn btn-primary" title="Inventário de Licenças" href="Clientes\\Inventario\\' + data + '"><i class="fas fa-clipboard-list"></i></a>' +
                             '<button class="btn btn-primary inativar" title="Inativar"><i class="fas fa-times"></i></button>' +
                             '</div > ';
                     },
