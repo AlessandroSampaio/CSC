@@ -100,8 +100,13 @@
 
     $('#TbClientes tbody').on('dblclick', 'tr', function () {
         var data = tableClientes.row(this).data();
-        var url = "/Atendimentos/Novo?ClienteId=" + data['Id'];
-        window.location.href = url;
+        if (data["SituacaoCadastro"] == "Ativo") {
+            var url = "/Atendimentos/Novo?ClienteId=" + data['Id'];
+            window.location.href = url;
+        }
+        else {
+            SWALBloqueio("Cliente Inativo, impossível abrir atendimento!");
+        }
     });
 
     $('#TbAtendimentos').on('click', '.transferir', function () {
@@ -182,9 +187,18 @@
         $("#funcDestino").append('<option value="' + AtdTransfer['FuncionarioId'] + '">' + AtdTransfer['Funcionario']['Nome'] + '</option>');
     });
 
-
     setInterval(function () {
         tableClientes.ajax.reload(null, false);
         tableAtendimentos.ajax.reload(null, false);
     }, 30000);
 });
+
+
+function SWALBloqueio(mensagem) {
+    swal({
+        text: mensagem,
+        icon: 'error',
+        button: true
+    })
+
+}
