@@ -174,5 +174,19 @@ namespace CSC.Controllers
             return Json(true);
         }
 
+        [HttpPost]
+        public async Task<JsonResult> SituacaoAtendimentosChart()
+        {
+            var lista =await _atendimentoServices.TotalizacaoAtendimentosAsync();
+            return Json(lista.GroupBy(s => s.Status).Select(s => s.Count() ));
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AtendimentosPorFuncionario()
+        {
+            var lista = await _atendimentoServices.FindAllAsync();
+            return Json(lista.GroupBy(func => func.Funcionario.Nome)
+                .Select(funcionario => new { Funcionario = funcionario.Key, Atendimentos = funcionario.Count() }));
+        }
     }
 }
