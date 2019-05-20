@@ -191,7 +191,8 @@ namespace CSC.Controllers
                 DataFinal = DateTime.ParseExact(dataFim, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
             var lista =await _atendimentoServices.TotalizacaoAtendimentosAsync();
-            return Json(lista.Where(a => a.Abertura>=DataInicio && a.Abertura<=DataFinal).GroupBy(s => s.Status).Select(s => s.Count() ));
+            return Json(lista.Where(a => a.Abertura>=DataInicio && a.Abertura<=DataFinal).GroupBy(s => s.Status).
+                Select(s => new { Tipo = s.Key, Contador = s.Count() }), SerializerSettings);
         }
 
         [HttpPost]

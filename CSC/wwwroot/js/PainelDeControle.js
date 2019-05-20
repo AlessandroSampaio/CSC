@@ -48,14 +48,32 @@
             var funcs = await AtdPorFuncionarios(dataini, datafim);
             var funcionario = funcs.map(item => item.funcionario);
             var totais = funcs.map(item => item.atendimentos);
+            var tipo = situacoes.map(item => item.Tipo);
+            var tipoContador = situacoes.map(item => item.Contador);
+            var color = [];
+            for (let i = 0; i < tipo.length; ++i) {
+                if (tipo[i] == 0) {
+                    tipo[i] = 'ABERTO';
+                    color[i] = "rgb(204, 18, 34)";
+                } else {
+                    if (tipo[i] == 1) {
+                        tipo[i] = 'FECHADO';
+                        color[i] = "rgb(4, 148, 28)";
+                    } else {
+                        tipo[i] = 'TRANSFERIDO';
+                        color[i] = "rgb(0, 18, 158)";
+                    }
+                }
+
+            }
             AtdPorSit = new Chart(atdTotal, {
                 type: 'pie',
                 data: {
-                    labels: ["Transferido", "Fechado", "Aberto"],
+                    labels: tipo,
                     datasets: [{
                         labels: "Numero de Atendimentos",
-                        backgroundColor: ["blue", "green", "red"],
-                        data: situacoes
+                        backgroundColor: color,
+                        data: tipoContador
                     }]
                 },
                 options: {
@@ -64,6 +82,7 @@
                     }
                 }
             });
+
             AtdPorFunc = new Chart(atdPorFunc, {
                 type: 'pie',
                 data: {
@@ -119,4 +138,16 @@ async function AtdPorSituacao(dataIni, dataFim) {
     }
     );
     return result;
+}
+
+function StatusToString(item, index) {
+    if (item == 0) {
+        TIPO[index] = 'ABERTO';
+    } else {
+        if (item == 1) {
+            TIPO[index] = 'FECHADO';
+        } else {
+            TIPO[index] = 'TRANSFERIDO';
+        }
+    }
 }
