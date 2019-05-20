@@ -1,4 +1,31 @@
 ﻿<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Período :</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4">
+                    <label class="col-form-label col-form-label-sm">De :</label>
+                    <div id="datai" class="input-group date">
+                        <input id="DataInicial" type="text" class="form-control form-control-sm" required />
+                        <span class="input-group-addon" style="position:absolute; right:5px;"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <label class="col-form-label col-form-label-sm">Até :</label>
+                    <div id="dataf" class="input-group date">
+                        <input id="DataFinal" type="text" class="form-control form-control-sm" required />
+                        <span class="input-group-addon" style="position:absolute; right:5px;"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <label>&nbsp;</label>
+                    <button type="button" id="btnPesquisar" class="btn btn-block btn-primary">Pesquisar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-12 col-md-6 col-lg-6">
             <div class="card">
@@ -24,7 +51,7 @@
 </div>
 
 @section Scripts
-{
+    {
     <script type="text/javascript" src="~/lib/ChartJS/Chart.min.js"></script>
     <script type="text/javascript" src="~/js/PainelDeControle.js"></script>
 }

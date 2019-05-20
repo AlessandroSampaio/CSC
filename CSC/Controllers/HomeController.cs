@@ -37,7 +37,7 @@ namespace CSC.Controllers
             return RedirectToAction("Index");
         }
 
-        [AcceptVerbs("Get", "Post")]
+       [AcceptVerbs("Get", "Post")]
         public IActionResult VerifyLogon(string NomeLogon, string Senha)
         {
             User user = new User(NomeLogon, Senha);

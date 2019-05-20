@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -175,17 +176,41 @@ namespace CSC.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> SituacaoAtendimentosChart()
+        public async Task<JsonResult> SituacaoAtendimentosChart(string dataIni, string dataFim)
         {
+            DateTime DataInicio;
+            DateTime DataFinal;
+            if (dataIni == null || dataFim == null)
+            {
+                DataInicio = DateTime.Now.Date;
+                DataFinal = DateTime.Now.Date;
+            }
+            else
+            {
+                DataInicio = DateTime.ParseExact(dataIni, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                DataFinal = DateTime.ParseExact(dataFim, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             var lista =await _atendimentoServices.TotalizacaoAtendimentosAsync();
-            return Json(lista.GroupBy(s => s.Status).Select(s => s.Count() ));
+            return Json(lista.Where(a => a.Abertura>=DataInicio && a.Abertura<=DataFinal).GroupBy(s => s.Status).Select(s => s.Count() ));
         }
 
         [HttpPost]
-        public async Task<JsonResult> AtendimentosPorFuncionario()
+        public async Task<JsonResult> AtendimentosPorFuncionario(string dataIni, string dataFim)
         {
+            DateTime DataInicio;
+            DateTime DataFinal;
+            if (dataIni == null || dataFim == null)
+            {
+                DataInicio = DateTime.Now.Date;
+                DataFinal = DateTime.Now.Date;
+            }
+            else
+            {
+                DataInicio = DateTime.ParseExact(dataIni, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                DataFinal = DateTime.ParseExact(dataFim, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             var lista = await _atendimentoServices.FindAllAsync();
-            return Json(lista.GroupBy(func => func.Funcionario.Nome)
+            return Json(lista.Where(a => a.Abertura >= DataInicio && a.Abertura <= DataFinal).GroupBy(func => func.Funcionario.Nome)
                 .Select(funcionario => new { Funcionario = funcionario.Key, Atendimentos = funcionario.Count() }));
         }
     }
