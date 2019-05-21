@@ -201,11 +201,18 @@ namespace CSC.Controllers
         }
 
         [HttpPost]
-        public async Task Inativar(int id)
+        public async Task<JsonResult> Inativar(int id)
         {
-            Cliente cliente = await _clienteServices.FindByIdAsync(id);
-            cliente.Status = PessoaStatus.Inativo;
-            await _clienteServices.UpdateAsync(cliente);
-        }
+            try
+            {
+                Cliente cliente = await _clienteServices.FindByIdAsync(id);
+                cliente.Status = PessoaStatus.Inativo;
+                await _clienteServices.UpdateAsync(cliente);
+                return Json(true);
+            }catch(Exception e)
+            {
+                return Json(false);
+            }
+         }
     }
 }

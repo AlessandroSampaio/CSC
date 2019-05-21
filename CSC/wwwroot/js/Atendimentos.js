@@ -1,5 +1,4 @@
 ﻿$(document).ready(function () {
-
     var AtdTransfer;
 
     var tableAtendimentos = $('#TbAtendimentos').DataTable({
@@ -129,7 +128,7 @@
         var userLogado = $('#userLogado').val();
         if (data["FuncionarioId"] == userLogado) {
             if (data['Status'] != 'Aberto') {
-                SWALBloqueio("Impossivel transferir atendimento, atendimento já encerrado ou transferido!");
+                SWALBloqueio('Impossivel transferir atendimento, atendimento já ' + data['Status'] + '!');
             } else {
                 AtdTransfer = data;
                 $('#FuncionarioOrigem').val(data["Funcionario"]["Nome"]);
@@ -143,12 +142,10 @@
 
     $('#TbAtendimentos').on('click', '.finalizar', function () {
         var data = tableAtendimentos.row($(this).parents('tr')).data();
-        console.log(data);
         if (data['Status'] != 'Aberto') {
-            alert('Impossivel encerrar esse atendimento!');
+            SWALBloqueio('Impossivel encerrar atendimento, atendimento já ' + data['Status'] + '!');
         } else {
-            AtdTransfer = data;
-            $('#EncerrarAtendimento').modal('show');
+            SWALEncerrar(data['Id']);
         }
     });
 
@@ -157,31 +154,7 @@
         if (data['Status'] != 'Aberto') {
             evt.preventDefault();
             SWALBloqueio('Não é possível editar um atendimento ' + data['Status']);
-        } 
-    });
-
-    $('#btnEncerrar').on('click', function () {
-        $('body').css('cursor', 'progress');
-        var detalhes = $('#Detalhes').val();
-        $.ajax({
-            url: '/Atendimentos/EncerrarAtendimento',
-            type: 'post',
-            async: true,
-            cache: false,
-            data: {
-                'atdId': AtdTransfer['Id'],
-                'detalhes': detalhes
-            },
-            dataType: 'Json',
-            success: function (e) {
-                console.log(e);
-                $('body').css('cursor', 'default');
-                AtdTransfer = null;
-                alert("Encerrado com sucesso!");
-                $('#EncerrarAtendimento').modal('hide');
-                tableAtendimentos.ajax.reload();
-            }
-        });
+        }
     });
 
     $('#btnTransferir').on('click', function () {
@@ -203,7 +176,7 @@
                 $("#funcDestino").append('<option value="' + AtdTransfer['FuncionarioId'] + '">' + AtdTransfer['Funcionario']['Nome'] + '</option>');
                 $('body').css('cursor', 'default');
                 AtdTransfer = null;
-                alert("Transferido com sucesso!");
+                SWALSuccess("Transferido com sucesso!");
                 $('#TransferirAtendimento').modal('hide');
                 tableAtendimentos.ajax.reload();
             }
@@ -220,12 +193,30 @@
     }, 30000);
 });
 
-
-function SWALBloqueio(mensagem) {
-    swal({
-        text: mensagem,
-        icon: 'error',
-        button: true
-    })
-
+function SWALEncerrar(Id) {
+    Swal.fire({
+        title: 'Encerrar',
+        text: 'Detalhes adicionais',
+        input: 'textarea',
+        confirmButtonText: 'Encerrar',
+        confirmButtonColor: '#fc544b',
+        focusConfirm: false
+    }).then(detalhes => {
+        if (detalhes.value != null) {
+            $.ajax({
+                url: '/Atendimentos/EncerrarAtendimento',
+                type: 'post',
+                async: true,
+                cache: false,
+                data: {
+                    'atdId': Id,
+                    'detalhes': detalhes.value
+                },
+                dataType: 'Json',
+                success: function (e) {
+                    SWALSuccess("Encerrado com sucesso!");
+                }
+            });
+        }
+    });
 }

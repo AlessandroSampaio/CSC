@@ -45,7 +45,7 @@
     $('#TbUsuarios').on('click', '.userLogon', function () {
         var data = tableUser.row($(this).parents('tr')).data();
         var userLogado = $('#userLogado').val();
-        if (data["Id"] == userLogado) {
+        if (data["FuncionarioId"] == userLogado) {
             SWALAlterarUser(data["Id"]);
         } else {
             SWALBloqueio("Acesso Negado!");
@@ -56,7 +56,7 @@
     $('#TbUsuarios').on('click', '.userSenha', function () {
         var data = tableUser.row($(this).parents('tr')).data();
         var userLogado = $('#userLogado').val();
-        if (data["Id"] == userLogado) {
+        if (data["FuncionarioId"] == userLogado) {
             SWALAlterarSenha(data["Id"]);
         } else {
             SWALBloqueio("Acesso Negado!")
@@ -70,76 +70,72 @@
 });
 
 function SWALAlterarUser(id) {
-    swal({
+    Swal.fire({
         title: "Alterar logon:",
         text: "Digite o novo logon :",
-        content: "input",
-        button: {
-            text: "Alterar",
-            closeModal: true
-        },
+        input: 'text',
+        confirmButtonText: 'Alterar'
     }).then(novoLogon => {
-        if (novoLogon != null) {
-            var filtro = {
-                Id: id,
-                NomeLogon: novoLogon
-            };
-            $.ajax({
-                url: '/Usuarios/AlterarNomeLogon',
-                type: 'POST',
-                cache: false,
-                async: true,
-                dataType: "Json",
-                data: filtro,
-                success: function (e) {
-                    return swal('Logon alterado com sucesso!', { icon: 'success' });
-                },
-            });
+        if (novoLogon.value != null) {
+            if (novoLogon.value != '') {
+                var filtro = {
+                    Id: id,
+                    NomeLogon: novoLogon.value
+                };
+                $.ajax({
+                    url: '/Usuarios/AlterarNomeLogon',
+                    type: 'POST',
+                    cache: false,
+                    async: true,
+                    dataType: "Json",
+                    data: filtro,
+                    success: function (e) {
+                        if (e == true) {
+                            return SWALSuccess('Logon alterado com sucesso!');
+                        } else {
+                            return SWALBloqueio(e);
+                        }
+                    },
+                });
+            } else {
+                SWALBloqueio("Novo login não pode ser vazio!");
+            }
         }
     });
 }
 
 function SWALAlterarSenha(id) {
-    swal({
-        title: "Alterar Senha:",
+    Swal.fire({
+        title: "Alterar Senha",
         text: "Digite a nova senha :",
-        content: {
-            element: "input",
-            attributes: {
-                placeholder: "Nova Senha",
-                type: "password",
-            },
-        },
-        button: {
-            text: "Alterar",
-            closeModal: true
-        },
+        input: 'password',
+       confirmButtonText: 'Alterar'
     }).then(novoLogon => {
-        if (novoLogon != null) {
-            var filtro = {
-                Id: id,
-                Senha: novoLogon
-            };
-            $.ajax({
-                url: '/Usuarios/AlterarSenha',
-                type: 'POST',
-                cache: false,
-                async: true,
-                dataType: "Json",
-                data: filtro,
-                success: function (e) {
-                    return swal('Senha alterada com sucesso!', { icon: 'success' });
-                },
-            });
+        if (novoLogon.value != null) {
+            if (novoLogon.value != '') {
+                var filtro = {
+                    Id: id,
+                    Senha: novoLogon.value
+                };
+                $.ajax({
+                    url: '/Usuarios/AlterarSenha',
+                    type: 'POST',
+                    cache: false,
+                    async: true,
+                    dataType: "Json",
+                    data: filtro,
+                    success: function (e) {
+                        if (e == true) {
+                            return SWALSuccess('Senha alterada com sucesso!');
+                        } else {
+                            return SWALBloqueio(e);
+                        }
+                    },
+                });
+            }
+            else {
+                return SWALBloqueio('Senha não pode ser vazia!');
+            }
         }
     });
-}
-
-function SWALBloqueio(mensagem) {
-    swal({
-        text: mensagem,
-        icon: 'error',
-        button: true
-    })
-
 }

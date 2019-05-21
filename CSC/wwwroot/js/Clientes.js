@@ -63,7 +63,6 @@
 
     $('#TbClientes').on('click', '.inativar', function () {
         var data = tableClientes.row($(this).parents('tr')).data();
-        console.log(data);
         if (data['SituacaoCadastro'] != "Ativo") {
 
             SWALBloqueio("Cliente já inativo!");
@@ -155,33 +154,29 @@
 
 
 function SWALInativarFunc(id) {
-    swal({
-        text: 'Deseja realmente inativar o funcionario?',
-        icon: 'warning',
-        buttons: true,
-        dangerMode: true,
+    Swal.fire({
+        text: 'Deseja realmente inativar o Cliente?',
+        type: 'question',
+        showCancelButton: true,
+        focusConfirm: false
     })
         .then((willDelete) => {
-            if (willDelete) {
+            if (willDelete.value) {
                 $.ajax({
                     url: '/Clientes/Inativar',
                     type: 'post',
                     data: { 'id': id },
+                    dataType: 'Json',
                     async: true,
                     cache: false,
                     success: function (e) {
-                        return swal('Cliente inativado com sucesso!', { icon: 'success' });
+                        if (e == true) {
+                            return SWALSuccess('Cliente Inativado!')
+                        } else {
+                            return SWALBloqueio(e);
+                        }
                     },
                 });
             } else { null }
         });
 };
-
-function SWALBloqueio(mensagem) {
-    swal({
-        text: mensagem,
-        icon: 'error',
-        button: true
-    })
-
-}

@@ -70,3 +70,21 @@ function valida_cnpj(valor) {
     }
     return false;
 }
+
+function SWALBloqueio(mensagem) {
+    Swal.fire({
+        text: mensagem,
+        type: 'error'
+    })
+}
+
+function SWALSuccess(mensagem) {
+    Swal.fire({
+        title: mensagem,
+        toast: true,
+        type: 'success',
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+    });
+}

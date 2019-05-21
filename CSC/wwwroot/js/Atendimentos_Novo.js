@@ -57,16 +57,22 @@
 });
 
 function SWALEncerrar(form) {
-    swal({
+    Swal.fire({
         text: 'Deseja encerrar o atendimento?',
-        icon: 'warning',
-        buttons: true,
-        dangerMode: true,
+        type: 'question',
+        showCancelButton: true,
+        cancelButtonText: 'Não',
+        confirmButtonText: 'Sim',
+        cancelButtonColor: '#fc544b',
+        allowEnterKey: false,
+        focusConfirm: false
     })
         .then((willFinish) => {
-            if (willFinish) {
-                $('#Status').val('Fechado');
+            if (willFinish.dismiss != "backdrop") {
+                if (willFinish.value == true) {
+                    $('#Status').val('Fechado');
+                }
+                form.submit();
             }
-            form.submit();
         });
 }
