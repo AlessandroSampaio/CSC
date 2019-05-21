@@ -54,6 +54,8 @@ namespace CSC.Models
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
+        public bool Mono { get; set; }
+
         [JsonProperty("numero")]
         [NotMapped]
         public string numero
@@ -68,7 +70,6 @@ namespace CSC.Models
                 }
             }
         }
-
 
         [NotMapped]
         public string dataInicio

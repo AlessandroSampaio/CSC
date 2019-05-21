@@ -51,7 +51,7 @@
                     "render": function (data) {
                         return '<div class="btn-group btn-group-justified">' +
                             '<a class="btn btn-primary" title="Editar" href="Clientes\\Editar\\' + data + '"><i class="fas fa-pen"></i></a>' +
-                            '<a class="btn btn-primary" title="Inventário de Licenças" href="Clientes\\Inventario\\' + data + '"><i class="fas fa-clipboard-list"></i></a>' +
+                            '<a class="btn btn-primary inventario" title="Inventário de Licenças" href="Clientes\\Inventario\\' + data + '"><i class="fas fa-clipboard-list"></i></a>' +
                             '<button class="btn btn-primary inativar" title="Inativar"><i class="fas fa-times"></i></button>' +
                             '</div > ';
                     },
@@ -70,6 +70,14 @@
         }
         else {
             SWALInativarFunc(data['Id']);
+        }
+    });
+
+    $('#TbClientes').on('click', '.inventario', function (evt) {
+        let data = tableClientes.row($(this).parents('tr')).data();
+        if (data['Mono'] == true) {
+            evt.preventDefault();
+            SWALBloqueio("Ciente Mono!");
         }
     });
 

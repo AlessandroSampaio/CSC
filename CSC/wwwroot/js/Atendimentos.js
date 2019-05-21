@@ -58,7 +58,7 @@
                     data: "Id",
                     "render": function (data) {
                         return '<div class="btn-group btn-group-justified">' +
-                            '<a class="btn btn-primary" title="Editar" href="\Atendimentos\\Editar\\' + data + '"><i class="fas fa-pen"></i></a>' +
+                            '<a class="btn btn-primary editar" title="Editar" href="\Atendimentos\\Editar\\' + data + '"><i class="fas fa-pen"></i></a>' +
                             '<button class="btn btn-primary transferir" title="Transferir Atendimento"><i class="fas fa-angle-double-right"></i></button>' +
                             '<button class="btn btn-primary finalizar" title="Encerrar Atendimento"><i class="fas fa-check"></i></button></div>';
                     },
@@ -67,7 +67,7 @@
                 }
 
             ],
-        order: [[4, 'asc'],[3, 'asc']]
+        order: [[4, 'asc'], [3, 'asc']]
 
     });
 
@@ -101,12 +101,26 @@
 
     $('#TbClientes tbody').on('dblclick', 'tr', function () {
         var data = tableClientes.row(this).data();
-        if (data["SituacaoCadastro"] == "Ativo") {
-            var url = "/Atendimentos/Novo?ClienteId=" + data['Id'];
-            window.location.href = url;
+        if (data["Mono"] == true) {
+            SWALBloqueio("Cliente Mono, impossível abrir atendimento");
+        } else {
+            if (data["SituacaoCadastro"] == "Ativo") {
+                var url = "/Atendimentos/Novo?ClienteId=" + data['Id'];
+                window.location.href = url;
+            }
+            else {
+                SWALBloqueio("Cliente Inativo, impossível abrir atendimento!");
+            }
         }
-        else {
-            SWALBloqueio("Cliente Inativo, impossível abrir atendimento!");
+    });
+
+    $('#TbAtendimentos').on('dblclick', 'tr', function () {
+        var data = tableAtendimentos.row(this).data();
+        if (data['Status'] != 'Aberto') {
+            SWALBloqueio('Não é possível editar um atendimento ' + data['Status']);
+        } else {
+            var url = "/Atendimentos/Editar/" + data['Id'];
+            window.location.href = url;
         }
     });
 
@@ -136,6 +150,14 @@
             AtdTransfer = data;
             $('#EncerrarAtendimento').modal('show');
         }
+    });
+
+    $('#TbAtendimentos').on('click', '.editar', function (evt) {
+        var data = tableAtendimentos.row($(this).parents('tr')).data();
+        if (data['Status'] != 'Aberto') {
+            evt.preventDefault();
+            SWALBloqueio('Não é possível editar um atendimento ' + data['Status']);
+        } 
     });
 
     $('#btnEncerrar').on('click', function () {

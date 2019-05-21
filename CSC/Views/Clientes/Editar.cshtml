@@ -65,6 +65,14 @@
                 <label asp-for="Status" class="col-form-label col-form-label-sm"></label>
                 <input asp-for="Status" class="form-control form-control-sm " disabled />
             </div>
+            <div class="col-2">
+                <label>&nbsp;</label>
+                <div class="custom-control custom-checkbox text-center">
+                    <input type="checkbox" asp-for="Mono" class="custom-control-input" />
+                    <label asp-for="Mono" class="custom-control-label"></label>
+                    <span asp-validation-for="Mono" class="text-danger"></span>
+                </div>
+            </div>
         </div>
         <div class="form-row">
             <div class="col-sm-12 text-right">

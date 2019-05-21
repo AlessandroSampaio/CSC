@@ -55,9 +55,9 @@
                 <span asp-validation-for="Email" class="text-danger" style="font-size:12px;"></span>
             </div>
             <div class="col-sm-2">
-                <label  class="col-form-label col-form-label-sm">Data de Contrato</label>
+                <label class="col-form-label col-form-label-sm">Data de Contrato</label>
                 <div class="input-group date">
-                    <input asp-for="dataInicio" type="text" class="form-control form-control-sm" required/>
+                    <input asp-for="dataInicio" type="text" class="form-control form-control-sm" required />
                     <span class="input-group-addon" style="position:absolute; right:5px;"><i class="fa fa-calendar"></i></span>
                     <span asp-validation-for="dataInicio" class="text-danger"></span>
                 </div>
@@ -65,6 +65,14 @@
             <div class="col-sm-2">
                 <label asp-for="Status" class="col-form-label col-form-label-sm"></label>
                 <input asp-for="Status" class="form-control form-control-sm " disabled />
+            </div>
+            <div class="col-2">
+                <label>&nbsp;</label>
+                <div class="custom-control custom-checkbox text-center">
+                    <input type="checkbox" asp-for="Mono" class="custom-control-input" />
+                    <label asp-for="Mono" class="custom-control-label"></label>
+                    <span asp-validation-for="Mono" class="text-danger"></span>
+                </div>
             </div>
         </div>
         <div class="form-row">
