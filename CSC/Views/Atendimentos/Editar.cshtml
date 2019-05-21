@@ -1,7 +1,7 @@
 ﻿@model CSC.Models.Atendimento
 
 <div class="container-fluid">
-    <form asp-action="Editar" method="post">
+    <form asp-action="Editar" method="post" id="novo">
         <input asp-for="ClienteId" type="hidden" />
         <div class="form-row">
             <div class="col-sm-3">
@@ -20,7 +20,7 @@
             </div>
             <div class="col-sm-2">
                 <label asp-for="Status" class="col-form-label col-form-label-sm"></label>
-                <input asp-for="Status" class="form-control form-control-sm" disabled />
+                <input asp-for="Status" class="form-control form-control-sm" readonly />
             </div>
         </div>
         <div class="form-row">
@@ -48,7 +48,7 @@
         <div class="form-row">
             <label>&nbsp;</label>
             <div class="col-sm-12 text-right">
-                <input type="submit" value="Gravar" class="btn btn-primary" />
+                <input type="submit" value="Gravar" id="btnSubmit"  class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-danger">Voltar</a>
             </div>
         </div>

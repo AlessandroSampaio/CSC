@@ -21,14 +21,14 @@
             dataSrc: '',
             type: 'post',
             data: { 'id': $('#ClienteId').val() }
-            
+
         },
         "columns": [
             { "data": "Funcionario.Nome" },
             { "data": "Cliente.nome" },
             { "data": "AtendimentoTipo" },
             { "data": "Status" },
-            { "data": "Detalhes"}
+            { "data": "Detalhes" }
         ],
         autoWidth: true
     });
@@ -49,5 +49,24 @@
         setTimeout(AttBadges, 1000);
     }());
 
-
+    $('#btnSubmit').on('click', function (evt) {
+        evt.preventDefault();
+        var form = $(this).parents('form');
+        SWALEncerrar(form);
+    });
 });
+
+function SWALEncerrar(form) {
+    swal({
+        text: 'Deseja encerrar o atendimento?',
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+    })
+        .then((willFinish) => {
+            if (willFinish) {
+                $('#Status').val('Fechado');
+            }
+            form.submit();
+        });
+}
