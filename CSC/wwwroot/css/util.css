@@ -2990,3 +2990,7 @@
 tr {
     cursor: pointer;
 }
+
+#TbHistory tr td{
+    white-space:nowrap;
+}

@@ -15,22 +15,22 @@
     });
 
     var tableHistorico = $('#TbHistory').DataTable({
-        dom: '<"top"f>',
+        dom: 'ftp',
         ajax: {
             url: '/Atendimentos/AtendimentoHistorico',
             dataSrc: '',
             type: 'post',
             data: { 'id': $('#ClienteId').val() }
-
         },
+        "scrollX": "true",
         "columns": [
             { "data": "Funcionario.Nome" },
             { "data": "Cliente.nome" },
+            { "data": "Solicitante"},
             { "data": "AtendimentoTipo" },
             { "data": "Status" },
             { "data": "Detalhes" }
-        ],
-        autoWidth: true
+        ]
     });
 
     (function AttBadges() {
