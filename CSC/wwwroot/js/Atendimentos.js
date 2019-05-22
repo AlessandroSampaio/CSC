@@ -71,18 +71,18 @@
     });
 
     var tableClientes = $('#TbClientes').DataTable({
-        dom: '<"top"f>',
+        dom: '<"top"ft>',
         ajax: {
             url: '/Clientes/Listagem',
             dataSrc: ''
         },
+        scrollX: true,
         "columns": [
             { "data": "Id" },
             { "data": "cnpj" },
             { "data": "nome" },
             { "data": "SituacaoCadastro" }
         ],
-        autoWidth: true,
         columnDefs:
             [
                 {
@@ -186,6 +186,12 @@
     $('#TransferirAtendimento').on("hidden.bs.modal", function () {
         $("#funcDestino").append('<option value="' + AtdTransfer['FuncionarioId'] + '">' + AtdTransfer['Funcionario']['Nome'] + '</option>');
     });
+
+    $('#ClientSelect').on("shown.bs.modal", function () { $('div.dataTables_filter input').focus(); });
+
+    $('#ClientSelect').on("hidden.bs.modal", function () { $('#TbAtendimentos_filter input').focus(); });
+
+    $('#TbAtendimentos_filter input').focus();
 
     setInterval(function () {
         tableClientes.ajax.reload(null, false);
