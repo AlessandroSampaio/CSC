@@ -3,14 +3,16 @@ using System;
 using CSC.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CSC.Migrations
 {
     [DbContext(typeof(CSCContext))]
-    partial class CSCContextModelSnapshot : ModelSnapshot
+    [Migration("20190522170951_Tarefas")]
+    partial class Tarefas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +42,7 @@ namespace CSC.Migrations
 
                     b.Property<int>("Status");
 
-                    b.Property<int>("TarefaId");
+                    b.Property<int?>("TarefaId");
 
                     b.HasKey("Id");
 
@@ -129,12 +131,8 @@ namespace CSC.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Conclusao");
-
                     b.Property<string>("Descricao")
                         .IsRequired();
-
-                    b.Property<string>("TarefaNumero");
 
                     b.HasKey("Id");
 
@@ -175,8 +173,7 @@ namespace CSC.Migrations
 
                     b.HasOne("CSC.Models.Tarefa")
                         .WithMany("Atendimentos")
-                        .HasForeignKey("TarefaId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TarefaId");
                 });
 
             modelBuilder.Entity("CSC.Models.Inventario", b =>

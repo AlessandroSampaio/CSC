@@ -1,0 +1,62 @@
+﻿@model CSC.Models.Tarefa
+
+@section CSS{
+    <link rel="stylesheet" href="~/css/Tarefa.css" />
+}
+
+<div class="container-fuild">
+    <form asp-actio="Novo" method="post">
+        <div class="form-row">
+            <div class="col-2">
+                <label asp-for="TarefaNumero" class="col-form-label"></label>
+                <input asp-for="TarefaNumero" class="form-control form-control-sm" />
+            </div>
+            <div class="col-8">
+                <label asp-for="Descricao" class="col-form-label"></label>
+                <input asp-for="Descricao" class="form-control form-control-sm" />
+            </div>
+            <div class="col-2">
+                <label class="col-form-label">Atendimento</label>
+                <input type="text" class="form-control form-control-sm" />
+                <span style="position:absolute; right:5px; top:33px"><button type="button" class="btn btn-link"><i class="fas fa-search"></i></button></span>
+            </div>
+        </div>
+        <br />
+        <div class="card">
+            <div class="card-header bg-primary">
+                <h5 class="card-title text-white">Atendimentos Vinculados</h5><br />
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-hover table-bordered" style="width:auto">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Atendimento</th>
+                            <th>CNPJ</th>
+                            <th>Razao Social</th>
+                            <th>Nome Fantasia</th>
+                            <th>Telefone</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{if (Model.Atendimentos != null)
+                            {
+                                foreach (var item in Model.Atendimentos)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Cliente.CNPJ)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Cliente.RazaoSocial)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Cliente.NomeFantasia)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Cliente.Telefone)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Cliente.Email)</td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>

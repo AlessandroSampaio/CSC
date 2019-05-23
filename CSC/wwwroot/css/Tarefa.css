@@ -1,0 +1,12 @@
+﻿span button:hover{
+       background-color: transparent !important;
+}
+
+span button:active{
+    background-color: transparent !important;
+}
+
+span button:focus {
+    background-color: transparent !important;
+}
+

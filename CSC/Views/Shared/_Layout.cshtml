@@ -22,6 +22,9 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="~/dist/css/style.css">
     <link rel="stylesheet" href="~/dist/css/components.css">
+
+    <!-- Page Css-->
+    @RenderSection("CSS", required: false);
 </head>
 
 <body>
@@ -78,6 +81,7 @@
                         <li class="nav-link"><a class="nav-link" asp-controller="Clientes" asp-action="Index"><i class="fas fa-address-card"></i><span class="text-center">Clientes</span></a></li>
                         <li class="menu-header">Atendimentos</li>
                         <li class="nav-link"><a class="nav-link" asp-controller="Atendimentos" asp-action="Index"><i class="fas fa-headphones"></i><span class="text-center">Atendimentos</span></a></li>
+                        <li class="nav-link"><a class="nav-link" asp-controller="Tarefas" asp-action="Index"><i class="fas fa-tasks"></i><span class="text-center">Tarefas</span></a></li>
                     </ul>
                 </aside>
             </div>

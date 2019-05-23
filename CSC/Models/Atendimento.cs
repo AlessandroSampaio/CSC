@@ -23,7 +23,7 @@ namespace CSC.Models
         public int? OrigemID { get; set; }
         public string Detalhes { get; set; }
         public string Solicitante { get; set; }
-
+        public int? TarefaId { get; set; }
 
         public Atendimento()
         {

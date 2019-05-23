@@ -35,6 +35,7 @@ namespace CSC
             services.AddScoped<FuncionarioServices>();
             services.AddScoped<UserServices>();
             services.AddScoped<AtendimentoServices>();
+            services.AddScoped<TarefaServices>();
 
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
