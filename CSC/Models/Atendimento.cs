@@ -24,6 +24,7 @@ namespace CSC.Models
         public string Detalhes { get; set; }
         public string Solicitante { get; set; }
         public int? TarefaId { get; set; }
+        public Tarefa Tarefa { get; set; }
 
         public Atendimento()
         {

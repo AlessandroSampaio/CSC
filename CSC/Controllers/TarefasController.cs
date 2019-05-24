@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CSC.Controllers
@@ -69,12 +71,43 @@ namespace CSC.Controllers
         {
             try
             {
-                await _tarefaServices.InsertAsync(tarefa);
+                Tarefa newTarefa = new Tarefa();
+                newTarefa.TarefaNumero = tarefa.TarefaNumero;
+                newTarefa.Descricao = tarefa.Descricao;
+                List<Atendimento> list = new List<Atendimento>();
+                foreach(var item in tarefa.Atendimentos)
+                {
+                    var atd = await _atendimentoServices.FindByIDAsync(item.Id);
+                    if(atd != null)
+                    {
+                        list.Add(atd);
+                    }
+                }
+                newTarefa.Atendimentos = list;
+                tarefa = null;
+                _tarefaServices.Insert(newTarefa);
+                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
                 return View(nameof(Index));
             }catch(Exception ex)
             {
-                return View("Error", ex.Message);
+                throw ex;
             }
         }
+
+        [HttpPost]
+        public async Task<JsonResult> LocaLizaAtendimento(int id)
+        {
+            Atendimento atendimento = await _atendimentoServices.FindByIDAsync(id);
+            return Json(atendimento, SerializerSettings);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Editar(int id)
+        {
+            Tarefa tarefa = await _tarefaServices.FindByIdAsync(id);
+            ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+            return View(tarefa);
+        }
+        
     }
 }

@@ -37,11 +37,22 @@
                     data: "Conclusao",
                     render: function (data) {
                         if (data == "" || data == null) {
-                            return '<div class="badge badge-success">Ativo</div>'
+                            return '<div class="badge badge-success">Aberto</div>'
                         }
-                        return '<div class="badge badge-danger">Inativo</div>'
+                        return '<div class="badge badge-danger">Fechado</div>'
                     }
                 }
             ]
+    });
+
+    $('#TbTarefas tbody').on('dblclick', 'tr', function () {
+        var data = tableTarefas.row(this).data();
+        console.log(data);
+        if (data['Conclusao'] == 'null') {
+            SWALBloqueio('Não é possível editar uma tarefa já encerrada');
+        } else {
+            var url = "/Tarefas/Editar/" + data['Id'];
+            window.location.href = url;
+        }
     });
 });

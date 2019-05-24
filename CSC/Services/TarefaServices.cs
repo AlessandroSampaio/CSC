@@ -1,6 +1,7 @@
 ﻿using CSC.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CSC.Services
@@ -19,10 +20,20 @@ namespace CSC.Services
             return await _context.Tarefa.ToListAsync();
         }
 
-        public async Task InsertAsync(Tarefa tarefa)
+        public async Task<Tarefa> FindByIdAsync(int id)
+        {
+            return await _context.Tarefa.Where(t => t.Id == id)
+                .Include(a => a.Atendimentos)
+                    .ThenInclude(c => c.Cliente)
+                .Include(a => a.Atendimentos)
+                    .ThenInclude(f => f.Funcionario)
+                .FirstOrDefaultAsync();
+        }
+
+        public void Insert(Tarefa tarefa)
         {
             _context.Tarefa.Add(tarefa);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
     }
 }

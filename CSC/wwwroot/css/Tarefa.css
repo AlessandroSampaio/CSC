@@ -10,3 +10,6 @@ span button:focus {
     background-color: transparent !important;
 }
 
+.swal2-content b{
+    font-weight: 700;
+}
