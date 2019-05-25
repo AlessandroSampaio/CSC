@@ -18,6 +18,10 @@
             index += 1;
         });
     });
+
+    $("#AtdID").inputFilter(function (value) {
+        return /^\d*$/.test(value);
+    });
 });
 
 function AddAtdRow(atd) {
@@ -91,11 +95,13 @@ function AddOnEnter() {
                                     AddAtdRow(E);
                                 }
                             }
+                            
                         });
 
                     }
                 }
             }
+            $('#AtdID').select();
         }
     });
 }
