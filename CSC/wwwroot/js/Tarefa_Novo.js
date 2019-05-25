@@ -68,28 +68,32 @@ function AddOnEnter() {
                 if (E['Status'] != 'Aberto') {
                     Swal.fire("Atendimento Fechado");
                 } else {
-                    Swal.fire({
-                        type: 'question',
-                        title: '<b>Adicionar Atendimento</b>',
-                        html: '<div class="row"><b>CNPJ: </b>' + E['Cliente']['cnpj'] + '</div>' +
-                            '<div class="row"><b>Cliente: </b>' + E['Cliente']['fantasia'] + '</div>' +
-                            '<div class="row"><b>Analista: </b>' + E['Funcionario']['Nome'] + '</div>' +
-                            '<div class="row"><b>Detalhes: </b> ' + E['Detalhes'] + '</div>',
-                        showCancelButton: true,
-                        focusCancel: true,
-                        confirmButtonText: 'Adicionar Atendimento',
-                        cancelButtonText: 'Cancelar'
-                    }).then(add => {
-                        if (add.dismiss == null && add.value == true) {
+                    if (E['TarefaId'] != null) {
+                        SWALBloqueio("Já existe uma tarefa para este atendimento!")
+                    } else {
+                        Swal.fire({
+                            type: 'question',
+                            title: '<b>Adicionar Atendimento</b>',
+                            html: '<div class="row"><b>CNPJ: </b>' + E['Cliente']['cnpj'] + '</div>' +
+                                '<div class="row"><b>Cliente: </b>' + E['Cliente']['fantasia'] + '</div>' +
+                                '<div class="row"><b>Analista: </b>' + E['Funcionario']['Nome'] + '</div>' +
+                                '<div class="row"><b>Detalhes: </b> ' + E['Detalhes'] + '</div>',
+                            showCancelButton: true,
+                            focusCancel: true,
+                            confirmButtonText: 'Adicionar Atendimento',
+                            cancelButtonText: 'Cancelar'
+                        }).then(add => {
+                            if (add.dismiss == null && add.value == true) {
 
-                            if (SearchAtd(E['Id']) > 0) {
-                                Swal.fire("Atendimento já inserido!");
-                            } else {
-                                AddAtdRow(E);
+                                if (SearchAtd(E['Id']) > 0) {
+                                    Swal.fire("Atendimento já inserido!");
+                                } else {
+                                    AddAtdRow(E);
+                                }
                             }
-                        }
-                    });
+                        });
 
+                    }
                 }
             }
         }

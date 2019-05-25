@@ -27,13 +27,14 @@
         "columns": [
             { "data": "Id" },
             { "data": "TarefaNumero" },
-            { "data": "Atendimentos[0].Abertura" },
+            { "data": "Descricao"},
+            { "data": "Abertura" },
             { "data": "Conclusao" }
         ],
         columnDefs:
             [
                 {
-                    targets: 3,
+                    targets: 4,
                     data: "Conclusao",
                     render: function (data) {
                         if (data == "" || data == null) {

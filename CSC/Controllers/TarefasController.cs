@@ -84,6 +84,7 @@ namespace CSC.Controllers
                     }
                 }
                 newTarefa.Atendimentos = list;
+                newTarefa.Abertura = DateTime.Now.Date;
                 tarefa = null;
                 _tarefaServices.Insert(newTarefa);
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
