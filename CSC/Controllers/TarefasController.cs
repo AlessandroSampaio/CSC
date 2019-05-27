@@ -33,7 +33,7 @@ namespace CSC.Controllers
             {
                 User user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
                 ViewBag.user = user;
-                ViewBag.Controller = "Tarefas";
+                ViewBag.Controller = "Tarefa";
 
                 return View();
             }
@@ -56,7 +56,7 @@ namespace CSC.Controllers
             {
                 User user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
                 ViewBag.user = user;
-                ViewBag.Controller = "Tarefas \\ Novo";
+                ViewBag.Controller = "Tarefa \\ Novo";
                 Tarefa tarefa = new Tarefa();
                 return View(tarefa);
             }
@@ -88,11 +88,21 @@ namespace CSC.Controllers
                 tarefa = null;
                 _tarefaServices.Insert(newTarefa);
                 ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                return View(nameof(Index));
+                return RedirectToAction("Index");
             }catch(Exception ex)
             {
                 throw ex;
             }
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public JsonResult VerifyTarefaNumero(string TarefaNumero)
+        {
+            if (_tarefaServices.FindByTarefa(TarefaNumero))
+            {
+                return Json($"Já existe uma tarefa com este código!");
+            }
+            return Json(true);
         }
 
         [HttpPost]

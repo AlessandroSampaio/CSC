@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,6 +9,7 @@ namespace CSC.Models
     {
         public int Id { get; set; }
         [Display(Name = "Tarefa")]
+        [Remote(action: "VerifyTarefaNumero", controller: "Tarefas")]
         public string TarefaNumero { get; set; }
         [Required]
         public string Descricao { get; set; }

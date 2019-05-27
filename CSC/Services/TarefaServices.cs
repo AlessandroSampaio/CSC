@@ -30,6 +30,11 @@ namespace CSC.Services
                 .FirstOrDefaultAsync();
         }
 
+        public bool FindByTarefa(string TarefaNumero)
+        {
+            return  _context.Tarefa.Any(t => t.TarefaNumero == TarefaNumero);
+        }
+
         public void Insert(Tarefa tarefa)
         {
             _context.Tarefa.Add(tarefa);

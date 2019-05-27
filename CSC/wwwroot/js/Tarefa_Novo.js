@@ -22,6 +22,8 @@
     $("#AtdID").inputFilter(function (value) {
         return /^\d*$/.test(value);
     });
+
+    $('#TarefaNumero').mask('SS-00000');
 });
 
 function AddAtdRow(atd) {

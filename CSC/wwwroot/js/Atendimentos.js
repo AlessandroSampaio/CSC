@@ -142,10 +142,14 @@
 
     $('#TbAtendimentos').on('click', '.finalizar', function () {
         var data = tableAtendimentos.row($(this).parents('tr')).data();
-        if (data['Status'] != 'Aberto') {
-            SWALBloqueio('Impossivel encerrar atendimento, atendimento já ' + data['Status'] + '!');
+        if (data['TarefaId'] != null) {
+            SWALBloqueio('Não é possível encerrar atendimento com tarefa em aberto!');
         } else {
-            SWALEncerrar(data['Id']);
+            if (data['Status'] != 'Aberto') {
+                SWALBloqueio('Impossivel encerrar atendimento, atendimento já ' + data['Status'] + '!');
+            } else {
+                SWALEncerrar(data['Id']);
+            }
         }
     });
 
