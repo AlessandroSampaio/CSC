@@ -1,4 +1,5 @@
 ﻿using CSC.Models;
+using CSC.Models.Enums;
 using CSC.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -119,6 +120,24 @@ namespace CSC.Controllers
             ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
             return View(tarefa);
         }
-        
+
+        [HttpPost]
+        public async Task<JsonResult> Concluir(int id)
+        {
+            try
+            {
+                Tarefa tarefa = await _tarefaServices.FindByIdAsync(id);
+                foreach (Atendimento t in tarefa.Atendimentos)
+                {
+                    t.Status = AtendimentoStatus.Fechado;
+                }
+                tarefa.Conclusao = DateTime.Now.Date;
+                _tarefaServices.Update(tarefa);
+                return Json(true);
+            }catch(Exception e)
+            {
+                return Json(e.Message);
+            }
+        }
     }
 }

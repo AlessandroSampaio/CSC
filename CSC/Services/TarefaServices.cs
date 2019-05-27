@@ -40,5 +40,11 @@ namespace CSC.Services
             _context.Tarefa.Add(tarefa);
             _context.SaveChanges();
         }
+
+        public void Update(Tarefa tarefa)
+        {
+            _context.Tarefa.Update(tarefa);
+            _context.SaveChanges();
+        }
     }
 }

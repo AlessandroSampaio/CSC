@@ -71,12 +71,11 @@
     });
 
     var tableClientes = $('#TbClientes').DataTable({
-        dom: '<"top"ft>',
+        dom: 'ftp',
         ajax: {
             url: '/Clientes/Listagem',
             dataSrc: ''
         },
-        scrollX: true,
         "columns": [
             { "data": "Id" },
             { "data": "cnpj" },
