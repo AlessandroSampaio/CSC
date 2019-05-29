@@ -131,10 +131,6 @@
         }
     });
 
-    setInterval(function () {
-        tableClientes.ajax.reload(null, false); 
-    }, 30000);
-
     function ConsultaCliente(doc) {
         var validacao = null;
         $.ajax({
@@ -171,6 +167,7 @@ function SWALInativarFunc(id) {
                     cache: false,
                     success: function (e) {
                         if (e == true) {
+                            $('#TbClientes').DataTable().ajax.reload();
                             return SWALSuccess('Cliente Inativado!')
                         } else {
                             return SWALBloqueio(e);

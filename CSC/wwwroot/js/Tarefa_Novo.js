@@ -1,4 +1,23 @@
 ﻿$(document).ready(function () {
+
+    var tableAtendimentoBusca = $('#TbAtendimentoBusca').DataTable({
+        dom: 'ftp',
+        ajax: {
+            url: '/Tarefas/ListaAtendimento',
+            dataSrc: '',
+            type: 'post'
+        },
+        "scrollX": "true",
+        "columns": [
+            { "data": "Id" },
+            { "data": "Funcionario.Nome" },
+            { "data": "Cliente.nome" },
+            { "data": "Solicitante" },
+            { "data": "AtendimentoTipo" },
+            { "data": "Detalhes" }
+        ]
+    });
+
     $(document).on("keydown", ":input:not(textarea)", function (event) {
         if (event.key == "Enter") {
             event.preventDefault();
@@ -24,6 +43,22 @@
     });
 
     $('#TarefaNumero').mask('SS-00000');
+
+    $('#btnPesquisarAtendimento').on('click', function () {
+        tableAtendimentoBusca.ajax.reload();
+        $('#AtendimentoSelect').modal('show');
+    });
+
+    $('#TbAtendimentoBusca tbody').on('dblclick', 'tr', function () {
+        var data = tableAtendimentoBusca.row(this).data();
+        $('#AtendimentoSelect').modal('hide');
+        $('#AtdID').val(data["Id"]);
+    });
+
+    $('#AtendimentoSelect').on('hidden.bs.modal', function () {
+        $('#AtdID').select();
+        $('#AtdID').focus();
+    })
 });
 
 function AddAtdRow(atd) {
@@ -50,7 +85,7 @@ function AddAtdRow(atd) {
 
 function SearchAtd(id) {
     var response = 0;
-    var TRows = $('tbody tr');
+    var TRows = $('#AtdVinculados > tbody > tr');
     TRows.each(function () {
         if ($(this).find("td:first").html() == id) {
             response += 1;
@@ -97,9 +132,7 @@ function AddOnEnter() {
                                     AddAtdRow(E);
                                 }
                             }
-                            
                         });
-
                     }
                 }
             }

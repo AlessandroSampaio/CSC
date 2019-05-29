@@ -4,7 +4,6 @@ using CSC.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Middleware;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -70,7 +69,7 @@ namespace CSC.Controllers
                 }
                 catch (Exception e)
                 {
-                    throw new HttpStatusCodeException(StatusCodes.Status500InternalServerError, e.Message);
+                    throw e;
                 }
             }
             else
@@ -95,7 +94,7 @@ namespace CSC.Controllers
             }
             catch (Exception e)
             {
-                throw new HttpStatusCodeException(StatusCodes.Status500InternalServerError, e.Message);
+                throw e;
             }
         }
 

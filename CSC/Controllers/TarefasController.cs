@@ -113,6 +113,13 @@ namespace CSC.Controllers
             return Json(atendimento, SerializerSettings);
         }
 
+        [HttpPost]
+        public async Task<JsonResult> ListaAtendimento()
+        {
+            var listaAtendimento = await _atendimentoServices.FindAllAsync(AtendimentoStatus.Aberto);
+            return Json(listaAtendimento, SerializerSettings);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Editar(int id)
         {

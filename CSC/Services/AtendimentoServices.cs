@@ -26,6 +26,15 @@ namespace CSC.Services
                 .ToListAsync();
         }
 
+        public Task<List<Atendimento>> FindAllAsync(AtendimentoStatus status)
+        {
+            return _context.Atendimento
+                .Include(c => c.Cliente)
+                .Include(f => f.Funcionario)
+                .Where(s => s.Status == status)
+                .ToListAsync();
+        }
+
         public async Task<Atendimento> FindByIDAsync(int id)
         {
             return await _context.Atendimento.Where(a => a.Id == id)
@@ -67,6 +76,5 @@ namespace CSC.Services
         {
             return await _context.Atendimento.ToListAsync();
         }
-        
     }
 }

@@ -76,10 +76,6 @@
             ]
     });
 
-    setInterval(function () {
-        tableFuncionarios.ajax.reload(null, false);
-    }, 30000);
-
     $('#TbFuncionarios').on('click', '.inativar', function () {
         var data = tableFuncionarios.row($(this).parents('tr')).data();
         console.log(data);
@@ -115,6 +111,7 @@ function SWALInativarFunc(id) {
                     cache: false,
                     success: function (e) {
                         if (e == true) {
+                            $('#TbFuncionarios').DataTable().ajax.reload();
                             return SWALSuccess('Funcionario inativado com sucesso');
                         } else {
                             return SWALBloqueio(e);

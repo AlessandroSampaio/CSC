@@ -4,71 +4,96 @@
     <link rel="stylesheet" href="~/css/Tarefa.css" />
 }
 
-    <div class="container-fuild">
-        <form asp-action="Novo" method="post" id="PostTarefa" >
-            <div class="form-row">
-                <div class="col-2">
-                    <label asp-for="TarefaNumero" class="col-form-label"></label>
-                    <input asp-for="TarefaNumero" class="form-control form-control-sm" />
-                    <span asp-validation-for="TarefaNumero" class="text-danger"></span>
-                </div>
-                <div class="col-8">
-                    <label asp-for="Descricao" class="col-form-label"></label>
-                    <input asp-for="Descricao" class="form-control form-control-sm" />
-                </div>
-                <div class="col-2">
-                    <label class="col-form-label">Atendimento</label>
-                    <input id="AtdID" type="text" class="form-control form-control-sm" />
-                    <span style="position:absolute; right:5px; top:33px"><button type="button" class="btn btn-link"><i class="fas fa-search"></i></button></span>
-                </div>
+<div class="container-fuild">
+    <form asp-action="Novo" method="post" id="PostTarefa">
+        <div class="form-row">
+            <div class="col-2">
+                <label asp-for="TarefaNumero" class="col-form-label"></label>
+                <input asp-for="TarefaNumero" class="form-control form-control-sm" />
+                <span asp-validation-for="TarefaNumero" class="text-danger"></span>
             </div>
-            <br />
-            <div class="card">
-                <div class="card-header bg-primary">
-                    <h5 class="card-title text-white">Atendimentos Vinculados</h5><br />
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered" id="AtdVinculados">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Atendimento</th>
-                                    <th>CNPJ</th>
-                                    <th>Razao Social</th>
-                                    <th>Analista</th>
-                                    <th>Telefone</th>
-                                    <th>Email</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @{if (Model.Atendimentos != null)
+            <div class="col-8">
+                <label asp-for="Descricao" class="col-form-label"></label>
+                <input asp-for="Descricao" class="form-control form-control-sm" />
+            </div>
+            <div class="col-2">
+                <label class="col-form-label">Atendimento</label>
+                <input id="AtdID" type="text" class="form-control form-control-sm" />
+                <span style="position:absolute; right:5px; top:33px"><button type="button" id="btnPesquisarAtendimento" class="btn btn-link"><i class="fas fa-search"></i></button></span>
+            </div>
+        </div>
+        <br />
+        <div class="card">
+            <div class="card-header bg-primary">
+                <h5 class="card-title text-white">Atendimentos Vinculados</h5><br />
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered" id="AtdVinculados">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Atendimento</th>
+                                <th>CNPJ</th>
+                                <th>Razao Social</th>
+                                <th>Analista</th>
+                                <th>Telefone</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{if (Model.Atendimentos != null)
+                                {
+                                    foreach (var item in Model.Atendimentos)
                                     {
-                                        foreach (var item in Model.Atendimentos)
-                                        {
-                                            <tr>
-                                                <td>@Html.DisplayFor(modelItem => item.Id)</td>
-                                                <td>@Html.DisplayFor(modelItem => item.Cliente.CNPJ)</td>
-                                                <td>@Html.DisplayFor(modelItem => item.Cliente.RazaoSocial)</td>
-                                                <td>@Html.DisplayFor(modelItem => item.Cliente.NomeFantasia)</td>
-                                                <td>@Html.DisplayFor(modelItem => item.Cliente.Telefone)</td>
-                                                <td>@Html.DisplayFor(modelItem => item.Cliente.Email)</td>
-                                            </tr>
-                                        }
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Cliente.CNPJ)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Cliente.RazaoSocial)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Cliente.NomeFantasia)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Cliente.Telefone)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Cliente.Email)</td>
+                                        </tr>
                                     }
                                 }
-                            </tbody>
-                        </table>
-                    </div>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <div class="form-row">
-                <div class="col-sm-12 text-right">
-                    <input id="btnGravar" type="submit" value="Gravar" class="btn btn-primary" />
-                    <a asp-action="Index" class="btn btn-danger">Voltar</a>
+        </div>
+        <div class="form-row">
+            <div class="col-sm-12 text-right">
+                <input id="btnGravar" type="submit" value="Gravar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-danger">Voltar</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Modals{
+    <!-- modal localizacao de Atendimentos -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="AtendimentoSelect">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <table class="table table-sm table-hover" id="TbAtendimentoBusca">
+                        <thead class="thead-dark rounded">
+                            <tr>
+                                <th>Id</th>
+                                <th>Funcionario</th>
+                                <th>Cliente</th>
+                                <th>Solicitante</th>
+                                <th>Tipo</th>
+                                <th>Detalhes</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
+}
 
 @section Scripts{
     <script type="text/javascript" src="~/js/Tarefa_Novo.js"></script>

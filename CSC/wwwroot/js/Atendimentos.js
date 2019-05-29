@@ -196,10 +196,6 @@
 
     $('#TbAtendimentos_filter input').focus();
 
-    setInterval(function () {
-        tableClientes.ajax.reload(null, false);
-        tableAtendimentos.ajax.reload(null, false);
-    }, 30000);
 });
 
 function SWALEncerrar(Id) {
@@ -224,6 +220,7 @@ function SWALEncerrar(Id) {
                 dataType: 'Json',
                 success: function (e) {
                     SWALSuccess("Encerrado com sucesso!");
+                    $('#TbAtendimentos').DataTable().ajax.reload();
                 }
             });
         }

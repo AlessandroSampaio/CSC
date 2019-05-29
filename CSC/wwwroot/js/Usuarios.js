@@ -91,6 +91,7 @@ function SWALAlterarUser(id) {
                     data: filtro,
                     success: function (e) {
                         if (e == true) {
+                            $('#TbUsuarios').DataTable().ajax.reload();
                             return SWALSuccess('Logon alterado com sucesso!');
                         } else {
                             return SWALBloqueio(e);
@@ -126,6 +127,7 @@ function SWALAlterarSenha(id) {
                     data: filtro,
                     success: function (e) {
                         if (e == true) {
+                            $('#TbUsuarios').DataTable().ajax.reload();
                             return SWALSuccess('Senha alterada com sucesso!');
                         } else {
                             return SWALBloqueio(e);

@@ -2994,3 +2994,7 @@ tr {
 #TbHistory tr td{
     white-space:nowrap;
 }
+
+#TbAtendimentoBusca tr td {
+    white-space: nowrap;
+}
