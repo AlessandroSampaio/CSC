@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 /**
  * Stisla
  *
@@ -2561,16 +2561,17 @@ body.sidebar-mini .main-sidebar {
         padding: 0 20px;
         background-color: #fff; }
         body.sidebar-mini .main-sidebar .sidebar-menu > li ul.dropdown-menu li a.has-dropdown:after {
-          content: "";
-          font-family: 'Font Awesome 5 Free';
-          font-weight: 900;
-          position: absolute;
-          top: 50%;
-          right: 20px;
-          -webkit-transform: translate(0, -50%);
-          transform: translate(0, -50%);
-          font-size: 12px;
-          transition: all .5s; }
+            content: '\f0d9';
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            -webkit-transform: translate(0, -50%);
+            transform: translate(0, -50%);
+            font-size: 12px;
+            transition: all .5s;
+        }
   body.sidebar-mini .main-sidebar .sidebar-menu li:hover > ul.dropdown-menu {
     display: block !important; }
     body.sidebar-mini .main-sidebar .sidebar-menu li:hover > ul.dropdown-menu li:hover > a {
@@ -2675,7 +2676,7 @@ body.layout-3 .navbar.navbar-secondary {
     body.layout-3 .navbar.navbar-secondary .navbar-nav > .nav-item > .nav-link.has-dropdown {
       margin-right: 35px; }
       body.layout-3 .navbar.navbar-secondary .navbar-nav > .nav-item > .nav-link.has-dropdown:after {
-        content: "";
+        content: "\f107";
         font-family: 'Font Awesome 5 Free';
         font-weight: 900;
         position: absolute;
@@ -2712,7 +2713,7 @@ body.layout-3 .navbar.navbar-secondary {
       padding-left: 20px !important;
       padding-right: 20px !important; }
       body.layout-3 .navbar.navbar-secondary .navbar-nav > .nav-item .dropdown-menu .nav-item .nav-link.has-dropdown:after {
-        content: "";
+        content: "\f107";
         font-family: 'Font Awesome 5 Free';
         font-weight: 900;
         position: absolute;
@@ -2818,16 +2819,17 @@ body.layout-3 .main-footer {
     .main-sidebar .sidebar-menu li.active ul.dropdown-menu {
       background-color: #f8fafb; }
     .main-sidebar .sidebar-menu li a.has-dropdown:after {
-      content: "";
-      font-family: 'Font Awesome 5 Free';
-      font-weight: 900;
-      position: absolute;
-      top: 50%;
-      right: 20px;
-      -webkit-transform: translate(0, -50%);
-      transform: translate(0, -50%);
-      font-size: 12px;
-      transition: all .5s; }
+        font-family: "Font Awesome 5 Free";
+        content: "\f107";
+        font-weight: 900;
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        -webkit-transform: translate(0, -50%);
+        transform: translate(0, -50%);
+        font-size: 12px;
+        transition: all .5s;
+    }
     .main-sidebar .sidebar-menu li.active > ul.dropdown-menu li a:hover {
       background-color: #f8fafb; }
     .main-sidebar .sidebar-menu li ul.dropdown-menu {

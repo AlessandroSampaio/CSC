@@ -2481,9 +2481,6 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-flex-wrap: wrap;
-	-moz-flex-wrap: wrap;
-	-ms-flex-wrap: wrap;
-	-o-flex-wrap: wrap;
 	flex-wrap: wrap;
 }
 
@@ -2540,7 +2537,6 @@
 	display: -moz-box;
 	display: -ms-flexbox;
 	display: flex;
-	-ms-align-items: flex-start;
 	align-items: flex-start;
 }
 
@@ -2550,7 +2546,6 @@
 	display: -moz-box;
 	display: -ms-flexbox;
 	display: flex;
-	-ms-align-items: flex-end;
 	align-items: flex-end;
 }
 
@@ -2560,7 +2555,6 @@
 	display: -moz-box;
 	display: -ms-flexbox;
 	display: flex;
-	-ms-align-items: center;
 	align-items: center;
 }
 
@@ -2570,7 +2564,6 @@
 	display: -moz-box;
 	display: -ms-flexbox;
 	display: flex;
-	-ms-align-items: stretch;
 	align-items: stretch;
 }
 
@@ -2582,9 +2575,7 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-flex-direction: row;
-	-moz-flex-direction: row;
 	-ms-flex-direction: row;
-	-o-flex-direction: row;
 	flex-direction: row;
 }
 
@@ -2595,9 +2586,7 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-flex-direction: row-reverse;
-	-moz-flex-direction: row-reverse;
 	-ms-flex-direction: row-reverse;
-	-o-flex-direction: row-reverse;
 	flex-direction: row-reverse;
 }
 
@@ -2608,9 +2597,7 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-flex-direction: column;
-	-moz-flex-direction: column;
 	-ms-flex-direction: column;
-	-o-flex-direction: column;
 	flex-direction: column;
 }
 
@@ -2621,9 +2608,7 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-flex-direction: column-reverse;
-	-moz-flex-direction: column-reverse;
 	-ms-flex-direction: column-reverse;
-	-o-flex-direction: column-reverse;
 	flex-direction: column-reverse;
 }
 
@@ -2635,7 +2620,6 @@
 	display: -ms-flexbox;
 	display: flex;
 	justify-content: center;
-	-ms-align-items: center;
 	align-items: center;
 }
 
@@ -2646,7 +2630,6 @@
 	display: -ms-flexbox;
 	display: flex;
 	justify-content: center;
-	-ms-align-items: flex-start;
 	align-items: flex-start;
 }
 
@@ -2657,7 +2640,6 @@
 	display: -ms-flexbox;
 	display: flex;
 	justify-content: center;
-	-ms-align-items: flex-end;
 	align-items: flex-end;
 }
 
@@ -2668,7 +2650,6 @@
 	display: -ms-flexbox;
 	display: flex;
 	justify-content: center;
-	-ms-align-items: stretch;
 	align-items: stretch;
 }
 
@@ -2679,7 +2660,6 @@
 	display: -ms-flexbox;
 	display: flex;
 	justify-content: flex-start;
-	-ms-align-items: center;
 	align-items: center;
 }
 
@@ -2690,7 +2670,6 @@
 	display: -ms-flexbox;
 	display: flex;
 	justify-content: flex-end;
-	-ms-align-items: center;
 	align-items: center;
 }
 
@@ -2701,7 +2680,6 @@
 	display: -ms-flexbox;
 	display: flex;
 	justify-content: space-around;
-	-ms-align-items: center;
 	align-items: center;
 }
 
@@ -2712,7 +2690,6 @@
 	display: -ms-flexbox;
 	display: flex;
 	justify-content: space-between;
-	-ms-align-items: center;
 	align-items: center;
 }
 
@@ -2724,11 +2701,8 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-flex-direction: column;
-	-moz-flex-direction: column;
 	-ms-flex-direction: column;
-	-o-flex-direction: column;
 	flex-direction: column;
-	-ms-align-items: flex-start;
 	align-items: flex-start;
 }
 
@@ -2739,11 +2713,8 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-flex-direction: column;
-	-moz-flex-direction: column;
 	-ms-flex-direction: column;
-	-o-flex-direction: column;
 	flex-direction: column;
-	-ms-align-items: flex-end;
 	align-items: flex-end;
 }
 
@@ -2754,11 +2725,8 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-flex-direction: column;
-	-moz-flex-direction: column;
 	-ms-flex-direction: column;
-	-o-flex-direction: column;
 	flex-direction: column;
-	-ms-align-items: center;
 	align-items: center;
 }
 
@@ -2769,11 +2737,8 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-flex-direction: column;
-	-moz-flex-direction: column;
 	-ms-flex-direction: column;
-	-o-flex-direction: column;
 	flex-direction: column;
-	-ms-align-items: flex-start;
 	align-items: flex-start;
 	justify-content: center;
 }
@@ -2785,11 +2750,8 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-flex-direction: column;
-	-moz-flex-direction: column;
 	-ms-flex-direction: column;
-	-o-flex-direction: column;
 	flex-direction: column;
-	-ms-align-items: flex-end;
 	align-items: flex-end;
 	justify-content: center;
 }
@@ -2801,11 +2763,8 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-flex-direction: column;
-	-moz-flex-direction: column;
 	-ms-flex-direction: column;
-	-o-flex-direction: column;
 	flex-direction: column;
-	-ms-align-items: center;
 	align-items: center;
 	justify-content: center;
 }
@@ -2817,11 +2776,8 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-flex-direction: column;
-	-moz-flex-direction: column;
 	-ms-flex-direction: column;
-	-o-flex-direction: column;
 	flex-direction: column;
-	-ms-align-items: stretch;
 	align-items: stretch;
 }
 
@@ -2832,9 +2788,7 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-flex-direction: column;
-	-moz-flex-direction: column;
 	-ms-flex-direction: column;
-	-o-flex-direction: column;
 	flex-direction: column;
 	justify-content: space-between;
 }
@@ -2847,11 +2801,8 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-flex-direction: column-reverse;
-	-moz-flex-direction: column-reverse;
 	-ms-flex-direction: column-reverse;
-	-o-flex-direction: column-reverse;
 	flex-direction: column-reverse;
-	-ms-align-items: flex-start;
 	align-items: flex-start;
 }
 
@@ -2862,11 +2813,8 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-flex-direction: column-reverse;
-	-moz-flex-direction: column-reverse;
 	-ms-flex-direction: column-reverse;
-	-o-flex-direction: column-reverse;
 	flex-direction: column-reverse;
-	-ms-align-items: flex-end;
 	align-items: flex-end;
 }
 
@@ -2877,11 +2825,8 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-flex-direction: column-reverse;
-	-moz-flex-direction: column-reverse;
 	-ms-flex-direction: column-reverse;
-	-o-flex-direction: column-reverse;
 	flex-direction: column-reverse;
-	-ms-align-items: center;
 	align-items: center;
 }
 
@@ -2892,11 +2837,8 @@
 	display: -ms-flexbox;
 	display: flex;
 	-webkit-flex-direction: column-reverse;
-	-moz-flex-direction: column-reverse;
 	-ms-flex-direction: column-reverse;
-	-o-flex-direction: column-reverse;
 	flex-direction: column-reverse;
-	-ms-align-items: stretch;
 	align-items: stretch;
 }
 

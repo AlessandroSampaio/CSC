@@ -8,7 +8,7 @@
     <!-- General CSS Files -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-datepicker.standalone.min.css" />
-    <link rel="stylesheet" href="~/fonts/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/util.css" />
 
 
@@ -82,6 +82,27 @@
                         <li class="menu-header">Atendimentos</li>
                         <li class="nav-link"><a class="nav-link" asp-controller="Atendimentos" asp-action="Index"><i class="fas fa-headphones"></i><span class="text-center">Atendimentos</span></a></li>
                         <li class="nav-link"><a class="nav-link" asp-controller="Tarefas" asp-action="Index"><i class="fas fa-tasks"></i><span class="text-center">Tarefas</span></a></li>
+                        <li class="menu-header">Relatorios</li>
+                        <li class="dropdown">
+                            <a class="nav-link has-dropdown" href="#" data-toggle="dropdown"><i class="fas fa-user"></i><span class="text-center">Analista</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-controller="Relatorios" asp-action="DesempenhoAnalista" class="nav-link">Desempenho</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="nav-link has-dropdown" href="#" data-toggle="dropdown"><i class="fas fa-address-card"></i><span class="text-center">Cliente</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-controller="Relatorios" asp-action="DadosCliente" class="nav-link">Dados</a></li>
+                                <li><a asp-controller="Relatorios" asp-action="AtendimentosCliente" class="nav-link">Atendimentos</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="nav-link has-dropdown" href="#" data-toggle="dropdown"><i class="fas fa-tasks"></i><span class="text-center">Tarefa</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-controller="Relatorio" asp-action="DetalhesTarefa" class="nav-link">Detalhes</a></li>
+                            </ul>
+                        </li>
+
                     </ul>
                 </aside>
             </div>
