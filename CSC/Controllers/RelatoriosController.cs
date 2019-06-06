@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using CSC.Models;
@@ -78,15 +79,17 @@ namespace CSC.Controllers
 
         //Relatorio de Desempenho por Analista
         [HttpPost]
-        public async Task<IActionResult> DesempenhoAnalistaPDF(int Analista, DateTime DataInicial, DateTime DataFinal, int tipo)
+        public async Task<IActionResult> DesempenhoAnalistaPDF(int Analista, string dataInicial, string dataFinal, int tipo)
         {
+            DateTime DataInicial = DateTime.ParseExact(dataInicial, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            DateTime DataFinal = DateTime.ParseExact(dataFinal, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             List<DesempenhoAnalista> desempenhoAnalistas = new List<DesempenhoAnalista>();
             if (Analista != 0)
             {
                 var list = await _atendimentoServices.FindByFuncinoarioAsync(Analista);
-                if (list.Where(a => a.Abertura > DataInicial && a.Abertura < DataFinal).Count() > 0)
+                if (list.Where(a => a.Abertura >= DataInicial && a.Abertura <= DataFinal).Count() > 0)
                 {
-                    DesempenhoAnalista desempenhoAnalista = new DesempenhoAnalista(list.Where(a => a.Abertura > DataInicial && a.Abertura < DataFinal).ToList(), (DataFinal - DataInicial).Days);
+                    DesempenhoAnalista desempenhoAnalista = new DesempenhoAnalista(list.Where(a => a.Abertura >= DataInicial && a.Abertura <= DataFinal).ToList(), (DataFinal - DataInicial).Days);
                     desempenhoAnalistas.Add(desempenhoAnalista);
                 }
             }
@@ -96,9 +99,9 @@ namespace CSC.Controllers
                 foreach(Funcionario f in func)
                 {
                     var list = await _atendimentoServices.FindByFuncinoarioAsync(f.Id);
-                    if (list.Where(a => a.Abertura > DataInicial && a.Abertura < DataFinal).Count() > 0)
+                    if (list.Where(a => a.Abertura >= DataInicial && a.Abertura <= DataFinal).Count() > 0)
                     {
-                        DesempenhoAnalista desempenhoAnalista = new DesempenhoAnalista(list.Where(a => a.Abertura > DataInicial && a.Abertura < DataFinal).ToList(), (DataFinal - DataInicial).Days);
+                        DesempenhoAnalista desempenhoAnalista = new DesempenhoAnalista(list.Where(a => a.Abertura >= DataInicial && a.Abertura <= DataFinal).ToList(), (DataFinal - DataInicial).Days);
                         desempenhoAnalistas.Add(desempenhoAnalista);
                     }
                 }

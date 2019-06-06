@@ -26,7 +26,7 @@ namespace CSC.Models.ViewModel
             TotalAtendimentoAberto = atendimentos.Where(s => s.Status == AtendimentoStatus.Aberto).Count();
             TotalAtendimentoTransferido = atendimentos.Where(s => s.Status == AtendimentoStatus.Transferido).Count();
             TotalDias = Dias;
-            MediaAtendimento = (atendimentos.Count / (double)Dias);
+            MediaAtendimento = Dias == 0 ? atendimentos.Count : atendimentos.Count / (double)Dias;
             Chaves = atendimentos.Where(t => t.AtendimentoTipo == TipoAtendimento.Chave).Count();
             Operacional = atendimentos.Where(t => t.AtendimentoTipo == TipoAtendimento.Operacional).Count();
             Tecnico = atendimentos.Where(t => t.AtendimentoTipo == TipoAtendimento.Tecnico).Count();
