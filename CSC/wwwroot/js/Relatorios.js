@@ -28,6 +28,23 @@
     $('.input-group.date').datepicker('setDate', new Date(date.getFullYear(), date.getMonth(), date.getDate()));
 
     $('#btnPesquisar').on('click', function () {
-        $('#content').html('<p>Teste De Busca</p>')
+        GerarDesempenho();
     });
 });
+
+function GerarDesempenho() {
+    $.ajax({
+        url: '/Relatorios/DesempenhoAnalistaPDF',
+        dataType: 'html',
+        type: 'post',
+        data: {
+            'Analista': $('#Analista').val(),
+            'DataInicial': $('#DataInicial').val(),
+            'DataFinal': $('#DataFinal').val(),
+            'tipo': '1'
+        },
+        success: function (result) {
+            $('#content').html(result);
+        }
+    });
+}

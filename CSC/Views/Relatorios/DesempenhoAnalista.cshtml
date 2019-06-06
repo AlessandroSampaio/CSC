@@ -9,20 +9,20 @@
                     <div class="col-2">
                         <label class="col-form-label">De :</label>
                         <div id="datai" class="input-group date">
-                            <input id="DataInicial" type="text" class="form-control" required />
+                            <input id="DataInicial" type="text" class="form-control" name="DataInicial" required />
                             <span class="input-group-addon" style="position:absolute; right:5px;"><i class="fa fa-calendar"></i></span>
                         </div>
                     </div>
                     <div class="col-2">
                         <label class="col-form-label">Até :</label>
                         <div id="dataf" class="input-group date">
-                            <input id="DataFinal" type="text" class="form-control" required />
+                            <input id="DataFinal" type="text" class="form-control" name="DataFinal" required />
                             <span class="input-group-addon" style="position:absolute; right:5px;"><i class="fa fa-calendar"></i></span>
                         </div>
                     </div>
                     <div class="col-5">
                         <label class="col-form-label">Analista:</label>
-                        <select id="funcDestino" asp-items="@ViewBag.Funcionarios" class="form-control">
+                        <select id="Analista" name="Analista" asp-items="@ViewBag.Funcionarios" class="form-control">
                             <option value="0">Todos</option>
                         </select>
                     </div>

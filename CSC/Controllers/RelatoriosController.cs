@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CSC.Models;
 using CSC.Models.ViewModel;
 using CSC.Services;
 using Microsoft.AspNetCore.Http;
@@ -75,14 +76,41 @@ namespace CSC.Controllers
             }
         }
 
+        //Relatorio de Desempenho por Analista
         [HttpPost]
-        public async Task<IActionResult> DesempenhoAnalistaPDF()
+        public async Task<IActionResult> DesempenhoAnalistaPDF(int Analista, DateTime DataInicial, DateTime DataFinal, int tipo)
         {
-            var list = await _atendimentoServices.FindByFuncinoarioAsync(1);
-            DesempenhoAnalista desempenhoAnalista = new DesempenhoAnalista(list, 30);
             List<DesempenhoAnalista> desempenhoAnalistas = new List<DesempenhoAnalista>();
-            desempenhoAnalistas.Add(desempenhoAnalista);
-            return new ViewAsPdf("DesempenhoAnalistaPDF",desempenhoAnalistas);
+            if (Analista != 0)
+            {
+                var list = await _atendimentoServices.FindByFuncinoarioAsync(Analista);
+                if (list.Where(a => a.Abertura > DataInicial && a.Abertura < DataFinal).Count() > 0)
+                {
+                    DesempenhoAnalista desempenhoAnalista = new DesempenhoAnalista(list.Where(a => a.Abertura > DataInicial && a.Abertura < DataFinal).ToList(), (DataFinal - DataInicial).Days);
+                    desempenhoAnalistas.Add(desempenhoAnalista);
+                }
+            }
+            else
+            {
+                var func = _funcionarioServices.FindAll();
+                foreach(Funcionario f in func)
+                {
+                    var list = await _atendimentoServices.FindByFuncinoarioAsync(f.Id);
+                    if (list.Where(a => a.Abertura > DataInicial && a.Abertura < DataFinal).Count() > 0)
+                    {
+                        DesempenhoAnalista desempenhoAnalista = new DesempenhoAnalista(list.Where(a => a.Abertura > DataInicial && a.Abertura < DataFinal).ToList(), (DataFinal - DataInicial).Days);
+                        desempenhoAnalistas.Add(desempenhoAnalista);
+                    }
+                }
+            }
+            if (tipo == 0)
+            {
+                return new ViewAsPdf("DesempenhoAnalistaPDF", desempenhoAnalistas);
+            }
+            else
+            {
+                return View("DesempenhoAnalistaPDF", desempenhoAnalistas);
+            }
         }
 
         public async Task<IActionResult> DetalhesTarefa()

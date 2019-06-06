@@ -1,8 +1,6 @@
 ﻿using CSC.Models.Enums;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CSC.Models.ViewModel
 {
@@ -15,7 +13,6 @@ namespace CSC.Models.ViewModel
         public int TotalAtendimentoTransferido { get; set; }
         public int TotalDias { get; set; }
         public double MediaAtendimento { get; set; }
-        public double MediaAtendimentoAberto { get; set; }
         public int Chaves { get; set; }
         public int Operacional { get; set; }
         public int Tecnico { get; set; }
@@ -29,8 +26,7 @@ namespace CSC.Models.ViewModel
             TotalAtendimentoAberto = atendimentos.Where(s => s.Status == AtendimentoStatus.Aberto).Count();
             TotalAtendimentoTransferido = atendimentos.Where(s => s.Status == AtendimentoStatus.Transferido).Count();
             TotalDias = Dias;
-            MediaAtendimento = atendimentos.Count / (double)Dias;
-            MediaAtendimentoAberto = atendimentos.Where(a => a.Status == AtendimentoStatus.Aberto).Select(a => (a.Encerramento - a.Abertura).TotalDays).Sum()/TotalDias;
+            MediaAtendimento = (atendimentos.Count / (double)Dias);
             Chaves = atendimentos.Where(t => t.AtendimentoTipo == TipoAtendimento.Chave).Count();
             Operacional = atendimentos.Where(t => t.AtendimentoTipo == TipoAtendimento.Operacional).Count();
             Tecnico = atendimentos.Where(t => t.AtendimentoTipo == TipoAtendimento.Tecnico).Count();
