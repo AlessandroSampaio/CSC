@@ -27,7 +27,6 @@ namespace CSC.Controllers
             _userServices = userServices;
         }
 
-
         public async Task<IActionResult> AtendimentosCliente()
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
@@ -95,13 +94,14 @@ namespace CSC.Controllers
             }
             else
             {
-                var func = _funcionarioServices.FindAll();
+                var listAtendimentos = await _atendimentoServices.FindByDateIntervalAsync(DataInicial, DataFinal);
+                var func = listAtendimentos.Select(f => f.Funcionario).Distinct();
                 foreach(Funcionario f in func)
                 {
-                    var list = await _atendimentoServices.FindByFuncinoarioAsync(f.Id);
-                    if (list.Where(a => a.Abertura >= DataInicial && a.Abertura <= DataFinal).Count() > 0)
+                    var list = listAtendimentos.Where(a => a.Funcionario == f).ToList();
+                    if (list.Count() > 0)
                     {
-                        DesempenhoAnalista desempenhoAnalista = new DesempenhoAnalista(list.Where(a => a.Abertura >= DataInicial && a.Abertura <= DataFinal).ToList(), (DataFinal - DataInicial).Days);
+                        DesempenhoAnalista desempenhoAnalista = new DesempenhoAnalista(list, (DataFinal - DataInicial).Days);
                         desempenhoAnalistas.Add(desempenhoAnalista);
                     }
                 }

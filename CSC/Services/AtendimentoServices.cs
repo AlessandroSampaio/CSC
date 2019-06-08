@@ -61,6 +61,15 @@ namespace CSC.Services
                             .ToListAsync();
         }
 
+        public Task<List<Atendimento>> FindByDateIntervalAsync(DateTime dataInicio, DateTime dataFim)
+        {
+            return _context.Atendimento
+                            .Where(a => a.Abertura >= dataInicio && a.Abertura <= dataFim)
+                            .Include(c => c.Cliente)
+                            .Include(f => f.Funcionario)
+                            .ToListAsync();
+        }
+
         public async Task InsertAsync(Atendimento atendimento)
         {
             _context.Atendimento.Add(atendimento);
