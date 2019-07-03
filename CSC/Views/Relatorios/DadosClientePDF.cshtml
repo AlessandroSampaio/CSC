@@ -1,3 +1,74 @@
-﻿<form asp-action="DemoViewAsPDF" >
-    <input type="submit" class="btn btn-outline-success" value="teste" />
-</form>
+﻿@model ICollection<CSC.Models.Cliente>
+
+@using System.Globalization;
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>DesempenhoAnalistaPDF</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+    <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <div class="text-center">
+            RELATORIO DE CLIENTES
+        </div>
+        <hr />
+        <br />
+    </header>
+    <div class="container-fluid">
+        @foreach (var itemModel in Model)
+        {
+            <div class="form-row">
+                <div class="col-12 text-center text-white bg-dark">
+                    @itemModel.CNPJ - @itemModel.RazaoSocial
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-8">
+                    <p>Nome Fantasia: @itemModel.NomeFantasia</p>
+                </div>
+                <div class="col-4">
+                    <p>Cliente desde: @itemModel.dataInicio</p>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-6">
+                    <p>Endereço: @itemModel.CEP - @itemModel.Logradouro, @itemModel.Numero</p>
+                </div>
+                <div class="col-6">
+                    <p>@itemModel.Bairro - @itemModel.Cidade</p>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-3">
+                    <p>Telefone: @itemModel.Telefone </p>
+                </div>
+                <div class="col-5">
+                    <p>Email: @itemModel.Email</p>
+                </div>
+                <div class="col-3">
+                    <p>Situação: @itemModel.Status</p>
+                </div>
+                <div class="col-1">
+                    @if (itemModel.Mono)
+                    {
+                        <p>Mono</p>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+</body>
+</html>

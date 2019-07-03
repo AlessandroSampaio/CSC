@@ -16,13 +16,16 @@ namespace CSC.Controllers
     public class RelatoriosController : Controller
     {
         private readonly AtendimentoServices _atendimentoServices;
+        private readonly ClienteServices _clienteServices;
         private readonly FuncionarioServices _funcionarioServices;
         private readonly UserServices _userServices;
+        
         const string SessionUserID = "_UserID";
 
-        public RelatoriosController(AtendimentoServices atendimentoServices, FuncionarioServices funcionarioServices, UserServices userServices)
+        public RelatoriosController(AtendimentoServices atendimentoServices, ClienteServices clienteServices, FuncionarioServices funcionarioServices, UserServices userServices)
         {
             _atendimentoServices = atendimentoServices;
+            _clienteServices = clienteServices;
             _funcionarioServices = funcionarioServices;
             _userServices = userServices;
         }
@@ -52,6 +55,18 @@ namespace CSC.Controllers
             else
             {
                 return RedirectToAction("Login", "Home");
+            }
+        }
+
+        public async Task<IActionResult> DadosClientePDF(int tipo)
+        {
+            var _clientList = await _clienteServices.FindAllAsync();
+            if (tipo == 0)
+            {
+                return new ViewAsPdf("DadosClientePDF", _clientList);
+            }else
+            {
+                return View();
             }
         }
 
