@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CSC.Migrations
 {
     [DbContext(typeof(CSCContext))]
-    [Migration("20190521105219_ClienteMono")]
-    partial class ClienteMono
+    [Migration("20190722113629_NewDatabase")]
+    partial class NewDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,11 +42,15 @@ namespace CSC.Migrations
 
                     b.Property<int>("Status");
 
+                    b.Property<int?>("TarefaId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClienteId");
 
                     b.HasIndex("FuncionarioId");
+
+                    b.HasIndex("TarefaId");
 
                     b.ToTable("Atendimento");
                 });
@@ -107,6 +111,15 @@ namespace CSC.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Funcionario");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Admissao = new DateTime(2019, 7, 22, 0, 0, 0, 0, DateTimeKind.Local),
+                            Nome = "Admin",
+                            Veiculo = false
+                        });
                 });
 
             modelBuilder.Entity("CSC.Models.Inventario", b =>
@@ -120,6 +133,25 @@ namespace CSC.Migrations
                     b.HasKey("ClienteID", "Software");
 
                     b.ToTable("Inventario");
+                });
+
+            modelBuilder.Entity("CSC.Models.Tarefa", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Abertura");
+
+                    b.Property<DateTime?>("Conclusao");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired();
+
+                    b.Property<string>("TarefaNumero");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tarefa");
                 });
 
             modelBuilder.Entity("CSC.Models.User", b =>
@@ -140,6 +172,15 @@ namespace CSC.Migrations
                     b.HasIndex("FuncionarioId");
 
                     b.ToTable("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            FuncionarioId = 1,
+                            NomeLogon = "admin",
+                            Senha = "2c84d6ef7d7d16c82eba6487caae5247b45d08555b45d0bc43af625def92a8d6"
+                        });
                 });
 
             modelBuilder.Entity("CSC.Models.Atendimento", b =>
@@ -153,6 +194,10 @@ namespace CSC.Migrations
                         .WithMany()
                         .HasForeignKey("FuncionarioId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CSC.Models.Tarefa", "Tarefa")
+                        .WithMany("Atendimentos")
+                        .HasForeignKey("TarefaId");
                 });
 
             modelBuilder.Entity("CSC.Models.Inventario", b =>

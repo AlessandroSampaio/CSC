@@ -19,7 +19,7 @@ namespace CSC.Services
             _context = context;
         }
 
-        public string GetHash(string plainText)
+        public static string GetHash(string plainText)
         {
             using (var sha256 = SHA256.Create())
             {
@@ -66,7 +66,7 @@ namespace CSC.Services
             return await _context.User.Where(user => user.NomeLogon.Contains(_name))
                 .Include(user => user.Funcionario)
                 .ToListAsync();
-            
+
         }
 
         public async Task InsertUserAsync(User user)

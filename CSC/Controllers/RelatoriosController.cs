@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using CSC.Models;
+﻿using CSC.Models;
 using CSC.Models.ViewModel;
 using CSC.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Rotativa.AspNetCore;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CSC.Controllers
 {
@@ -19,7 +19,7 @@ namespace CSC.Controllers
         private readonly ClienteServices _clienteServices;
         private readonly FuncionarioServices _funcionarioServices;
         private readonly UserServices _userServices;
-        
+
         const string SessionUserID = "_UserID";
 
         public RelatoriosController(AtendimentoServices atendimentoServices, ClienteServices clienteServices, FuncionarioServices funcionarioServices, UserServices userServices)
@@ -63,8 +63,14 @@ namespace CSC.Controllers
             var _clientList = await _clienteServices.FindAllAsync();
             if (tipo == 0)
             {
-                return new ViewAsPdf("DadosClientePDF", _clientList);
-            }else
+                return new ViewAsPdf("DadosClientePDF", _clientList)
+                {
+                    PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                    CustomSwitches = "--footer-right \" [page]/[toPage]\"" +
+          " --footer-line --footer-font-size \"10\" --footer-spacing 1 --footer-font-name \"Times New Roman\""
+                };
+            }
+            else
             {
                 return View();
             }
@@ -111,7 +117,7 @@ namespace CSC.Controllers
             {
                 var listAtendimentos = await _atendimentoServices.FindByDateIntervalAsync(DataInicial, DataFinal);
                 var func = listAtendimentos.Select(f => f.Funcionario).Distinct();
-                foreach(Funcionario f in func)
+                foreach (Funcionario f in func)
                 {
                     var list = listAtendimentos.Where(a => a.Funcionario == f).ToList();
                     if (list.Count() > 0)

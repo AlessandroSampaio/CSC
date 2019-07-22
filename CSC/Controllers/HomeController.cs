@@ -85,7 +85,5 @@ namespace CSC.Controllers
                 return RedirectToAction(nameof(Login));
             }
         }
-
-
     }
 }

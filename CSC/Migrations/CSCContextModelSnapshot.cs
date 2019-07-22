@@ -14,7 +14,7 @@ namespace CSC.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
+                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("CSC.Models.Atendimento", b =>
@@ -109,6 +109,15 @@ namespace CSC.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Funcionario");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Admissao = new DateTime(2019, 7, 22, 0, 0, 0, 0, DateTimeKind.Local),
+                            Nome = "Admin",
+                            Veiculo = false
+                        });
                 });
 
             modelBuilder.Entity("CSC.Models.Inventario", b =>
@@ -161,6 +170,15 @@ namespace CSC.Migrations
                     b.HasIndex("FuncionarioId");
 
                     b.ToTable("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            FuncionarioId = 1,
+                            NomeLogon = "admin",
+                            Senha = "2c84d6ef7d7d16c82eba6487caae5247b45d08555b45d0bc43af625def92a8d6"
+                        });
                 });
 
             modelBuilder.Entity("CSC.Models.Atendimento", b =>

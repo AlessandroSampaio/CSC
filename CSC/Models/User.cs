@@ -25,5 +25,12 @@ namespace CSC.Models
             this.NomeLogon = name;
             this.Senha = senha;
         }
+        public User(int id, string name, string senha, int funcionarioID)
+        {
+            this.Id = id;
+            this.NomeLogon = name;
+            this.Senha = senha;
+            this.FuncionarioId = funcionarioID;
+        }
     }
 }

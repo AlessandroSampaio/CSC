@@ -94,7 +94,7 @@ namespace CSC.Controllers
             try
             {
                 User user = await _userServices.FindByIdAsync(Id);
-                user.Senha = _userServices.GetHash(Senha);
+                user.Senha = UserServices.GetHash(Senha);
                 await _userServices.UpdateAsync(user);
             }
             catch (DbUpdateConcurrencyException e)
