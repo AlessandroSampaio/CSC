@@ -37,15 +37,23 @@ namespace CSC.Controllers
             return RedirectToAction("Index");
         }
 
-       [AcceptVerbs("Get", "Post")]
-        public IActionResult VerifyLogon(string NomeLogon, string Senha)
+        [AcceptVerbs("Get", "Post")]
+        public IActionResult VerifyLogon(string NomeLogon, string Senha, int FuncionarioId)
         {
-            User user = new User(NomeLogon, Senha);
-            if (_UserServices.ValidUser(user) == null)
+            if (FuncionarioId == 0)
             {
-                return Json($"O usuario ou a senha estão incorretos!");
+                User user = new User(NomeLogon, Senha);
+                if (_UserServices.ValidUser(user) == null)
+                {
+                    return Json($"O usuario ou a senha estão incorretos!");
+                }
+                return Json(true);
             }
-            return Json(true);
+            else
+            {
+                return Json(true);
+            }
+            
         }
 
         public async Task<IActionResult> Index()

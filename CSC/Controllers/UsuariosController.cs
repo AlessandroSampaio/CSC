@@ -63,6 +63,7 @@ namespace CSC.Controllers
         [HttpPost]
         public async Task<IActionResult> Novo(User user)
         {
+            
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
                 await _userServices.InsertUserAsync(user);
