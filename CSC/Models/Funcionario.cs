@@ -18,6 +18,8 @@ namespace CSC.Models
         public DateTime? Demissao { get; set; }
         public bool Veiculo { get; set; }
 
+        public Funcionario() { }
+
         public Funcionario(int id, string nome, DateTime admissao)
         {
             Id = id;

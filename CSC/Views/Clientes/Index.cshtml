@@ -1,17 +1,39 @@
-﻿<table class="table table-sm table-hover" id="TbClientes">
-    <thead class="thead-dark rounded">
-        <tr>
-            <th>Id</th>
-            <th>CNPJ</th>
-            <th>Razao Social</th>
-            <th>Telefone</th>
-            <th>Status</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+﻿<div class="container">
+    <div class="form-row">
+        <div class="col-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <select class="form-control form-control-sm" id="slctOption">
+                        <option class="form-control form-control-sm" value="1">CNPJ</option>
+                        <option class="form-control form-control-sm" value="2">Razao Social</option>
+                    </select>
+                </div>
+                <input type="text" class="form-control" id="txtSearch" />
+                <div class="input-group-append">
+                    <!--<button class="btn mr-sm-2 btn-secondary">Pesquisar</button>-->
+                    <button class="btn btn-primary" id="btnNovo">Novo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+</div>
 
+<div class="container">
+    <table class="table table-sm table-hover" id="TbClientes">
+        <thead class="thead-dark rounded">
+            <tr>
+                <th>Id</th>
+                <th>CNPJ</th>
+                <th>Razao Social</th>
+                <th>Telefone</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 @section Modals{
     <div class="modal fade" id="NovoCliente">
         <div class="modal-dialog modal-dialog-centered">
@@ -36,12 +58,12 @@
                             </div>
                         </div>
                     </form>
-                    
+
                     <form asp-action="Novo" id="FormPessoaJuridica" class="hide" method="post">
                         <div class="row">
                             <div class="col-12">
                                 <label><b>Cnpj </b>:</label>
-                                <input class="form-control" type="text" id="NovoCnpj" name="_doc" autocomplete="off"/>
+                                <input class="form-control" type="text" id="NovoCnpj" name="_doc" autocomplete="off" />
                                 <span id="ValidPJ" class="text-danger"></span>
                                 <br />
                                 <input id="btnNovoCliente" type="submit" value="Incluir" class="btn btn-primary btn-block" />

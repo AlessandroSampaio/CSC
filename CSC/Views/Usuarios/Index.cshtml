@@ -1,4 +1,23 @@
-﻿
+﻿<div class="container">
+    <div class="form-row">
+        <div class="col-12">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <select class="form-control form-control-sm" id="slctOption">
+                        <option class="form-control form-control-sm" value="0">Id</option>
+                        <option class="form-control form-control-sm" value="1">Logon</option>
+                        <option class="form-control form-control-sm" value="2">Nome</option>
+                    </select>
+                </div>
+                <input type="text" class="form-control" id="txtSearch" />
+                <div class="input-group-append">
+                    <a asp-action="Novo" class="btn btn-primary" id="btnNovo">Novo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+</div>
 
 <table class="table table-sm table-hover row-border" id="TbUsuarios">
     <thead class="thead-dark rounded">

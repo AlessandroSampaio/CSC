@@ -1,24 +1,6 @@
 ﻿$(document).ready(function () {
     var tableTarefas = $('#TbTarefas').DataTable({
-        dom: '<"top"Bft>',
-        buttons: [{
-            extend: 'collection',
-            className: "btn-primary",
-            text: 'Exportar',
-            buttons:
-                [
-                    { extend: "excel", className: "btn-block" },
-                    { extend: "pdf", className: "btn-block" },
-                    { extend: "print", className: "btn-block" }]
-        },
-        {
-            text: 'Novo',
-            className: 'btn-primary',
-            action: function () {
-                window.location.href = '/Tarefas/Novo/';
-            }
-        }
-        ],
+        dom: '<"top"t>',
         ajax: {
             url: '/Tarefas/Listagem',
             dataSrc: '',
@@ -72,6 +54,9 @@
         SWALConcluirTarefa(id['Id']);
     });
 
+    $('#txtSearch').on('keyup', function () {
+        tableTarefas.columns($('#slctOption').val()).search(this.value).draw();
+    })
 });
 
 function SWALConcluirTarefa(Id) {

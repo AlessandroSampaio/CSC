@@ -1,25 +1,7 @@
 ﻿$(document).ready(function () {
     
     var tableFuncionarios = $('#TbFuncionarios').DataTable({
-        dom: '<"top"B>fp',
-        buttons: [{
-            extend: 'collection',
-            className: "btn-primary",
-            text: 'Exportar',
-            buttons:
-                [
-                    { extend: "excel", className: "btn-block" },
-                    { extend: "pdf", className: "btn-block" },
-                    { extend: "print", className: "btn-block" }]
-        },
-        {
-            text: 'Novo',
-            className: 'btn-primary',
-            action: function (e, dt, button, config) {
-                window.location.href = '/Funcionarios/Novo/';
-            }
-        }
-        ],
+        dom: '<"top"p>',
         ajax: {
             url: '/Funcionarios/Listagem',
             dataSrc: ''
@@ -89,6 +71,10 @@
             tableFuncionarios.ajax.reload();
         }
     });
+
+    $('#txtSearch').on('keyup', function () {
+        tableFuncionarios.columns($('#slctOption').val()).search(this.value).draw();
+    })
 });
 
 

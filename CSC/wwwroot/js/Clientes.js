@@ -1,25 +1,7 @@
 ﻿$(document).ready(function () {
 
     var tableClientes = $('#TbClientes').DataTable({
-        dom: '<"top"B>fp',
-        buttons: [{
-            extend: 'collection',
-            className: "btn-primary",
-            text: 'Exportar',
-            buttons:
-                [
-                    { extend: "excel", className: "btn-block" },
-                    { extend: "pdf", className: "btn-block" },
-                    { extend: "print", className: "btn-block" }]
-        },
-        {
-            text: 'Novo',
-            className: 'btn-primary',
-            action: function (e, dt, button, config) {
-                $('#NovoCliente').modal('show');
-            }
-        }
-        ],
+        dom: '<"top"P>',
         ajax: {
             url: '/Clientes/Listagem',
             dataSrc: ''
@@ -130,6 +112,12 @@
             }
         }
     });
+
+    $('#txtSearch').on('keyup', function () {
+        tableClientes.columns($('#slctOption').val()).search(this.value).draw();
+    })
+
+    $('#btnNovo').click(function () { $('#NovoCliente').modal('show'); });
 
     function ConsultaCliente(doc) {
         var validacao = null;

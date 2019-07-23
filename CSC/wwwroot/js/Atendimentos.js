@@ -2,25 +2,7 @@
     var AtdTransfer;
 
     var tableAtendimentos = $('#TbAtendimentos').DataTable({
-        dom: '<"top"Bf><"botton"p>',
-        buttons: [{
-            extend: 'collection',
-            className: "btn-primary",
-            text: 'Exportar',
-            buttons:
-                [
-                    { extend: "excel", className: "btn-block" },
-                    { extend: "pdf", className: "btn-block" },
-                    { extend: "print", className: "btn-block" }]
-        },
-        {
-            text: 'Novo',
-            className: 'btn-primary',
-            action: function () {
-                $('#ClientSelect').modal('show');
-            }
-        }
-        ],
+        dom: '<"botton"p>',
         ajax: {
             url: '/Atendimentos/Listagem',
             dataSrc: ''
@@ -196,6 +178,11 @@
 
     $('#TbAtendimentos_filter input').focus();
 
+    $('#btnNovo').click(function () { $('#ClientSelect').modal('show'); })
+
+    $('#txtSearch').on('keyup', function () {
+        tableAtendimentos.columns($('#slctOption').val()).search(this.value).draw();
+    })
 });
 
 function SWALEncerrar(Id) {

@@ -1,24 +1,5 @@
 ﻿$(document).ready(function () {
     var tableUser = $('#TbUsuarios').DataTable({
-        dom: '<"top"B>',
-        buttons: [{
-            extend: 'collection',
-            className: "btn-primary",
-            text: 'Exportar',
-            buttons:
-                [
-                    { extend: "excel", className: "btn-block" },
-                    { extend: "pdf", className: "btn-block" },
-                    { extend: "print", className: "btn-block" }],
-        },
-        {
-            text: 'Novo',
-            className: 'btn-primary',
-            action: function (e, dt, button, config) {
-                window.location.href = '/Usuarios/Novo/';
-            }
-        }
-        ],
         ajax: {
             url: '/Usuarios/Listagem',
             dataSrc: ''
@@ -62,6 +43,10 @@
             SWALBloqueio("Acesso Negado!")
         }
     });
+
+    $('#txtSearch').on('keyup', function () {
+        tableUser.columns($('#slctOption').val()).search(this.value).draw();
+    })
 
     setInterval(function () {
         tableUser.ajax.reload(null, false);
