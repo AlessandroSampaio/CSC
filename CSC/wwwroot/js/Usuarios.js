@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     var tableUser = $('#TbUsuarios').DataTable({
+        dom: '<"top"t>',
         ajax: {
             url: '/Usuarios/Listagem',
             dataSrc: ''
