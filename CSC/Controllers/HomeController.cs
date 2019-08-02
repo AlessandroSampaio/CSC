@@ -1,97 +1,114 @@
 ﻿using CSC.Models;
-using CSC.Services;
-using Microsoft.AspNetCore.Http;
+using CSC.Models.ViewModel;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace CSC.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
-        public readonly UserServices _UserServices;
-        const string SessionUserID = "_UserID";
-        const string SessionUserTime = "_LogonTime";
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly ILogger _logger;
 
-
-        public HomeController(UserServices UserServices)
+        public HomeController(SignInManager<User> signInManager, UserManager<User> userManager, ILogger<HomeController> logger)
         {
-            _UserServices = UserServices;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _logger = logger;
         }
 
-        public IActionResult Login()
+        [TempData]
+        public string ErrorMessage { get; set; }
+
+        public IActionResult Index()
         {
+            ViewBag.Controller = "Painel de Informações";
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(string returnUrl = null)
+        {
+            // Limpando Cookies para garantir o processo de login
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
         [HttpPost]
-        public IActionResult Login(User user)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
-            if (!ModelState.IsValid)
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
             {
-                return View();
-            }
-            user = _UserServices.ValidUser(user);
-            HttpContext.Session.SetInt32(SessionUserID, user.Id);
-            HttpContext.Session.SetString(SessionUserTime, DateTime.Now.ToString());
-            return RedirectToAction("Index");
-        }
-
-        [AcceptVerbs("Get", "Post")]
-        public IActionResult VerifyLogon(string NomeLogon, string Senha, int FuncionarioId)
-        {
-            if (FuncionarioId == 0)
-            {
-                User user = new User(NomeLogon, Senha);
-                if (_UserServices.ValidUser(user) == null)
+                var result = await _signInManager.PasswordSignInAsync(model.Logon, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
                 {
-                    return Json($"O usuario ou a senha estão incorretos!");
+                    _logger.LogInformation("Usuario Logado.");
+                    return RedirectToLocal(returnUrl);
                 }
-                return Json(true);
+                else if (result.IsNotAllowed)
+                {
+                    ModelState.AddModelError(string.Empty, "Usuario Inativo");
+                    return View(model);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Login ou Senha Invalidos");
+                    return View(model);
+                }
             }
-            else
-            {
-                return Json(true);
-            }
-            
-        }
-
-        public async Task<IActionResult> Index()
-        {
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
-            {
-                ViewBag.user = await _UserServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                ViewBag.Controller = "Painel de Controle";
-                return View();
-            }
-            else
-            {
-                return RedirectToAction(nameof(Login));
-            }
+            return View(model);
         }
 
         [HttpPost]
-        [HttpGet]
-        public IActionResult Logout(int id)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
         {
-            HttpContext.Session.Remove(SessionUserID);
-            return RedirectToAction("Login");
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("Usuario deslogou.");
+            return RedirectToAction("Login", "Home");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> SessionTime()
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
         {
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
-            {
-                ViewBag.user = await _UserServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                TimeSpan TimeLogon = DateTime.Now - DateTime.Parse(HttpContext.Session.GetString(SessionUserTime).ToString());
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
 
-                return Json(TimeLogon.Minutes);
+        #region Helpers
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
+
+        private IActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
             }
             else
             {
-                return RedirectToAction(nameof(Login));
+                return RedirectToAction(nameof(HomeController.Index), "Home");
             }
         }
+
+        #endregion
     }
 }

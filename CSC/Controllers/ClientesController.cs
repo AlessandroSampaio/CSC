@@ -15,14 +15,12 @@ namespace CSC.Controllers
     public class ClientesController : Controller
     {
         public readonly ClienteServices _clienteServices;
-        public readonly UserServices _userServices;
         const string SessionUserID = "_UserID";
         private readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { DateFormatString = "dd/MM/yyyy" };
 
-        public ClientesController(UserServices userServices, ClienteServices clienteServices)
+        public ClientesController(ClienteServices clienteServices)
         {
             _clienteServices = clienteServices;
-            _userServices = userServices;
         }
 
 
@@ -31,7 +29,7 @@ namespace CSC.Controllers
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
                 ViewBag.Controller = "Cliente";
-                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                ViewBag.user = new User();
                 return View();
             }
             else
@@ -54,7 +52,7 @@ namespace CSC.Controllers
                 try
                 {
                     ViewBag.Controller = "Cliente \\ Novo";
-                    ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                    ViewBag.user = new User();
                     Cliente cliente;
                     _doc = _doc.Replace(".", "").Replace("-", "").Replace("/", "");
                     if (_doc.Length < 14)
@@ -86,7 +84,7 @@ namespace CSC.Controllers
                 ModelState.Remove("DataInicio");
                 if (!ModelState.IsValid)
                 {
-                    ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                    ViewBag.user = new User();
                     return View(cliente);
                 }
                 _clienteServices.Insert(cliente);
@@ -111,7 +109,7 @@ namespace CSC.Controllers
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
                 ViewBag.Controller = "Clientes \\ Editar";
-                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                ViewBag.user = new User();
                 Cliente cliente = await _clienteServices.FindByIdAsync(id);
                 if (cliente.CNPJ.Length == 11) { ViewBag.Type = 'f'; }
                 else { ViewBag.Type = 'j'; }
@@ -130,7 +128,7 @@ namespace CSC.Controllers
             ModelState.Remove("DataInicio");
             if (!ModelState.IsValid)
             {
-                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                ViewBag.user = new User();
                 return View(obj);
             }
             await _clienteServices.UpdateAsync(obj);
@@ -143,7 +141,7 @@ namespace CSC.Controllers
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
                 ViewBag.Controller = "Clientes \\ Inventario";
-                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                ViewBag.user = new User();
                 ViewBag.SelectListItem = Enum.GetValues(typeof(Software)).Cast<Software>().Select(v => new SelectListItem
                 {
                     Text = v.ToString(),
@@ -164,7 +162,7 @@ namespace CSC.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                ViewBag.user = new User();
                 return View(inventarios);
             }
             return RedirectToAction("Index");

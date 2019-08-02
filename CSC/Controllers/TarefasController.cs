@@ -16,23 +16,21 @@ namespace CSC.Controllers
         private readonly AtendimentoServices _atendimentoServices;
         private readonly ClienteServices _clienteServices;
         private readonly TarefaServices _tarefaServices;
-        private readonly UserServices _userServices;
         const string SessionUserID = "_UserID";
         private readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { DateFormatString = "dd/MM/yyyy" };
 
-        public TarefasController(AtendimentoServices atendimentoServices, ClienteServices clienteServices, UserServices userServices, TarefaServices tarefaServices)
+        public TarefasController(AtendimentoServices atendimentoServices, ClienteServices clienteServices, TarefaServices tarefaServices)
         {
             _atendimentoServices = atendimentoServices;
             _clienteServices = clienteServices;
             _tarefaServices = tarefaServices;
-            _userServices = userServices;
         }
 
         public async Task<IActionResult> Index()
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
-                User user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                User user = new User();
                 ViewBag.user = user;
                 ViewBag.Controller = "Tarefa";
 
@@ -55,7 +53,7 @@ namespace CSC.Controllers
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
-                User user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                User user = new User();
                 ViewBag.user = user;
                 ViewBag.Controller = "Tarefa \\ Novo";
                 Tarefa tarefa = new Tarefa();
@@ -88,7 +86,7 @@ namespace CSC.Controllers
                 newTarefa.Abertura = DateTime.Now.Date;
                 tarefa = null;
                 _tarefaServices.Insert(newTarefa);
-                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                ViewBag.user = new User();
                 return RedirectToAction("Index");
             }catch(Exception ex)
             {
@@ -124,7 +122,7 @@ namespace CSC.Controllers
         public async Task<IActionResult> Editar(int id)
         {
             Tarefa tarefa = await _tarefaServices.FindByIdAsync(id);
-            ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+            ViewBag.user = new User();
             return View(tarefa);
         }
 

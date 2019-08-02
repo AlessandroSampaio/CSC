@@ -1,7 +1,8 @@
 ﻿@model CSC.Models.ViewModel.UserViewModel
 
 <div class="container-fluid">
-    <form asp-action="Novo" method="post">
+    <form asp-action="Perfil" method="post">
+        <input type="hidden" asp-for="Id" readonly/>
         <div asp-validation-summary="None">
             <div class="form-row">
                 <div class="col-4 col-md-4 col-sm-4">
@@ -30,7 +31,7 @@
                 <div class="col-2">
                     <div class="form-group">
                         <label asp-for="Admissao" class="control-label"></label>
-                        <input asp-for="Admissao" class="form-control" />
+                        <input asp-for="Admissao" class="form-control" readonly/>
                     </div>
                 </div>
                 <div class="col-2">
@@ -47,39 +48,18 @@
                         <input type="text" asp-for="UserName" class="form-control" />
                     </div>
                 </div>
-                <div class="col-4 col-md-4 col-sm-4">
-                    <div class="form-group">
-                        <label asp-for="Password"></label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
-                                    <i class="fas fa-lock"></i>
-                                </div>
-                            </div>
-                            <input asp-for="Password" type="password" class="form-control pwstrength" data-indicator="pwindicator">
-                        </div>
-                        <div id="pwindicator" class="pwindicator">
-                            <div class="bar"></div>
-                            <div class="label"></div>
-                        </div>
-                    </div>
-                </div>
                 <div class="col-2 col-sm-2 col-md-2">
                     <label asp-for="Role" class="col-form-label col-form-label-sm"></label>
-                    <select asp-for="Role" asp-items="@ViewBag.Roles" class="form-control"></select>
-                </div>
-            </div>
-            <div class="form-row">
-
-                <div class="col-2 col-md-2 col-sm-2">
-
+                    <input asp-for="Role" class="form-control" readonly>
                 </div>
             </div>
             <div class="form-row">
                 <div class="col-8"></div>
                 <div class="col-4 col-md-4 col-sm-4">
+                    <label>&nbsp;</label>
                     <div class="float-right  align-self-center">
                         <input type="submit" value="Gravar" class="btn btn-primary" />
+                        <button id="btnAlterarSenha" type="button" class="btn btn-outline-primary btn-secondary">Alterar Senha</button>
                         <a asp-action="Index" class="btn btn-danger">Voltar</a>
                     </div>
                 </div>
@@ -87,3 +67,8 @@
         </div>
     </form>
 </div>
+
+@section Scripts{
+<script type="text/javascript" src="~/js/Perfil.js"></script>
+
+}

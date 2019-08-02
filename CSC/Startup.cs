@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Rotativa.AspNetCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace CSC
 {
@@ -31,9 +32,34 @@ namespace CSC
                      options.UseMySql(Configuration.GetConnectionString("CSCContext"),
                      builder => builder.MigrationsAssembly("CSC")));
 
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<CSCContext>()
+                .AddDefaultTokenProviders()
+                .AddSignInManager<ApplicationSignInManager>();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Default Password settings.
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 5;
+                options.Password.RequiredUniqueChars = 1;
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings  
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                options.LoginPath = "/Home/Login";
+                options.LogoutPath = "/Home/Logout";
+                options.AccessDeniedPath = "/Home/AccessDenied";
+                options.SlidingExpiration = true;
+            });
+
             services.AddScoped<ClienteServices>();
-            services.AddScoped<FuncionarioServices>();
-            services.AddScoped<UserServices>();
             services.AddScoped<AtendimentoServices>();
             services.AddScoped<TarefaServices>();
 

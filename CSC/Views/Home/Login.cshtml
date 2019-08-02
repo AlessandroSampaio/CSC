@@ -1,4 +1,4 @@
-﻿@model CSC.Models.User
+﻿@model CSC.Models.ViewModel.LoginViewModel
 
 @{
     Layout = null;
@@ -11,10 +11,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="~/css/util.css">
     <link rel="stylesheet" type="text/css" href="~/css/main.css">
-    <link rel="stylesheet" type="text/css" href="~/font-awesome/css/fontawesome.min.css">
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+
+    <script src="https://kit.fontawesome.com/cefb2299a8.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
@@ -29,12 +30,21 @@
                     <div asp-validation-summary="All" class="text-danger">
                         <span class="login100-form-title p-b-51">Login</span>
                         <div class="wrap-input100 validate-input m-b-16">
-                            <input asp-for="NomeLogon" class="input100" type="text" placeholder="Usuario">
+                            <input asp-for="Logon" class="input100" type="text" placeholder="Usuario">
                             <span class="focus-input100"></span>
                         </div>
                         <div class="wrap-input100 validate-input m-b-16">
-                            <input asp-for="Senha" class="input100" type="password" placeholder="Senha">
+                            <input asp-for="Password" class="input100" type="password" placeholder="Senha">
                             <span class="focus-input100"></span>
+                        </div>
+                        <div class="flex-sb-m w-full p-t-3 p-b-24">
+                            <div class="contact100-form-checkbox">
+                                <input class="input-checkbox100" type="checkbox" asp-for="RememberMe">
+                                <label class="label-checkbox100" asp-for="RememberMe"></label>
+                            </div>
+                            <div>
+                                <a href="#" class="txt1">Esqueceu?</a>
+                            </div>
                         </div>
                         <div class="container-login100-form-btn m-t-17">
                             <input type="submit" class="login100-form-btn" style="text-align:center;" value="Login" />

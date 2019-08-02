@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,29 +15,25 @@ namespace CSC.Controllers
 {
     public class AtendimentosController : Controller
     {
-        public readonly UserServices _userServices;
         public readonly AtendimentoServices _atendimentoServices;
         public readonly ClienteServices _clienteServices;
-        public readonly FuncionarioServices _funcionarioServices;
         const string SessionUserID = "_UserID";
         private readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { DateFormatString = "dd/MM/yyyy" };
 
-        public AtendimentosController(UserServices userServices, AtendimentoServices atendimentoServices, ClienteServices clienteServices, FuncionarioServices funcionarioServices)
+        public AtendimentosController(AtendimentoServices atendimentoServices, ClienteServices clienteServices)
         {
-            _userServices = userServices;
             _atendimentoServices = atendimentoServices;
             _clienteServices = clienteServices;
-            _funcionarioServices = funcionarioServices;
         }
 
         public async Task<IActionResult> Index()
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
-                User user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                User user = new User();
                 ViewBag.user = user;
                 ViewBag.Controller = "Atendimentos";
-                var list = _funcionarioServices.FindAll().ToList();
+                var list = new List<User>();
                 ViewBag.Funcionarios = list.Select(v => new SelectListItem
                 {
                     Text = v.Nome,
@@ -63,7 +60,7 @@ namespace CSC.Controllers
         {
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
-                User user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                User user = new User();
                 ViewBag.Controller = "Atendimentos \\ Novo";
                 ViewBag.user = user;
                 ViewBag.TipoAtendimento = Enum.GetValues(typeof(TipoAtendimento)).Cast<TipoAtendimento>().Select(v => new SelectListItem
@@ -72,8 +69,7 @@ namespace CSC.Controllers
                     Value = ((int)v).ToString()
                 }).ToList();
                 Atendimento atendimento = new Atendimento {
-                    Funcionario = user.Funcionario,
-                    FuncionarioId = user.FuncionarioId,
+                    FuncionarioId = user.UserId,
                     Cliente = await _clienteServices.FindByIdAsync(ClienteId),
                     ClienteId = ClienteId,
                     Abertura = DateTime.Now.Date
@@ -104,7 +100,7 @@ namespace CSC.Controllers
                 {
                     return RedirectToAction("Index");
                 }
-                User user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                User user = new User();
                 ViewBag.Controller = "Atendimentos \\ Novo";
                 ViewBag.user = user;
                 ViewBag.TipoAtendimento = Enum.GetValues(typeof(TipoAtendimento)).Cast<TipoAtendimento>().Select(v => new SelectListItem
@@ -125,7 +121,7 @@ namespace CSC.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                ViewBag.user = new User();
                 return View(obj);
             }
             await _atendimentoServices.UpdateAsync(obj);

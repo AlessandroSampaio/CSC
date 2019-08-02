@@ -1,124 +1,237 @@
 ﻿using CSC.Models;
+using CSC.Models.Enums;
 using CSC.Models.ViewModel;
-using CSC.Services;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CSC.Controllers
 {
+    [Authorize]
     public class UsuariosController : Controller
     {
-        public readonly FuncionarioServices _funcionarioServices;
-        public readonly UserServices _userServices;
-        const string SessionUserID = "_UserID";
-        private readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { DateFormatString = "dd/MM/yyy" };
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly ILogger _logger;
+        private readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { DateFormatString = "dd/MM/yyyy" };
 
-        public UsuariosController(UserServices userServices, FuncionarioServices funcionarioServices)
+        public UsuariosController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<UsuariosController> logger)
         {
-            _funcionarioServices = funcionarioServices;
-            _userServices = userServices;
-        }
-
-        public async Task<IActionResult> Index()
-        {
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
-            {
-                ViewBag.Controller = "Usuarios";
-                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
-        }
-
-
-        public async Task<IActionResult> Listagem()
-        {    
-            var listUsuarios = await _userServices.FindAllAsync();
-            return Json(listUsuarios, SerializerSettings);
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _logger = logger;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Novo()
+        [Authorize(Roles = "Admin, Supervisor")]
+        public IActionResult Index()
         {
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
+            ViewBag.Controller = "Usuários";
+            return View();
+        }
+
+        [Authorize(Roles = "Admin, Supervisor")]
+        public async Task<IActionResult> Listagem()
+        {
+            try
             {
-                ViewBag.Controller = "Usuarios / Novo";
-                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                var listFunc = await _funcionarioServices.FindFuncionariosWithNoUsers();
-                var ViewModel = new UserFormViewModel() { Funcionarios = listFunc };
-                return View(ViewModel);
+                var listUsers = await _userManager.Users.OrderBy(u => u.UserId).ToListAsync();
+                listUsers.RemoveAt(0);
+                UserIndexViewModel[] userIndexViewModels = new UserIndexViewModel[listUsers.Count];
+                if (listUsers.Count > 0)
+                {
+                    int i = 0;
+                    foreach (User user in listUsers)
+                    {
+                        userIndexViewModels[i] = new UserIndexViewModel(user);
+                        i++;
+                    }
+                    return Json(userIndexViewModels, SerializerSettings);
+                }
+                else
+                {
+                    return Json(userIndexViewModels, SerializerSettings);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return RedirectToAction("Login", "Home");
+                return Json(ex.Message);
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Novo(User user)
+        [HttpGet]
+        [Authorize(Roles = "Admin, Supervisor")]
+        public IActionResult Novo()
         {
-            
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
+            ViewBag.Controller = "Usuarios / Novo";
+            ViewBag.Roles = Enum.GetValues(typeof(Roles)).Cast<Roles>().Select(v => new SelectListItem
             {
-                await _userServices.InsertUserAsync(user);
+                Text = v.ToString(),
+                Value = ((int)v).ToString()
+            }).ToList();
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin, Supervisor")]
+        public async Task<IActionResult> Novo(UserViewModel userView)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = new User()
+                {
+                    Admissao = userView.Admissao,
+                    Email = userView.Email,
+                    Nome = userView.Nome,
+                    UserName = userView.UserName
+                };
+                var newUser = await _userManager.CreateAsync(user, userView.Password);
+                if (newUser.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, userView.Role.ToString());
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, newUser.Errors.ToString());
+                    return View(userView);
+                }
                 return RedirectToAction("Index");
             }
             else
             {
-                return RedirectToAction("Login", "Home");
+                ModelState.AddModelError(string.Empty, "Não foi possivel criar o usuario");
+                return View(userView);
             }
         }
 
         [HttpGet]
-        public async Task<IActionResult> Editar(int id)
-        {
-            User user = await _userServices.FindByIdAsync(id);
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
-            {
-                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                return View(user);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
-        }
-
-        public async Task<IActionResult> AlterarSenha(int Id, string Senha)
+        [Authorize]
+        public async Task<IActionResult> Perfil()
         {
             try
             {
-                User user = await _userServices.FindByIdAsync(Id);
-                user.Senha = UserServices.GetHash(Senha);
-                await _userServices.UpdateAsync(user);
+                var user = await _userManager.GetUserAsync(User);
+                var role = await _userManager.GetRolesAsync(user);
+                UserViewModel userView = new UserViewModel(user, (Roles)Enum.Parse(typeof(Roles), role[0]));
+                ViewBag.Controller = "Usuarios / Perfil";
+                return View(userView);
             }
-            catch (DbUpdateConcurrencyException e)
+            catch (Exception ex)
             {
-                return View("Error", e.Message);
+                throw ex;
             }
-            return Json(true);
         }
 
-        public async Task<IActionResult> AlterarNomeLogon(int Id, string NomeLogon)
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Perfil(UserViewModel userView)
         {
             try
             {
-                User user = await _userServices.FindByIdAsync(Id);
-                user.NomeLogon = NomeLogon;
-                await _userServices.UpdateAsync(user);
+                User user = await _userManager.FindByIdAsync(userView.Id);
+                user.Nome = userView.Nome;
+                user.Email = userView.Email;
+                user.UserName = userView.UserName;
+                var update = await _userManager.UpdateAsync(user);
+                if (update.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    AddErrors(update);
+                    return View(userView);
+                }
 
             }
-            catch (DbUpdateConcurrencyException e)
+            catch (Exception)
             {
-                return View("Error", e.Message);
+                return StatusCode(500);
             }
-            return Json(true);
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<JsonResult> AlterarUserName(string userName, string newUserName)
+        {
+            if (newUserName == null)
+            {
+                throw new ArgumentNullException(nameof(newUserName));
+            }
+
+            try
+            {
+                var user = await _userManager.FindByNameAsync(userName);
+                var update = await _userManager.SetUserNameAsync(user, newUserName);
+                if (update.Succeeded)
+                {
+                    return Json(true);
+                }
+                else
+                {
+                    return Json(update.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AlterarSenha(string userName, string password)
+        {
+            if (password == null)
+            {
+                throw new ArgumentNullException(nameof(password));
+            }
+            try
+            {
+                var user = await _userManager.FindByNameAsync(userName);
+                var loggedUser = await _userManager.GetUserAsync(User);
+                var isAdmin = await _userManager.GetRolesAsync(loggedUser);
+
+                if (user != loggedUser && !isAdmin.Contains("Admin"))
+                {
+                    return StatusCode(403);
+                }
+
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var update = await _userManager.ResetPasswordAsync(user, token, password);
+
+                if (update.Succeeded)
+                {
+                    return Json(true);
+                }
+                else
+                {
+                    return Json(update.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+        }
+
+        #region Helpers
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
+
+        #endregion
     }
 }

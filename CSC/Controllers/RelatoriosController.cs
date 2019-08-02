@@ -17,17 +17,13 @@ namespace CSC.Controllers
     {
         private readonly AtendimentoServices _atendimentoServices;
         private readonly ClienteServices _clienteServices;
-        private readonly FuncionarioServices _funcionarioServices;
-        private readonly UserServices _userServices;
 
         const string SessionUserID = "_UserID";
 
-        public RelatoriosController(AtendimentoServices atendimentoServices, ClienteServices clienteServices, FuncionarioServices funcionarioServices, UserServices userServices)
+        public RelatoriosController(AtendimentoServices atendimentoServices, ClienteServices clienteServices)
         {
             _atendimentoServices = atendimentoServices;
             _clienteServices = clienteServices;
-            _funcionarioServices = funcionarioServices;
-            _userServices = userServices;
         }
 
         public async Task<IActionResult> AtendimentosCliente()
@@ -35,7 +31,7 @@ namespace CSC.Controllers
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
                 ViewBag.Controller = "Relatorio de Atendimentos por Cliente";
-                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                ViewBag.user = new User();
                 return View();
             }
             else
@@ -49,7 +45,7 @@ namespace CSC.Controllers
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
                 ViewBag.Controller = "Clientes";
-                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                ViewBag.user = new User();
                 return View();
             }
             else
@@ -81,8 +77,8 @@ namespace CSC.Controllers
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
                 ViewBag.Controller = "Atendimentos por Analistas";
-                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
-                var list = _funcionarioServices.FindAll().ToList();
+                ViewBag.user = new User();
+                var list = new List<User>();
                 ViewBag.Funcionarios = list.Select(v => new SelectListItem
                 {
                     Text = v.Nome,
@@ -142,7 +138,7 @@ namespace CSC.Controllers
             if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
             {
                 ViewBag.Controller = "Tarefas";
-                ViewBag.user = await _userServices.FindByIdAsync(HttpContext.Session.GetInt32(SessionUserID).Value);
+                ViewBag.user = new User();
                 return View();
             }
             else
