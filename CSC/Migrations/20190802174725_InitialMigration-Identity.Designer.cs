@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CSC.Migrations
 {
     [DbContext(typeof(CSCContext))]
-    [Migration("20190802174119_InitialMigration-Identity")]
+    [Migration("20190802174725_InitialMigration-Identity")]
     partial class InitialMigrationIdentity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -186,7 +186,8 @@ namespace CSC.Migrations
 
                     b.Property<bool>("TwoFactorEnabled");
 
-                    b.Property<int>("UserId");
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);

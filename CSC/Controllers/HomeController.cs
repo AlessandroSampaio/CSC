@@ -27,6 +27,7 @@ namespace CSC.Controllers
         [TempData]
         public string ErrorMessage { get; set; }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             ViewBag.Controller = "Painel de Informações";
@@ -56,7 +57,7 @@ namespace CSC.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("Usuario Logado.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index");
                 }
                 else if (result.IsNotAllowed)
                 {

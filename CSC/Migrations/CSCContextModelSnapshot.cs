@@ -184,7 +184,8 @@ namespace CSC.Migrations
 
                     b.Property<bool>("TwoFactorEnabled");
 
-                    b.Property<int>("UserId");
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
