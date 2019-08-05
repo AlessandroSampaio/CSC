@@ -62,6 +62,9 @@ namespace CSC
                 options.SlidingExpiration = true;
             });
 
+
+            services.AddScoped<ClienteServices>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

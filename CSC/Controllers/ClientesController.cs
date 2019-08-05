@@ -1,7 +1,7 @@
 ﻿using CSC.Models;
 using CSC.Models.Enums;
 using CSC.Services;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace CSC.Controllers
 {
+    [Authorize]
     public class ClientesController : Controller
     {
         public readonly ClienteServices _clienteServices;
-        const string SessionUserID = "_UserID";
         private readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { DateFormatString = "dd/MM/yyyy" };
 
         public ClientesController(ClienteServices clienteServices)
@@ -23,19 +23,10 @@ namespace CSC.Controllers
             _clienteServices = clienteServices;
         }
 
-
-        public async Task<IActionResult> Index()
+        
+        public IActionResult Index()
         {
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
-            {
-                ViewBag.Controller = "Cliente";
-                ViewBag.user = new User();
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            return View();
         }
 
         public async Task<IActionResult> Listagem()
@@ -47,37 +38,30 @@ namespace CSC.Controllers
         [HttpPost]
         public async Task<IActionResult> Novo(string _doc)
         {
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
+            try
             {
-                try
+                ViewBag.Controller = "Cliente \\ Novo";
+                ViewBag.user = new User();
+                Cliente cliente;
+                _doc = _doc.Replace(".", "").Replace("-", "").Replace("/", "");
+                if (_doc.Length < 14)
                 {
-                    ViewBag.Controller = "Cliente \\ Novo";
-                    ViewBag.user = new User();
-                    Cliente cliente;
-                    _doc = _doc.Replace(".", "").Replace("-", "").Replace("/", "");
-                    if (_doc.Length < 14)
-                    {
-                        ViewBag.Type = 'f';
-                        cliente = new Cliente { CNPJ = _doc };
-                        return View(cliente);
-                    }
-                    ViewBag.Type = 'j';
-                    cliente = await _clienteServices.ConsultaWS(_doc);
+                    ViewBag.Type = 'f';
+                    cliente = new Cliente { CNPJ = _doc };
                     return View(cliente);
                 }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                ViewBag.Type = 'j';
+                cliente = await _clienteServices.ConsultaWS(_doc);
+                return View(cliente);
             }
-            else
+            catch (Exception e)
             {
-                return RedirectToAction("Login", "Home");
+                throw e;
             }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Salvar(Cliente cliente)
+        public IActionResult Salvar(Cliente cliente)
         {
             try
             {
@@ -106,20 +90,13 @@ namespace CSC.Controllers
 
         public async Task<IActionResult> Editar(int id)
         {
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
-            {
-                ViewBag.Controller = "Clientes \\ Editar";
-                ViewBag.user = new User();
-                Cliente cliente = await _clienteServices.FindByIdAsync(id);
-                if (cliente.CNPJ.Length == 11) { ViewBag.Type = 'f'; }
-                else { ViewBag.Type = 'j'; }
+            ViewBag.Controller = "Clientes \\ Editar";
+            ViewBag.user = new User();
+            Cliente cliente = await _clienteServices.FindByIdAsync(id);
+            if (cliente.CNPJ.Length == 11) { ViewBag.Type = 'f'; }
+            else { ViewBag.Type = 'j'; }
 
-                return View(cliente);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            return View(cliente);
         }
 
         [HttpPost]
@@ -138,27 +115,20 @@ namespace CSC.Controllers
         [HttpGet]
         public async Task<IActionResult> Inventario(int id)
         {
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
+            ViewBag.Controller = "Clientes \\ Inventario";
+            ViewBag.user = new User();
+            ViewBag.SelectListItem = Enum.GetValues(typeof(Software)).Cast<Software>().Select(v => new SelectListItem
             {
-                ViewBag.Controller = "Clientes \\ Inventario";
-                ViewBag.user = new User();
-                ViewBag.SelectListItem = Enum.GetValues(typeof(Software)).Cast<Software>().Select(v => new SelectListItem
-                {
-                    Text = v.ToString(),
-                    Value = ((int)v).ToString()
-                }).ToList();
+                Text = v.ToString(),
+                Value = ((int)v).ToString()
+            }).ToList();
 
-                Cliente cliente = await _clienteServices.FindByIdAsync(id);
-                return View(cliente);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            Cliente cliente = await _clienteServices.FindByIdAsync(id);
+            return View(cliente);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Inventario(List<Inventario> inventarios)
+        public IActionResult Inventario(List<Inventario> inventarios)
         {
             if (!ModelState.IsValid)
             {
@@ -206,10 +176,11 @@ namespace CSC.Controllers
                 cliente.Status = PessoaStatus.Inativo;
                 await _clienteServices.UpdateAsync(cliente);
                 return Json(true);
-            }catch(Exception e)
+            }
+            catch (Exception)
             {
                 return Json(false);
             }
-         }
+        }
     }
 }
