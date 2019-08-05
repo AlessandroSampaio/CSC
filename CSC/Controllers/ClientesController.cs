@@ -23,7 +23,6 @@ namespace CSC.Controllers
             _clienteServices = clienteServices;
         }
 
-        
         public IActionResult Index()
         {
             return View();
@@ -88,6 +87,7 @@ namespace CSC.Controllers
             return cliente == null ? Json(false) : Json(true);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Editar(int id)
         {
             ViewBag.Controller = "Clientes \\ Editar";
@@ -116,13 +116,11 @@ namespace CSC.Controllers
         public async Task<IActionResult> Inventario(int id)
         {
             ViewBag.Controller = "Clientes \\ Inventario";
-            ViewBag.user = new User();
             ViewBag.SelectListItem = Enum.GetValues(typeof(Software)).Cast<Software>().Select(v => new SelectListItem
             {
                 Text = v.ToString(),
                 Value = ((int)v).ToString()
             }).ToList();
-
             Cliente cliente = await _clienteServices.FindByIdAsync(id);
             return View(cliente);
         }
@@ -162,7 +160,6 @@ namespace CSC.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveInventario(Inventario inv)
         {
-
             await _clienteServices.RemoveInventario(inv);
             return Json(true);
         }
