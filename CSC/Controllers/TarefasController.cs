@@ -26,20 +26,12 @@ namespace CSC.Controllers
             _tarefaServices = tarefaServices;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
-            {
-                User user = new User();
-                ViewBag.user = user;
-                ViewBag.Controller = "Tarefa";
-
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            User user = new User();
+            ViewBag.user = user;
+            ViewBag.Controller = "Tarefa";
+            return View();
         }
 
         [HttpPost]
@@ -49,20 +41,13 @@ namespace CSC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Novo()
+        public IActionResult Novo()
         {
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
-            {
-                User user = new User();
-                ViewBag.user = user;
-                ViewBag.Controller = "Tarefa \\ Novo";
-                Tarefa tarefa = new Tarefa();
-                return View(tarefa);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            User user = new User();
+            ViewBag.user = user;
+            ViewBag.Controller = "Tarefa \\ Novo";
+            Tarefa tarefa = new Tarefa();
+            return View(tarefa);
         }
 
         [HttpPost]
@@ -74,10 +59,10 @@ namespace CSC.Controllers
                 newTarefa.TarefaNumero = tarefa.TarefaNumero;
                 newTarefa.Descricao = tarefa.Descricao;
                 List<Atendimento> list = new List<Atendimento>();
-                foreach(var item in tarefa.Atendimentos)
+                foreach (var item in tarefa.Atendimentos)
                 {
                     var atd = await _atendimentoServices.FindByIDAsync(item.Id);
-                    if(atd != null)
+                    if (atd != null)
                     {
                         list.Add(atd);
                     }
@@ -88,7 +73,8 @@ namespace CSC.Controllers
                 _tarefaServices.Insert(newTarefa);
                 ViewBag.user = new User();
                 return RedirectToAction("Index");
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -139,7 +125,8 @@ namespace CSC.Controllers
                 tarefa.Conclusao = DateTime.Now.Date;
                 _tarefaServices.Update(tarefa);
                 return Json(true);
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 return Json(e.Message);
             }

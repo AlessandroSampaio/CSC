@@ -41,7 +41,7 @@ namespace CSC.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: false),
                     Nome = table.Column<string>(nullable: true),
                     Admissao = table.Column<DateTime>(nullable: false),
                     Demissao = table.Column<DateTime>(nullable: true)
@@ -52,10 +52,10 @@ namespace CSC.Migrations
                 });
 
             migrationBuilder.AddUniqueConstraint(
-                name: "UK_User_Id",
-                schema: "CSC",
-                table: "AspNetUsers",
-                column: "UserId");
+               name: "UK_User_Id",
+               schema: "CSC",
+               table: "AspNetUsers",
+               column: "UserId");
 
             migrationBuilder.Sql("ALTER TABLE `CSC`.`aspnetusers` CHANGE COLUMN `UserId` `UserId` INT(11) NOT NULL AUTO_INCREMENT ; ", false);
 
@@ -82,22 +82,6 @@ namespace CSC.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cliente", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Funcionario",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(nullable: false),
-                    Admissao = table.Column<DateTime>(nullable: false),
-                    Demissao = table.Column<DateTime>(nullable: true),
-                    Veiculo = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Funcionario", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -247,7 +231,7 @@ namespace CSC.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FuncionarioId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
                     ClienteId = table.Column<int>(nullable: false),
                     Abertura = table.Column<DateTime>(nullable: false),
                     Encerramento = table.Column<DateTime>(nullable: false),
@@ -268,15 +252,15 @@ namespace CSC.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Atendimento_Funcionario_FuncionarioId",
-                        column: x => x.FuncionarioId,
-                        principalTable: "Funcionario",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Atendimento_Tarefa_TarefaId",
                         column: x => x.TarefaId,
                         principalTable: "Tarefa",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Atendimento_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -324,14 +308,14 @@ namespace CSC.Migrations
                 column: "ClienteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Atendimento_FuncionarioId",
-                table: "Atendimento",
-                column: "FuncionarioId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Atendimento_TarefaId",
                 table: "Atendimento",
                 column: "TarefaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Atendimento_UserId",
+                table: "Atendimento",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -361,13 +345,10 @@ namespace CSC.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Funcionario");
-
-            migrationBuilder.DropTable(
                 name: "Tarefa");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Cliente");

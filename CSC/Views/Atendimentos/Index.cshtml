@@ -95,5 +95,8 @@
 }
 
 @section Scripts {
+    @if(User.IsInRole("Admin")){
+    <script type="text/javascript" src="~/js/AdminAtendimentos.js"></script>
+    }else{
     <script type="text/javascript" src="~/js/Atendimentos.js"></script>
-}
+    }}

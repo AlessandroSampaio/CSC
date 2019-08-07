@@ -22,7 +22,7 @@ namespace CSC.Services
         {
             return _context.Atendimento
                 .Include(c => c.Cliente)
-                .Include(f => f.Funcionario)
+                .Include(f => f.User)
                 .ToListAsync();
         }
 
@@ -30,7 +30,7 @@ namespace CSC.Services
         {
             return _context.Atendimento
                 .Include(c => c.Cliente)
-                .Include(f => f.Funcionario)
+                .Include(f => f.User)
                 .Where(s => s.Status == status)
                 .ToListAsync();
         }
@@ -39,7 +39,7 @@ namespace CSC.Services
         {
             return await _context.Atendimento.Where(a => a.Id == id)
                 .Include(c => c.Cliente)
-                .Include(f => f.Funcionario)
+                .Include(f => f.User)
                 .FirstOrDefaultAsync();
         }
 
@@ -48,16 +48,16 @@ namespace CSC.Services
             return _context.Atendimento
                 .Where(c => c.ClienteId== id)
                 .Include(c => c.Cliente)
-                .Include(f => f.Funcionario)
+                .Include(f => f.User)
                 .ToListAsync();
         }
 
-        public Task<List<Atendimento>> FindByFuncinoarioAsync(int id)
+        public Task<List<Atendimento>> FindByFuncinoarioAsync(int Userid)
         {
             return _context.Atendimento
-                            .Where(c => c.FuncionarioId == id)
                             .Include(c => c.Cliente)
-                            .Include(f => f.Funcionario)
+                            .Include(f => f.User)
+                            .Where(f => f.User.UserId == Userid)
                             .ToListAsync();
         }
 
@@ -66,7 +66,7 @@ namespace CSC.Services
             return _context.Atendimento
                             .Where(a => a.Abertura >= dataInicio && a.Abertura <= dataFim)
                             .Include(c => c.Cliente)
-                            .Include(f => f.Funcionario)
+                            .Include(f => f.User)
                             .ToListAsync();
         }
 

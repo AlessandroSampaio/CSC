@@ -9,8 +9,8 @@ namespace CSC.Models
     public class Atendimento
     {
         public int Id { get; set; }
-        public Funcionario Funcionario { get; set; }
-        public int FuncionarioId { get; set; }
+        public User User { get; set; }
+        public string UserId { get; set; }
         public Cliente Cliente { get; set; }
         public int ClienteId { get; set; }
         public DateTime Abertura { get; set; }

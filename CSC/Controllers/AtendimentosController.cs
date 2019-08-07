@@ -1,9 +1,12 @@
 ﻿using CSC.Models;
 using CSC.Models.Enums;
 using CSC.Services;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,40 +16,37 @@ using System.Threading.Tasks;
 
 namespace CSC.Controllers
 {
+    [Authorize]
     public class AtendimentosController : Controller
     {
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly ILogger _logger;
         public readonly AtendimentoServices _atendimentoServices;
         public readonly ClienteServices _clienteServices;
-        const string SessionUserID = "_UserID";
         private readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { DateFormatString = "dd/MM/yyyy" };
 
-        public AtendimentosController(AtendimentoServices atendimentoServices, ClienteServices clienteServices)
+        public AtendimentosController(AtendimentoServices atendimentoServices, ClienteServices clienteServices, UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AtendimentosController> logger)
         {
+            _logger = logger;
+            _userManager = userManager;
+            _signInManager = signInManager;
             _atendimentoServices = atendimentoServices;
             _clienteServices = clienteServices;
         }
 
         public async Task<IActionResult> Index()
         {
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
+            ViewBag.Controller = "Atendimentos";
+            var users = _userManager.Users;
+            ViewBag.Funcionarios = await users.Select(v => new SelectListItem
             {
-                User user = new User();
-                ViewBag.user = user;
-                ViewBag.Controller = "Atendimentos";
-                var list = new List<User>();
-                ViewBag.Funcionarios = list.Select(v => new SelectListItem
-                {
-                    Text = v.Nome,
-                    Value = v.Id.ToString()
-                }).ToList();
+                Text = v.Nome,
+                Value = v.Id.ToString()
+            }).ToListAsync();
 
 
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            return View();
         }
 
         public async Task<IActionResult> Listagem()
@@ -58,62 +58,56 @@ namespace CSC.Controllers
         [HttpGet]
         public async Task<IActionResult> Novo(int ClienteId)
         {
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
+            //Editar para buscar usuario logado
+            ViewBag.Controller = "Atendimentos \\ Novo";
+            ViewBag.TipoAtendimento = Enum.GetValues(typeof(TipoAtendimento)).Cast<TipoAtendimento>().Select(v => new SelectListItem
             {
-                User user = new User();
-                ViewBag.Controller = "Atendimentos \\ Novo";
-                ViewBag.user = user;
-                ViewBag.TipoAtendimento = Enum.GetValues(typeof(TipoAtendimento)).Cast<TipoAtendimento>().Select(v => new SelectListItem
-                {
-                    Text = v.ToString(),
-                    Value = ((int)v).ToString()
-                }).ToList();
-                Atendimento atendimento = new Atendimento {
-                    FuncionarioId = user.UserId,
-                    Cliente = await _clienteServices.FindByIdAsync(ClienteId),
-                    ClienteId = ClienteId,
-                    Abertura = DateTime.Now.Date
-                };
-                return View(atendimento);
-            }
-            else
+                Text = v.ToString(),
+                Value = ((int)v).ToString()
+            }).ToList();
+            Atendimento atendimento = new Atendimento
             {
-                return RedirectToAction("Login", "Home");
-            }
+                Cliente = await _clienteServices.FindByIdAsync(ClienteId),
+                ClienteId = ClienteId,
+                Abertura = DateTime.Now.Date
+            };
+            return View(atendimento);
         }
 
         [HttpPost]
         public async Task<IActionResult> Novo(Atendimento atendimento)
         {
-          
-            await _atendimentoServices.InsertAsync(atendimento);
-            return RedirectToAction("Index");
+            try
+            {
+                var user = await _userManager.GetUserAsync(User);
+                atendimento.User = user;
+                atendimento.UserId = user.Id;
+                await _atendimentoServices.InsertAsync(atendimento);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", ex.Message);
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Editar(int id)
         {
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
+            Atendimento atendimento = await _atendimentoServices.FindByIDAsync(id);
+            if (atendimento.Status != AtendimentoStatus.Aberto)
             {
-                Atendimento atendimento = await _atendimentoServices.FindByIDAsync(id);
-                if (atendimento.Status != AtendimentoStatus.Aberto)
-                {
-                    return RedirectToAction("Index");
-                }
-                User user = new User();
-                ViewBag.Controller = "Atendimentos \\ Novo";
-                ViewBag.user = user;
-                ViewBag.TipoAtendimento = Enum.GetValues(typeof(TipoAtendimento)).Cast<TipoAtendimento>().Select(v => new SelectListItem
-                {
-                    Text = v.ToString(),
-                    Value = ((int)v).ToString()
-                }).ToList();
-                return View(atendimento);
+                return RedirectToAction("Index");
             }
-            else
+            User user = new User();
+            ViewBag.Controller = "Atendimentos \\ Novo";
+            ViewBag.user = user;
+            ViewBag.TipoAtendimento = Enum.GetValues(typeof(TipoAtendimento)).Cast<TipoAtendimento>().Select(v => new SelectListItem
             {
-                return RedirectToAction("Login", "Home");
-            }
+                Text = v.ToString(),
+                Value = ((int)v).ToString()
+            }).ToList();
+            return View(atendimento);
         }
 
         [HttpPost]
@@ -144,21 +138,37 @@ namespace CSC.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> TransferirAtendimento(int atdId, int funcionarioDestino)
+        public async Task<JsonResult> TransferirAtendimento(int atdId, string funcionarioDestino)
         {
-            Atendimento atdOrig = await _atendimentoServices.FindByIDAsync(atdId);
-            Atendimento atdDest = new Atendimento {
-                Abertura = atdOrig.Abertura,
-                ClienteId = atdOrig.ClienteId,
-                AtendimentoTipo = atdOrig.AtendimentoTipo,
-                FuncionarioId = funcionarioDestino,
-                Detalhes = atdOrig.Detalhes,
-                OrigemID = atdOrig.Id
-            };
-            await _atendimentoServices.InsertAsync(atdDest);
-            atdOrig.Status = AtendimentoStatus.Transferido;
-            await _atendimentoServices.UpdateAsync(atdOrig);
-            return Json(true);
+            try
+            {
+                var newUser = await _userManager.FindByIdAsync(funcionarioDestino);
+                if (newUser != null)
+                {
+                    Atendimento atdOrig = await _atendimentoServices.FindByIDAsync(atdId);
+                    Atendimento atdDest = new Atendimento
+                    {
+                        Abertura = atdOrig.Abertura,
+                        ClienteId = atdOrig.ClienteId,
+                        AtendimentoTipo = atdOrig.AtendimentoTipo,
+                        UserId = newUser.Id,
+                        User = newUser,
+                        Detalhes = atdOrig.Detalhes,
+                        OrigemID = atdOrig.Id
+                    };
+                    await _atendimentoServices.InsertAsync(atdDest);
+                    atdOrig.Status = AtendimentoStatus.Transferido;
+                    await _atendimentoServices.UpdateAsync(atdOrig);
+                    return Json(true);
+                }else
+                {
+                    return Json("Usuario não encontrado");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
         }
 
         [HttpPost]
@@ -169,6 +179,22 @@ namespace CSC.Controllers
             atd.Status = AtendimentoStatus.Fechado;
             await _atendimentoServices.UpdateAsync(atd);
             return Json(true);
+        }
+
+        [HttpPost]
+        [Authorize(Roles ="Admin, Supervisor")]
+        public async Task<JsonResult> ReabrirAtendimento(int atdId)
+        {
+            try
+            {
+                var atendimento = await _atendimentoServices.FindByIDAsync(atdId);
+                atendimento.Status = AtendimentoStatus.Aberto;
+                await _atendimentoServices.UpdateAsync(atendimento);
+                return Json(true);
+            }
+            catch (Exception ex) {
+                return Json(ex.Message);
+            }
         }
 
         [HttpPost]
@@ -186,8 +212,8 @@ namespace CSC.Controllers
                 DataInicio = DateTime.ParseExact(dataIni, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                 DataFinal = DateTime.ParseExact(dataFim, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
-            var lista =await _atendimentoServices.TotalizacaoAtendimentosAsync();
-            return Json(lista.Where(a => a.Abertura>=DataInicio && a.Abertura<=DataFinal).GroupBy(s => s.Status).
+            var lista = await _atendimentoServices.TotalizacaoAtendimentosAsync();
+            return Json(lista.Where(a => a.Abertura >= DataInicio && a.Abertura <= DataFinal).GroupBy(s => s.Status).
                 Select(s => new { Tipo = s.Key, Contador = s.Count() }), SerializerSettings);
         }
 
@@ -207,7 +233,7 @@ namespace CSC.Controllers
                 DataFinal = DateTime.ParseExact(dataFim, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
             var lista = await _atendimentoServices.FindAllAsync();
-            return Json(lista.Where(a => a.Abertura >= DataInicio && a.Abertura <= DataFinal).GroupBy(func => func.Funcionario.Nome)
+            return Json(lista.Where(a => a.Abertura >= DataInicio && a.Abertura <= DataFinal).GroupBy(func => func.User.Nome)
                 .Select(funcionario => new { Funcionario = funcionario.Key, Atendimentos = funcionario.Count() }));
         }
     }

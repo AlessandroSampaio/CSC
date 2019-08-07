@@ -18,40 +18,24 @@ namespace CSC.Controllers
         private readonly AtendimentoServices _atendimentoServices;
         private readonly ClienteServices _clienteServices;
 
-        const string SessionUserID = "_UserID";
-
         public RelatoriosController(AtendimentoServices atendimentoServices, ClienteServices clienteServices)
         {
             _atendimentoServices = atendimentoServices;
             _clienteServices = clienteServices;
         }
 
-        public async Task<IActionResult> AtendimentosCliente()
+        public IActionResult AtendimentosCliente()
         {
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
-            {
-                ViewBag.Controller = "Relatorio de Atendimentos por Cliente";
-                ViewBag.user = new User();
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            ViewBag.Controller = "Relatorio de Atendimentos por Cliente";
+            ViewBag.user = new User();
+            return View();
         }
 
-        public async Task<IActionResult> DadosCliente()
+        public IActionResult DadosCliente()
         {
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
-            {
-                ViewBag.Controller = "Clientes";
-                ViewBag.user = new User();
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            ViewBag.Controller = "Clientes";
+            ViewBag.user = new User();
+            return View();
         }
 
         public async Task<IActionResult> DadosClientePDF(int tipo)
@@ -72,25 +56,18 @@ namespace CSC.Controllers
             }
         }
 
-        public async Task<IActionResult> DesempenhoAnalista()
+        public IActionResult DesempenhoAnalista()
         {
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
+            ViewBag.Controller = "Atendimentos por Analistas";
+            ViewBag.user = new User();
+            var list = new List<User>();
+            ViewBag.Funcionarios = list.Select(v => new SelectListItem
             {
-                ViewBag.Controller = "Atendimentos por Analistas";
-                ViewBag.user = new User();
-                var list = new List<User>();
-                ViewBag.Funcionarios = list.Select(v => new SelectListItem
-                {
-                    Text = v.Nome,
-                    Value = v.Id.ToString()
-                }).ToList();
+                Text = v.Nome,
+                Value = v.Id.ToString()
+            }).ToList();
 
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            return View();
         }
 
         //Relatorio de Desempenho por Analista
@@ -112,10 +89,10 @@ namespace CSC.Controllers
             else
             {
                 var listAtendimentos = await _atendimentoServices.FindByDateIntervalAsync(DataInicial, DataFinal);
-                var func = listAtendimentos.Select(f => f.Funcionario).Distinct();
-                foreach (Funcionario f in func)
+                var func = listAtendimentos.Select(f => f.User).Distinct();
+                foreach (User f in func)
                 {
-                    var list = listAtendimentos.Where(a => a.Funcionario == f).ToList();
+                    var list = listAtendimentos.Where(a => a.User == f).ToList();
                     if (list.Count() > 0)
                     {
                         DesempenhoAnalista desempenhoAnalista = new DesempenhoAnalista(list, (DataFinal - DataInicial).Days);
@@ -133,18 +110,11 @@ namespace CSC.Controllers
             }
         }
 
-        public async Task<IActionResult> DetalhesTarefa()
+        public IActionResult DetalhesTarefa()
         {
-            if (HttpContext.Session.GetInt32(SessionUserID).HasValue)
-            {
-                ViewBag.Controller = "Tarefas";
-                ViewBag.user = new User();
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            ViewBag.Controller = "Tarefas";
+            ViewBag.user = new User();
+            return View();
         }
     }
 }

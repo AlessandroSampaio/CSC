@@ -21,8 +21,8 @@ namespace CSC.Models.ViewModel
         public DesempenhoAnalista(List<Atendimento> atendimentos, int Dias)
         {
             TotalAtendimento = atendimentos.Count;
-            Analista = atendimentos.Select(s => s.Funcionario.Nome).First();
-            AnalistaId = atendimentos.Select(s => s.FuncionarioId).First();
+            Analista = atendimentos.Select(s => s.User.Nome).First();
+            AnalistaId = atendimentos.Select(s => s.User.UserId).First();
             TotalAtendimentoAberto = atendimentos.Where(s => s.Status == AtendimentoStatus.Aberto).Count();
             TotalAtendimentoTransferido = atendimentos.Where(s => s.Status == AtendimentoStatus.Transferido).Count();
             TotalDias = Dias;

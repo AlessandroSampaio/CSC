@@ -70,12 +70,5 @@ namespace CSC.Models
                 }
             }
         }
-
-        [NotMapped]
-        public string dataInicio
-        {
-            get { return DataInicio.Day < 10 ? '0' + DataInicio.ToString("dd/MM/yyyy") : DataInicio.ToString("dd/MM/yyyy"); }
-            set { DataInicio = DateTime.ParseExact(value, "dd/MM/yyyy", CultureInfo.InvariantCulture); }
-        }
     }
 }

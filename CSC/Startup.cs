@@ -64,6 +64,7 @@ namespace CSC
 
 
             services.AddScoped<ClienteServices>();
+            services.AddScoped<AtendimentoServices>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

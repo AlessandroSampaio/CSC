@@ -26,7 +26,7 @@ namespace CSC.Services
                 .Include(a => a.Atendimentos)
                     .ThenInclude(c => c.Cliente)
                 .Include(a => a.Atendimentos)
-                    .ThenInclude(f => f.Funcionario)
+                    .ThenInclude(u => u.User)
                 .FirstOrDefaultAsync();
         }
 

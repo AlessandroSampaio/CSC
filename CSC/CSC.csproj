@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190805131402_Funcionario-Usuario.cs" />
+    <Compile Remove="Migrations\20190805131402_Funcionario-Usuario.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\js\JavaScript.js" />
   </ItemGroup>
 

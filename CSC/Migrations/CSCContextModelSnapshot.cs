@@ -32,8 +32,6 @@ namespace CSC.Migrations
 
                     b.Property<DateTime>("Encerramento");
 
-                    b.Property<int>("FuncionarioId");
-
                     b.Property<int?>("OrigemID");
 
                     b.Property<string>("Solicitante");
@@ -42,13 +40,15 @@ namespace CSC.Migrations
 
                     b.Property<int?>("TarefaId");
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClienteId");
 
-                    b.HasIndex("FuncionarioId");
-
                     b.HasIndex("TarefaId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Atendimento");
                 });
@@ -90,25 +90,6 @@ namespace CSC.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cliente");
-                });
-
-            modelBuilder.Entity("CSC.Models.Funcionario", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("Admissao");
-
-                    b.Property<DateTime?>("Demissao");
-
-                    b.Property<string>("Nome")
-                        .IsRequired();
-
-                    b.Property<bool>("Veiculo");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Funcionario");
                 });
 
             modelBuilder.Entity("CSC.Models.Inventario", b =>
@@ -316,14 +297,13 @@ namespace CSC.Migrations
                         .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("CSC.Models.Funcionario", "Funcionario")
-                        .WithMany()
-                        .HasForeignKey("FuncionarioId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("CSC.Models.Tarefa", "Tarefa")
                         .WithMany("Atendimentos")
                         .HasForeignKey("TarefaId");
+
+                    b.HasOne("CSC.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("CSC.Models.Inventario", b =>

@@ -40,7 +40,8 @@
                         return '<div class="btn-group btn-group-justified">' +
                             '<a class="btn btn-primary editar" title="Editar" href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>' +
                             '<button class="btn btn-primary transferir" title="Transferir Atendimento"><i class="fas fa-angle-double-right"></i></button>' +
-                            '<button class="btn btn-primary finalizar" title="Encerrar Atendimento"><i class="fas fa-check"></i></button></div>';
+                            '<button class="btn btn-primary finalizar" title="Encerrar Atendimento"><i class="fas fa-check"></i></button>' +
+                            '<button class="btn btn-primary reabrir" title="Reabrir Atendimento"><i class="fas fa-undo-alt"></i></button></div > ';
                     },
                     searchable: false,
                     orderable: false
@@ -105,18 +106,13 @@
 
     $('#TbAtendimentos').on('click', '.transferir', function () {
         var data = tableAtendimentos.row($(this).parents('tr')).data();
-        var userLogado = $('#UserLoggedIn').html();
-        if (data["User"]["UserName"] == userLogado) {
-            if (data['Status'] != 'Aberto') {
-                SWALBloqueio('Impossivel transferir atendimento, atendimento já ' + data['Status'] + '!');
-            } else {
-                AtdTransfer = data;
-                $('#FuncionarioOrigem').val(data["User"]["Nome"]);
-                $("#funcDestino option[value='" + data["UserId"] + "']").remove();
-                $('#TransferirAtendimento').modal('show');
-            }
+        if (data['Status'] != 'Aberto') {
+            SWALBloqueio('Impossivel transferir atendimento, atendimento já ' + data['Status'] + '!');
         } else {
-            SWALBloqueio("Você não tem permissão para realizar esta operação!")
+            AtdTransfer = data;
+            $('#FuncionarioOrigem').val(data["User"]["Nome"]);
+            $("#funcDestino option[value='" + data["UserId"] + "']").remove();
+            $('#TransferirAtendimento').modal('show');
         }
     });
 
@@ -132,6 +128,36 @@
             }
         }
     });
+
+    $('#TbAtendimentos').on('click', '.reabrir', function () {
+        var data = tableAtendimentos.row($(this).parents('tr')).data();
+        if (data['Status'] != "Fechado") {
+            SWALBloqueio('Não é possível reabrir este atendimento!');
+        } else {
+            $.ajax({
+                url: '/Atendimentos/ReabrirAtendimento',
+                type: 'post',
+                async: true,
+                cache: false,
+                data: {
+                    'atdId': data['Id']
+                },
+                dataType: 'Json',
+                statusCode: {
+                    403: SWALBloqueio("Você não tem permissões para executar esta ação!"),
+                    500: SWALBloqueio("Houve um erro inesperado, por favor não contate o adminisrador!")
+                },
+                success: function (result) {
+                    if (result == true) {
+                        SWALSuccess("Atendimento reaberto com sucesso!")
+                        tableAtendimentos.ajax.reload();
+                    } else {
+                        SWALBloqueio(result);
+                    }
+                }
+            });
+        }
+    })
 
     $('#TbAtendimentos').on('click', '.editar', function (evt) {
         var data = tableAtendimentos.row($(this).parents('tr')).data();
