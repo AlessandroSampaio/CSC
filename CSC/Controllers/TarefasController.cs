@@ -1,8 +1,11 @@
 ﻿using CSC.Models;
 using CSC.Models.Enums;
 using CSC.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,16 +14,23 @@ using System.Threading.Tasks;
 
 namespace CSC.Controllers
 {
+    [Authorize]
     public class TarefasController : Controller
     {
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly ILogger _logger;
         private readonly AtendimentoServices _atendimentoServices;
         private readonly ClienteServices _clienteServices;
         private readonly TarefaServices _tarefaServices;
         const string SessionUserID = "_UserID";
         private readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { DateFormatString = "dd/MM/yyyy" };
 
-        public TarefasController(AtendimentoServices atendimentoServices, ClienteServices clienteServices, TarefaServices tarefaServices)
+        public TarefasController(AtendimentoServices atendimentoServices, ClienteServices clienteServices, TarefaServices tarefaServices, UserManager<User> userManager, SignInManager<User> signInManager, ILogger<TarefasController> logger)
         {
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _logger = logger;
             _atendimentoServices = atendimentoServices;
             _clienteServices = clienteServices;
             _tarefaServices = tarefaServices;
@@ -28,8 +38,6 @@ namespace CSC.Controllers
 
         public IActionResult Index()
         {
-            User user = new User();
-            ViewBag.user = user;
             ViewBag.Controller = "Tarefa";
             return View();
         }
@@ -43,8 +51,6 @@ namespace CSC.Controllers
         [HttpGet]
         public IActionResult Novo()
         {
-            User user = new User();
-            ViewBag.user = user;
             ViewBag.Controller = "Tarefa \\ Novo";
             Tarefa tarefa = new Tarefa();
             return View(tarefa);
@@ -71,7 +77,6 @@ namespace CSC.Controllers
                 newTarefa.Abertura = DateTime.Now.Date;
                 tarefa = null;
                 _tarefaServices.Insert(newTarefa);
-                ViewBag.user = new User();
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

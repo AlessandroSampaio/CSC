@@ -59,6 +59,7 @@ namespace CSC.Controllers
         public async Task<IActionResult> Novo(int ClienteId)
         {
             //Editar para buscar usuario logado
+            var user = await _userManager.GetUserAsync(User);
             ViewBag.Controller = "Atendimentos \\ Novo";
             ViewBag.TipoAtendimento = Enum.GetValues(typeof(TipoAtendimento)).Cast<TipoAtendimento>().Select(v => new SelectListItem
             {
@@ -69,7 +70,9 @@ namespace CSC.Controllers
             {
                 Cliente = await _clienteServices.FindByIdAsync(ClienteId),
                 ClienteId = ClienteId,
-                Abertura = DateTime.Now.Date
+                Abertura = DateTime.Now.Date,
+                User = user,
+                UserId = user.Id
             };
             return View(atendimento);
         }

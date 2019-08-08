@@ -10,7 +10,7 @@
         "scrollX": "true",
         "columns": [
             { "data": "Id" },
-            { "data": "Funcionario.Nome" },
+            { "data": "User.Nome" },
             { "data": "Cliente.nome" },
             { "data": "Solicitante" },
             { "data": "AtendimentoTipo" },
@@ -73,7 +73,7 @@ function AddAtdRow(atd) {
     cols += '<td>' + atd['Id'] + '</td>';
     cols += '<td>' + atd['Cliente']['cnpj'] + '</td>';
     cols += '<td>' + atd['Cliente']['nome'] + '</td>';
-    cols += '<td>' + atd['Funcionario']['Nome'] + '</td>';
+    cols += '<td>' + atd['User']['Nome'] + '</td>';
     cols += '<td>' + atd['Cliente']['telefone'] + '</td>';
     cols += '<td>' + atd['Cliente']['Email'] + '</td>';
 
@@ -117,7 +117,7 @@ function AddOnEnter() {
                             title: '<b>Adicionar Atendimento</b>',
                             html: '<div class="row"><b>CNPJ: </b>' + E['Cliente']['cnpj'] + '</div>' +
                                 '<div class="row"><b>Cliente: </b>' + E['Cliente']['fantasia'] + '</div>' +
-                                '<div class="row"><b>Analista: </b>' + E['Funcionario']['Nome'] + '</div>' +
+                                '<div class="row"><b>Analista: </b>' + E['User']['Nome'] + '</div>' +
                                 '<div class="row"><b>Detalhes: </b> ' + E['Detalhes'] + '</div>',
                             showCancelButton: true,
                             focusCancel: true,

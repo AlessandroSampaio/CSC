@@ -144,8 +144,8 @@
                 },
                 dataType: 'Json',
                 statusCode: {
-                    403: SWALBloqueio("Você não tem permissões para executar esta ação!"),
-                    500: SWALBloqueio("Houve um erro inesperado, por favor não contate o adminisrador!")
+                    403: function () { SWALBloqueio("Você não tem permissões para executar esta ação!") },
+                    500: function () { SWALBloqueio("Houve um erro inesperado! Favor ignore e não contate o suporte!") }
                 },
                 success: function (result) {
                     if (result == true) {

@@ -1,9 +1,12 @@
 ﻿using CSC.Models;
 using CSC.Models.ViewModel;
 using CSC.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 using Rotativa.AspNetCore;
 using System;
 using System.Collections.Generic;
@@ -13,15 +16,22 @@ using System.Threading.Tasks;
 
 namespace CSC.Controllers
 {
+    [Authorize(Roles ="Admin, Supervisor")]
     public class RelatoriosController : Controller
     {
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly ILogger _logger;
         private readonly AtendimentoServices _atendimentoServices;
         private readonly ClienteServices _clienteServices;
 
-        public RelatoriosController(AtendimentoServices atendimentoServices, ClienteServices clienteServices)
+        public RelatoriosController(AtendimentoServices atendimentoServices, ClienteServices clienteServices, UserManager<User> userManager, SignInManager<User> signInManager, ILogger<RelatoriosController> logger)
         {
-            _atendimentoServices = atendimentoServices;
+            _logger = logger;
+            _userManager = userManager;
+            _signInManager = signInManager;
             _clienteServices = clienteServices;
+            _atendimentoServices = atendimentoServices;
         }
 
         public IActionResult AtendimentosCliente()

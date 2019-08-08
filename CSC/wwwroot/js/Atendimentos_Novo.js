@@ -24,7 +24,7 @@
         },
         "scrollX": "true",
         "columns": [
-            { "data": "Funcionario.Nome" },
+            { "data": "User.Nome" },
             { "data": "Cliente.nome" },
             { "data": "Solicitante"},
             { "data": "AtendimentoTipo" },
