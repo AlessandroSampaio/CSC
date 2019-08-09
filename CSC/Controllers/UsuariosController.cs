@@ -1,8 +1,10 @@
 ﻿using CSC.Models;
 using CSC.Models.Enums;
 using CSC.Models.ViewModel;
+using CSC.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace CSC.Controllers
@@ -17,13 +20,15 @@ namespace CSC.Controllers
     [Authorize]
     public class UsuariosController : Controller
     {
+        private readonly IEmailSender _emailSender;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger _logger;
         private readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { DateFormatString = "dd/MM/yyyy" };
 
-        public UsuariosController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<UsuariosController> logger)
+        public UsuariosController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<UsuariosController> logger, IEmailSender emailSender)
         {
+            _emailSender = emailSender;
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
@@ -85,30 +90,66 @@ namespace CSC.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User()
+                try
                 {
-                    Admissao = userView.Admissao,
-                    Email = userView.Email,
-                    Nome = userView.Nome,
-                    UserName = userView.UserName
-                };
-                var newUser = await _userManager.CreateAsync(user, userView.Password);
-                if (newUser.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(user, userView.Role.ToString());
+                    User user = new User()
+                    {
+                        Admissao = userView.Admissao,
+                        Email = userView.Email,
+                        Nome = userView.Nome,
+                        UserName = userView.UserName
+                    };
+                    var newUser = await _userManager.CreateAsync(user, userView.Password);
+                    if (newUser.Succeeded)
+                    {
+                        await _userManager.AddToRoleAsync(user, userView.Role.ToString());
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, newUser.Errors.ToString());
+                        return View(userView);
+                    }
+
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = "http://www.csc.com" + Url.Action("ConfirmarEmail", "Usuarios", new { userId = user.Id, code });
+
+                    await _emailSender.SendEmailAsync(userView.Email, "Comfirme seu e-mail.",
+                        $"Por favor confirme o seu registro <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
+
+                    return RedirectToAction("Index");
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, newUser.Errors.ToString());
-                    return View(userView);
+                catch (Exception ex) {
+                    return NotFound(ex.Message);
                 }
-                return RedirectToAction("Index");
             }
             else
             {
                 ModelState.AddModelError(string.Empty, "Não foi possivel criar o usuario");
                 return View(userView);
             }
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmarEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{userId}'.");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException($"Error confirming email for user with ID '{userId}':");
+            }
+
+            return RedirectToAction("Login", "Home");
         }
 
         [HttpGet]
