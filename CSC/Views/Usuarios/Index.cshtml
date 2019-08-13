@@ -40,10 +40,16 @@
         </tr>
     </thead>
     <tbody>
-       
     </tbody>
 </table>
 
 @section Scripts {
-    <script type="text/javascript" src="~/js/Usuarios.js"></script>
+    @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+    {
+        <script type="text/javascript" src="~/js/AdminUsuarios.js"></script>
+    }
+    else
+    {
+        <script type="text/javascript" src="~/js/Usuarios.js"></script>
+    }
 }

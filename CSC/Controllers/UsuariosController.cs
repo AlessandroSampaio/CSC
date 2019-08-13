@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using SendGrid;
 using System;
 using System.Linq;
 using System.Text.Encodings.Web;
@@ -111,9 +112,9 @@ namespace CSC.Controllers
                     }
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = "http://www.csc.com" + Url.Action("ConfirmarEmail", "Usuarios", new { userId = user.Id, code });
+                    var callbackUrl = "http://192.168.25.15" + Url.Action("ConfirmarEmail", "Usuarios", new { userId = user.Id, code });
 
-                    await _emailSender.SendEmailAsync(userView.Email, "Comfirme seu e-mail.",
+                    await _emailSender.SendEmailAsync(userView.Email, "Comfirmação de Registro.",
                         $"Por favor confirme o seu registro <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
 
                     return RedirectToAction("Index");
@@ -129,24 +130,51 @@ namespace CSC.Controllers
             }
         }
 
+        [HttpPost]
+        [Authorize(Roles ="Admin, Supervisor")]
+        public async Task<JsonResult> ReenviarEmail(string userName, string email)
+        {
+            try
+            {
+                User user = await _userManager.FindByNameAsync(userName);
+                if (!user.EmailConfirmed)
+                {
+                    await _userManager.SetEmailAsync(user, email);
+
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = "http://192.168.25.15" + Url.Action("ConfirmarEmail", "Usuarios", new { userId = user.Id, code });
+
+                    await _emailSender.SendEmailAsync(email, "Comfirmação de Registro.",
+                        $"Por favor confirme o seu registro <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
+                    return Json("Email enviado com sucesso!", SerializerSettings);
+                }
+
+                return Json("Email já confirmado!", SerializerSettings);
+            }
+            catch(Exception ex)
+            {
+                return Json(ex.Message);
+            }
+        }
+
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmarEmail(string userId, string code)
         {
             if (userId == null || code == null)
             {
-                return RedirectToAction("Login", "Home");
+                return NotFound($"Chave de validação para o usuario com o Id = '{userId}' não é válida.");
             }
 
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{userId}'.");
+                return NotFound($"Não foi possivel encontrar um usuario com o Id = '{userId}'.");
             }
 
             var result = await _userManager.ConfirmEmailAsync(user, code);
             if (!result.Succeeded)
             {
-                throw new InvalidOperationException($"Error confirming email for user with ID '{userId}':");
+                throw new InvalidOperationException($"Erro ao confirmar o e-mail para o usuario com o Id = '{userId}':");
             }
 
             return RedirectToAction("Login", "Home");

@@ -46,6 +46,8 @@ namespace CSC.Data
                     {
                         //here we tie the new user to the "Admin" role 
                         await UserManager.AddToRoleAsync(poweruser, "Admin");
+                        var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+                        await UserManager.ConfirmEmailAsync(poweruser, code);
                     }
                 }
                 catch (Exception ex)

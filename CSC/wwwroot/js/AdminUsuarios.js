@@ -21,6 +21,7 @@
                     "defaultContent": '<div class="btn-group btn-group-justified">' +
                         '<button class="btn btn-primary userLogon" title="Alterar Logon" type="button"><i class="fas fa-user-edit"></i></button>' +
                         '<button class="btn btn-primary userSenha" title="Alterar Senha" type="button" ><i class="fas fa-key"></i></button>' +
+                        '<button class="btn btn-primary userConfirmEmail" title="Alterar Senha" type="button" ><i class="fas fa-envelope"></i></button>' +
                         '</div>',
                     order: false
                 }
@@ -35,6 +36,11 @@
     $('#TbUsuarios').on('click', '.userSenha', function () {
         var data = tableUser.row($(this).parents('tr')).data();
         SWALAlterarSenha(data["UserName"]);
+    });
+
+    $('#TbUsuarios').on('click', '.userConfirmEmail', function () {
+        var data = tableUser.row($(this).parents('tr')).data();
+        SWALReenvioEmail(data["UserName"]);
     });
 
     $('#txtSearch').on('keyup', function () {
@@ -119,3 +125,65 @@ function SWALAlterarSenha(username) {
         }
     })
 }
+
+function SWALReenvioEmail(username) {
+    Swal.fire({
+        title: "Reenviar e-mail",
+        text: "Utilizar o e-mail do cadastro?",
+        showCloseButton: true,
+        showCancelButton: true,
+        focusConfirm: false,
+        cancelButtonText: "Alterar e-mail?"
+    }).then(result => {
+        if (result.value == true) {
+            let filtro = {
+                userName : username,
+                email : null
+            };
+            $.ajax({
+                url: '/Usuarios/ReenviarEmail',
+                type: 'POST',
+                cache: false,
+                async: true,
+                dataType: "Json",
+                data: filtro,
+                success: function (e) {
+                    if (e != false) {
+                        return SWALSuccess(e);
+                    } else {
+                        return SWALBloqueio(e);
+                    }
+                }
+            });
+        } else {
+            Swal.fire({
+                title: "Reenviar Email",
+                text: "Digite o novo email :",
+                input: 'text',
+                confirmButtonText: 'Enviar'
+            }).then(novoEmail => {
+                if (novoEmail.value != null && novoEmail.value != '') {
+                    let filtro = {
+                        userName : username,
+                        email : novoEmail.value
+                    };
+                    $.ajax({
+                        url: '/Usuarios/ReenviarEmail',
+                        type: 'POST',
+                        cache: false,
+                        async: true,
+                        dataType: "Json",
+                        data: filtro,
+                        success: function (e) {
+                            if (e != false) {
+                                return SWALSuccess(e);
+                            } else {
+                                return SWALBloqueio(e);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    });
+};
