@@ -53,11 +53,10 @@ namespace CSC.Migrations
 
             migrationBuilder.AddUniqueConstraint(
                name: "UK_User_Id",
-               schema: "CSC",
                table: "AspNetUsers",
                column: "UserId");
 
-            migrationBuilder.Sql("ALTER TABLE `CSC`.`aspnetusers` CHANGE COLUMN `UserId` `UserId` INT(11) NOT NULL AUTO_INCREMENT ; ", false);
+            migrationBuilder.Sql("ALTER TABLE `aspnetusers` CHANGE COLUMN `UserId` `UserId` INT(11) NOT NULL AUTO_INCREMENT ; ", false);
 
             migrationBuilder.CreateTable(
                 name: "Cliente",

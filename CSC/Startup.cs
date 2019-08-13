@@ -15,24 +15,24 @@ namespace CSC
 {
     public class Startup
     {
-        /* public Startup(IConfiguration configuration)
-         {
-             Configuration = configuration;
-
-
-         }*/
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json",
-                             optional: false,
-                             reloadOnChange: true)
                 .AddEnvironmentVariables();
 
             if (env.IsDevelopment())
             {
+                builder.AddJsonFile("appsettings.Development.json",
+                             optional: false,
+                             reloadOnChange: true);
                 builder.AddUserSecrets<Startup>();
+            }
+            else
+            {
+                builder.AddJsonFile("appsettings.json",
+                             optional: false,
+                             reloadOnChange: true);
             }
 
             Configuration = builder.Build();
@@ -104,7 +104,7 @@ namespace CSC
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                
+
             }
             else
             {
