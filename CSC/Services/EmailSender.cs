@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using System;
 using System.Threading.Tasks;
 
 namespace CSC.Services
@@ -14,30 +15,42 @@ namespace CSC.Services
             Options = optionsAccessor.Value;
         }
 
-        public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
+        public AuthMessageSenderOptions Options { get; } //set only via Configuration
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            return Execute(Options.SendGridKey, subject, message, email);
+            try
+            {
+                return Execute(Options.SendGridKey, subject, message, email);
+            }catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public Task Execute(string apiKey, string subject, string message, string email)
         {
-            var client = new SendGridClient(apiKey);
-            var msg = new SendGridMessage()
+            try
             {
-                From = new EmailAddress("alessandrorsampaio@outlook.com", "Alessandro Sampaio"),
-                Subject = subject,
-                PlainTextContent = message + "\nEmail Automático, <strong>Não Responde<strong>",
-                HtmlContent = message
-            };
-            msg.AddTo(new EmailAddress(email));
+                var client = new SendGridClient(apiKey);
+                var msg = new SendGridMessage()
+                {
+                    From = new EmailAddress("alessandrorsampaio@outlook.com", "Alessandro Sampaio"),
+                    Subject = subject,
+                    PlainTextContent = message + "\nEmail Automático, <strong>Não Responde<strong>",
+                    HtmlContent = message
+                };
+                msg.AddTo(new EmailAddress(email));
 
-            // Disable click tracking.
-            // See https://sendgrid.com/docs/User_Guide/Settings/tracking.html
-            msg.SetClickTracking(false, false);
+                // Disable click tracking.
+                // See https://sendgrid.com/docs/User_Guide/Settings/tracking.html
+                msg.SetClickTracking(false, false);
 
-            return client.SendEmailAsync(msg);
+                return client.SendEmailAsync(msg);
+            }catch(Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
