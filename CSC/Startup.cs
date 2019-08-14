@@ -21,7 +21,7 @@ namespace CSC
                 .SetBasePath(env.ContentRootPath)
                 .AddEnvironmentVariables();
 
-            if (!env.IsDevelopment())
+            if (env.IsDevelopment())
             {
                 builder.AddJsonFile("appsettings.Development.json",
                              optional: false,
@@ -71,6 +71,7 @@ namespace CSC
                 options.Password.RequiredLength = 5;
                 options.Password.RequiredUniqueChars = 1;
                 options.SignIn.RequireConfirmedEmail = true;
+                options.User.RequireUniqueEmail = true;
             });
 
             services.ConfigureApplicationCookie(options =>

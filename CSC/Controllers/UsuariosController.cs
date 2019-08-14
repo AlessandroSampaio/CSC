@@ -91,6 +91,11 @@ namespace CSC.Controllers
             {
                 try
                 {
+                    var isInUse = await _userManager.FindByEmailAsync(userView.Email);
+                    if(isInUse != null) {
+                        ModelState.AddModelError(string.Empty, "E-mail já utilizado!");
+                        return View(userView);
+                    }
                     User user = new User()
                     {
                         Admissao = userView.Admissao,
