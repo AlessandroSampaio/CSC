@@ -1,7 +1,6 @@
 ﻿using CSC.Models;
 using CSC.Models.Enums;
 using CSC.Models.ViewModel;
-using CSC.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -10,7 +9,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using SendGrid;
 using System;
 using System.Linq;
 using System.Text.Encodings.Web;
@@ -119,7 +117,8 @@ namespace CSC.Controllers
 
                     return RedirectToAction("Index");
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
                     return NotFound(ex.Message);
                 }
             }
@@ -131,7 +130,7 @@ namespace CSC.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles ="Admin, Supervisor")]
+        [Authorize(Roles = "Admin, Supervisor")]
         public async Task<JsonResult> ReenviarEmail(string userName, string email)
         {
             try
@@ -139,19 +138,22 @@ namespace CSC.Controllers
                 User user = await _userManager.FindByNameAsync(userName);
                 if (!user.EmailConfirmed)
                 {
-                    await _userManager.SetEmailAsync(user, email);
+                    if (email != null)
+                    {
+                        await _userManager.SetEmailAsync(user, email);
+                    }
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = "http://192.168.25.15" + Url.Action("ConfirmarEmail", "Usuarios", new { userId = user.Id, code });
 
-                    await _emailSender.SendEmailAsync(email, "Comfirmação de Registro.",
+                    await _emailSender.SendEmailAsync(user.Email, "Comfirmação de Registro.",
                         $"Por favor confirme o seu registro <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
                     return Json("Email enviado com sucesso!", SerializerSettings);
                 }
 
                 return Json("Email já confirmado!", SerializerSettings);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(ex.Message);
             }
@@ -291,6 +293,61 @@ namespace CSC.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<JsonResult> SendToken(string email)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    return Json("Não há usuários com o email supracitado!");
+                }
+                var pswToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                var callbackUrl = "http://192.168.25.15" + Url.Action("RedefinirSenha", "Usuarios", new { userId = user.Id, code = pswToken });
+
+                await _emailSender.SendEmailAsync(user.Email, "Redefinição de Senha.",
+                    $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Clique aqui</a> para redefinir sua senha.\n\nVocê será redirecionado para um novo ambiente!");
+                return Json("Email enviado com sucesso!", SerializerSettings);
+            }
+            catch (Exception ex) {
+                return Json("Error : " + ex.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult RedefinirSenha(string userId, string code)
+        {
+            PasswordResetViewModel viewModel = new PasswordResetViewModel() { UserId = userId, Token = code };
+            return View(viewModel);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> RedefinirSenha(PasswordResetViewModel viewModel)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(viewModel.UserId);
+                if(user == null)
+                {
+                    return NotFound("Usuario não encontrado!");
+                }
+                var result = await _userManager.ResetPasswordAsync(user, viewModel.Token, viewModel.Senha);
+                if (!result.Succeeded)
+                {
+                    AddErrors(result);
+                }
+                return RedirectToAction("Login", "Home");
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("Execption", ex.Message);
+                return View(viewModel);
+            }
+        }
         #region Helpers
 
         private void AddErrors(IdentityResult result)

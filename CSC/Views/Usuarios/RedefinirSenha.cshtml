@@ -1,0 +1,52 @@
+﻿@model CSC.Models.ViewModel.PasswordResetViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/css/main.css">
+
+    <script src="https://kit.fontawesome.com/cefb2299a8.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="~/js/RedefinirSenha.js"></script>
+
+</head>
+<body>
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100 p-t-50 p-b-90">
+                <form class="login100-form validate-form flex-sb flex-w" method="post" asp-controller="Usuarios" asp-action="RedefinirSenha">
+                    <div asp-validation-summary="All" class="text-danger">
+                        <input type="hidden" asp-for="Token" />
+                        <input type="hidden" asp-for="UserId" />
+                        <span class="login100-form-title p-b-51">Redefinir a senha</span>
+                        <div class="wrap-input100 validate-input m-b-16">
+                            <input asp-for="Senha" class="input100" type="password" placeholder="Nova Senha">
+                            <span class="focus-input100"></span>
+                        </div>
+                        <div class="wrap-input100 validate-input m-b-16">
+                            <input asp-for="ConfirmSenha" class="input100" type="password" placeholder="Confirme a Senha">
+                            <span class="focus-input100"></span>
+                        </div>
+                        <div class="container-login100-form-btn m-t-17">
+                            <input if="btnRedefinir" type="submit" class="login100-form-btn" style="text-align:center;" value="Redefinir" disabled/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

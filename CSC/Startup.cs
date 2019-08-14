@@ -21,7 +21,7 @@ namespace CSC
                 .SetBasePath(env.ContentRootPath)
                 .AddEnvironmentVariables();
 
-            if (env.IsDevelopment())
+            if (!env.IsDevelopment())
             {
                 builder.AddJsonFile("appsettings.Development.json",
                              optional: false,

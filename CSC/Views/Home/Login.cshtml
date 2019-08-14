@@ -11,15 +11,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="~/css/util.css">
     <link rel="stylesheet" type="text/css" href="~/css/main.css">
 
-    <script src="https://kit.fontawesome.com/cefb2299a8.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="https://kit.fontawesome.com/cefb2299a8.js"></script>
+    <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="~/lib/SweetAlert/sweetalert2.min.js"></script>
+    <script src="~/js/site.js"></script>
+    <script type="text/javascript" src="~/js/Login.js"></script>
 
 </head>
 <body>
@@ -43,7 +46,7 @@
                                 <label class="label-checkbox100" asp-for="RememberMe"></label>
                             </div>
                             <div>
-                                <a href="#" class="txt1">Esqueceu?</a>
+                                <a href="#" id="forgotPsw" class="txt1">Esqueceu?</a>
                             </div>
                         </div>
                         <div class="container-login100-form-btn m-t-17">
