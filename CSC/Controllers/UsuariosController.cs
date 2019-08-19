@@ -115,7 +115,7 @@ namespace CSC.Controllers
                     }
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = "http://192.168.25.15" + Url.Action("ConfirmarEmail", "Usuarios", new { userId = user.Id, code });
+                    var callbackUrl = "http://wmsolucoes.ddns.net" + Url.Action("ConfirmarEmail", "Usuarios", new { userId = user.Id, code });
 
                     await _emailSender.SendEmailAsync(userView.Email, "Comfirmação de Registro.",
                         $"Por favor confirme o seu registro <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
@@ -149,7 +149,7 @@ namespace CSC.Controllers
                     }
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = "http://192.168.25.15" + Url.Action("ConfirmarEmail", "Usuarios", new { userId = user.Id, code });
+                    var callbackUrl = "http://wmsolucoes.ddns.net" + Url.Action("ConfirmarEmail", "Usuarios", new { userId = user.Id, code });
 
                     await _emailSender.SendEmailAsync(user.Email, "Comfirmação de Registro.",
                         $"Por favor confirme o seu registro <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
@@ -311,7 +311,7 @@ namespace CSC.Controllers
                 }
                 var pswToken = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-                var callbackUrl = "http://192.168.25.15" + Url.Action("RedefinirSenha", "Usuarios", new { userId = user.Id, code = pswToken });
+                var callbackUrl = "http://wmsolucoes.ddns.net" + Url.Action("RedefinirSenha", "Usuarios", new { userId = user.Id, code = pswToken });
 
                 await _emailSender.SendEmailAsync(user.Email, "Redefinição de Senha.",
                     $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Clique aqui</a> para redefinir sua senha.\n\nVocê será redirecionado para um novo ambiente!");

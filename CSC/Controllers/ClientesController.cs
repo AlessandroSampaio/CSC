@@ -25,6 +25,7 @@ namespace CSC.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.Controller = "Cliente";
             return View();
         }
 

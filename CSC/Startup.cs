@@ -30,12 +30,10 @@ namespace CSC
             }
             else
             {
-
                 builder.AddJsonFile("appsettings.json",
                              optional: false,
                              reloadOnChange: true);
             }
-
             Configuration = builder.Build();
         }
 
@@ -88,7 +86,7 @@ namespace CSC
 
             // requires
             // using Microsoft.AspNetCore.Identity.UI.Services;
-            // using WebPWrecover.Services;
+            // using CSC.Services;
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration.GetSection("AuthMessageSenderOptions"));
 
