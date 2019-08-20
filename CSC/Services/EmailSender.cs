@@ -35,7 +35,7 @@ namespace CSC.Services
                 var client = new SendGridClient(apiKey);
                 var msg = new SendGridMessage()
                 {
-                    From = new EmailAddress("alessandrorsampaio@outlook.com", "Alessandro Sampaio"),
+                    From = new EmailAddress("wmsolucoes_suporte@hotmail.com", "Wm Soluções"),
                     Subject = subject,
                     PlainTextContent = message + "\nEmail Automático, <strong>Não Responde<strong>",
                     HtmlContent = message

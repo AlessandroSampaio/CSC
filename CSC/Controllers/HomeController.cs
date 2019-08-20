@@ -27,7 +27,7 @@ namespace CSC.Controllers
         [TempData]
         public string ErrorMessage { get; set; }
 
-        [AllowAnonymous]
+        [Authorize]
         public IActionResult Index()
         {
             ViewBag.Controller = "Painel de Informações";

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Rotativa.AspNetCore;
 using System;
 
 namespace CSC
@@ -125,6 +126,9 @@ namespace CSC
                     name: "default",
                     template: "{controller=Home}/{action=Login}/{id?}");
             });
+
+            RotativaConfiguration.Setup(env);
+
         }
     }
 }

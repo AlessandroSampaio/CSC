@@ -48,10 +48,7 @@
                         <a asp-action="index"></a>
                     </div>
                     <ul class="sidebar-menu">
-                        @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
-                        {
-                            <li><a asp-controller="Home" asp-action="Index" class="nav-link"><i class="fas fa-chart-pie"></i><span class="text-center">Painel de Controle</span></a></li>
-                        }
+                        <li><a asp-controller="Home" asp-action="Index" class="nav-link"><i class="fas fa-chart-pie"></i><span class="text-center">Painel de Controle</span></a></li>
                         <li class="dropdown">
                             <a class="nav-link has-dropdown" href="#" data-toggle="dropdown"><i class="fas fa-address-card"></i><span class="text-center">Pessoas</span></a>
                             <ul class="dropdown-menu">
@@ -76,8 +73,10 @@
                                 <a class="nav-link has-dropdown" href="#" data-toggle="dropdown"><i class="fas fa-clipboard"></i><span class="text-center">Relatorios</span></a>
                                 <ul class="dropdown-menu">
                                     <li class="nav-link"><a class="nav-link" asp-controller="Relatorios" asp-action="DesempenhoAnalista">Desempenho</a></li>
-                                    <!--<li class="nav-link"><a class="nav-link" asp-controller="Relatorios" asp-action="DadosCliente">Clientes</a></li>
-                                    <li class="nav-link"><a class="nav-link" asp-controller="Relatorios" asp-action="AtendimentosCliente">Atendimentos</a></li>-->
+                                    <!--
+                                    <li class="nav-link"><a class="nav-link" asp-controller="Relatorios" asp-action="DadosCliente">Clientes</a></li>
+                                    <li class="nav-link"><a class="nav-link" asp-controller="Relatorios" asp-action="AtendimentosCliente">Atendimentos</a></li>
+                                    -->
                                 </ul>
                             </li>
                         }

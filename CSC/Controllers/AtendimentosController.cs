@@ -58,23 +58,29 @@ namespace CSC.Controllers
         [HttpGet]
         public async Task<IActionResult> Novo(int ClienteId)
         {
-            //Editar para buscar usuario logado
-            var user = await _userManager.GetUserAsync(User);
-            ViewBag.Controller = "Atendimentos \\ Novo";
-            ViewBag.TipoAtendimento = Enum.GetValues(typeof(TipoAtendimento)).Cast<TipoAtendimento>().Select(v => new SelectListItem
+            try
             {
-                Text = v.ToString(),
-                Value = ((int)v).ToString()
-            }).ToList();
-            Atendimento atendimento = new Atendimento
+                //Editar para buscar usuario logado
+                var user = await _userManager.GetUserAsync(User);
+                ViewBag.Controller = "Atendimentos \\ Novo";
+                ViewBag.TipoAtendimento = Enum.GetValues(typeof(TipoAtendimento)).Cast<TipoAtendimento>().Select(v => new SelectListItem
+                {
+                    Text = v.ToString(),
+                    Value = ((int)v).ToString()
+                }).ToList();
+                Atendimento atendimento = new Atendimento
+                {
+                    Cliente = await _clienteServices.FindByIdAsync(ClienteId),
+                    ClienteId = ClienteId,
+                    Abertura = DateTime.Now.Date,
+                    User = user,
+                    UserId = user.Id
+                };
+                return View(atendimento);
+            }catch(Exception ex)
             {
-                Cliente = await _clienteServices.FindByIdAsync(ClienteId),
-                ClienteId = ClienteId,
-                Abertura = DateTime.Now.Date,
-                User = user,
-                UserId = user.Id
-            };
-            return View(atendimento);
+                return RedirectToAction("Error", ex.Message);
+            }
         }
 
         [HttpPost]
