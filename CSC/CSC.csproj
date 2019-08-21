@@ -6,6 +6,10 @@
     <UserSecretsId>409171f3-bdc3-4b38-97a6-d6c1c085083e</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Migrations\20190805131402_Funcionario-Usuario.cs" />
     <Compile Remove="Migrations\20190805131402_Funcionario-Usuario.Designer.cs" />

@@ -21,7 +21,6 @@ namespace CSC.Controllers
         private readonly AtendimentoServices _atendimentoServices;
         private readonly ClienteServices _clienteServices;
         private readonly TarefaServices _tarefaServices;
-        const string SessionUserID = "_UserID";
         private readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings { DateFormatString = "dd/MM/yyyy" };
 
         public TarefasController(AtendimentoServices atendimentoServices, ClienteServices clienteServices, TarefaServices tarefaServices, UserManager<User> userManager, SignInManager<User> signInManager, ILogger<TarefasController> logger)
@@ -59,9 +58,11 @@ namespace CSC.Controllers
         {
             try
             {
-                Tarefa newTarefa = new Tarefa();
-                newTarefa.TarefaNumero = tarefa.TarefaNumero;
-                newTarefa.Descricao = tarefa.Descricao;
+                Tarefa newTarefa = new Tarefa
+                {
+                    TarefaNumero = tarefa.TarefaNumero,
+                    Descricao = tarefa.Descricao
+                };
                 List<Atendimento> list = new List<Atendimento>();
                 foreach (var item in tarefa.Atendimentos)
                 {
