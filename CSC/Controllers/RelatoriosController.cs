@@ -84,39 +84,14 @@ namespace CSC.Controllers
         [HttpPost]
         public async Task<IActionResult> DesempenhoAnalistaPDF(int Analista, string dataInicial, string dataFinal, int tipo)
         {
-            DateTime DataInicial = DateTime.ParseExact(dataInicial, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-            DateTime DataFinal = DateTime.ParseExact(dataFinal, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-            List<DesempenhoAnalista> desempenhoAnalistas = new List<DesempenhoAnalista>();
-            if (Analista != 0)
-            {
-                var list = await _atendimentoServices.FindByFuncinoarioAsync(Analista);
-                if (list.Where(a => a.Abertura >= DataInicial && a.Abertura <= DataFinal).Count() > 0)
-                {
-                    DesempenhoAnalista desempenhoAnalista = new DesempenhoAnalista(list.Where(a => a.Abertura >= DataInicial && a.Abertura <= DataFinal).ToList(), (DataFinal - DataInicial).Days);
-                    desempenhoAnalistas.Add(desempenhoAnalista);
-                }
-            }
-            else
-            {
-                var listAtendimentos = await _atendimentoServices.FindByDateIntervalAsync(DataInicial, DataFinal);
-                var func = listAtendimentos.Select(f => f.User).Distinct();
-                foreach (User f in func)
-                {
-                    var list = listAtendimentos.Where(a => a.User == f).ToList();
-                    if (list.Count() > 0)
-                    {
-                        DesempenhoAnalista desempenhoAnalista = new DesempenhoAnalista(list, (DataFinal - DataInicial).Days);
-                        desempenhoAnalistas.Add(desempenhoAnalista);
-                    }
-                }
-            }
+            var desempenho = await _atendimentoServices.GetDesempenhoAnalistas(DateTime.ParseExact(dataInicial, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(dataFinal, "dd/MM/yyyy", CultureInfo.InvariantCulture));
             if (tipo == 0)
             {
-                return new ViewAsPdf("DesempenhoAnalistaPDF", desempenhoAnalistas);
+                return new ViewAsPdf("DesempenhoAnalistaPDF", desempenho);
             }
             else
             {
-                return View("DesempenhoAnalistaPDF", desempenhoAnalistas);
+                return View("DesempenhoAnalistaPDF", desempenho);
             }
         }
 

@@ -19,5 +19,7 @@ namespace CSC.Models
         public DbSet<Inventario> Inventario { get; set; }
         public DbSet<Atendimento> Atendimento { get; set; }
         public DbSet<Tarefa> Tarefa { get; set; }
+        public DbQuery<DesempenhoAnalista> DesempenhoAnalista { get; set; }
+
     }
 }

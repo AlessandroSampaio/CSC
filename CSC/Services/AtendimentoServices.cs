@@ -89,6 +89,21 @@ namespace CSC.Services
                 throw new NullReferenceException();
             }
         }
+
+        public async Task<List<DesempenhoAnalista>> GetDesempenhoAnalistas(DateTime? inicio, DateTime? fim)
+        {
+            //Verifica se foi fornecido valores de Data e retorna o intervalo
+            if(inicio != null && fim != null)
+            {
+                return await _context.DesempenhoAnalista.FromSql($"select * from desempenho_analista where abertura between {0} and {1}", inicio, fim).ToListAsync();
+            }
+            //Caso não informado, retorna toda a view
+            if(inicio == null && fim == null)
+            {
+                return await _context.DesempenhoAnalista.FromSql($"select * from desempenho_analista").ToListAsync();
+            }
+            return null;
+        }
         
         public async Task<List<Atendimento>> TotalizacaoAtendimentosAsync()
         {

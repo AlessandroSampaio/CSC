@@ -336,10 +336,16 @@ namespace CSC.Controllers
         {
             try
             {
+                if(viewModel.Senha != viewModel.ConfirmSenha)
+                {
+                    ModelState.AddModelError(string.Empty, "As senhas divergem");
+                    return View(viewModel);
+                }
                 var user = await _userManager.FindByIdAsync(viewModel.UserId);
                 if(user == null)
                 {
-                    return NotFound("Usuario não encontrado!");
+                    ModelState.AddModelError(string.Empty, "Usuarios nao encontrado!Solicite um novo link de redefinição de Senha");
+                    return View(viewModel);
                 }
                 var result = await _userManager.ResetPasswordAsync(user, viewModel.Token, viewModel.Senha);
                 if (!result.Succeeded)
