@@ -22,7 +22,8 @@ namespace CSC.Services
             try
             {
                 return Execute(Options.SendGridKey, subject, message, email);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -47,7 +48,8 @@ namespace CSC.Services
                 msg.SetClickTracking(false, false);
 
                 return client.SendEmailAsync(msg);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }

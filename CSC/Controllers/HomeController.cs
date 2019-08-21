@@ -1,6 +1,5 @@
 ﻿using CSC.Models;
 using CSC.Models.ViewModel;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +39,7 @@ namespace CSC.Controllers
         {
             // Limpando Cookies para garantir o processo de login
             //await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-            
+
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");

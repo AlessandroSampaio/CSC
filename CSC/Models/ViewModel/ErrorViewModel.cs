@@ -1,5 +1,3 @@
-using System;
-
 namespace CSC.Models
 {
     public class ErrorViewModel

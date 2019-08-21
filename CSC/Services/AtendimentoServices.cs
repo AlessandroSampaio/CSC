@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace CSC.Services
 {
@@ -46,7 +45,7 @@ namespace CSC.Services
         public Task<List<Atendimento>> FindByClientAsync(int id)
         {
             return _context.Atendimento
-                .Where(c => c.ClienteId== id)
+                .Where(c => c.ClienteId == id)
                 .Include(c => c.Cliente)
                 .Include(f => f.User)
                 .ToListAsync();
@@ -79,7 +78,7 @@ namespace CSC.Services
         public async Task UpdateAsync(Atendimento atendimento)
         {
             bool hasAny = _context.Atendimento.Any(a => a.Id == atendimento.Id);
-            if(hasAny)
+            if (hasAny)
             {
                 _context.Atendimento.Update(atendimento);
                 await _context.SaveChangesAsync();
@@ -93,18 +92,18 @@ namespace CSC.Services
         public async Task<List<DesempenhoAnalista>> GetDesempenhoAnalistas(DateTime? inicio, DateTime? fim)
         {
             //Verifica se foi fornecido valores de Data e retorna o intervalo
-            if(inicio != null && fim != null)
+            if (inicio != null && fim != null)
             {
                 return await _context.DesempenhoAnalista.FromSql($"select * from desempenho_analista where abertura between {0} and {1}", inicio, fim).ToListAsync();
             }
             //Caso não informado, retorna toda a view
-            if(inicio == null && fim == null)
+            if (inicio == null && fim == null)
             {
                 return await _context.DesempenhoAnalista.FromSql($"select * from desempenho_analista").ToListAsync();
             }
             return null;
         }
-        
+
         public async Task<List<Atendimento>> TotalizacaoAtendimentosAsync()
         {
             return await _context.Atendimento.ToListAsync();

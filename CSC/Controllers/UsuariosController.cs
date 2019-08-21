@@ -92,7 +92,8 @@ namespace CSC.Controllers
                 try
                 {
                     var isInUse = await _userManager.FindByEmailAsync(userView.Email);
-                    if(isInUse != null) {
+                    if (isInUse != null)
+                    {
                         ModelState.AddModelError(string.Empty, "E-mail já utilizado!");
                         return View(userView);
                     }
@@ -317,7 +318,8 @@ namespace CSC.Controllers
                     $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Clique aqui</a> para redefinir sua senha.\n\nVocê será redirecionado para um novo ambiente!");
                 return Json("Email enviado com sucesso!", SerializerSettings);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 return Json("Error : " + ex.Message);
             }
         }
@@ -336,13 +338,13 @@ namespace CSC.Controllers
         {
             try
             {
-                if(viewModel.Senha != viewModel.ConfirmSenha)
+                if (viewModel.Senha != viewModel.ConfirmSenha)
                 {
                     ModelState.AddModelError(string.Empty, "As senhas divergem");
                     return View(viewModel);
                 }
                 var user = await _userManager.FindByIdAsync(viewModel.UserId);
-                if(user == null)
+                if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "Usuarios nao encontrado!Solicite um novo link de redefinição de Senha");
                     return View(viewModel);
@@ -354,7 +356,8 @@ namespace CSC.Controllers
                 }
                 return RedirectToAction("Login", "Home");
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 ModelState.AddModelError("Execption", ex.Message);
                 return View(viewModel);
             }

@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -90,7 +89,8 @@ namespace CSC.Controllers
                 }
                 return View(atendimento);
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return RedirectToAction("Error", ex.Message);
             }
@@ -182,7 +182,8 @@ namespace CSC.Controllers
                     atdOrig.Status = AtendimentoStatus.Transferido;
                     await _atendimentoServices.UpdateAsync(atdOrig);
                     return Json(true);
-                }else
+                }
+                else
                 {
                     return Json("Usuario não encontrado");
                 }
@@ -204,7 +205,7 @@ namespace CSC.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles ="Admin, Supervisor")]
+        [Authorize(Roles = "Admin, Supervisor")]
         public async Task<JsonResult> ReabrirAtendimento(int atdId)
         {
             try
@@ -214,7 +215,8 @@ namespace CSC.Controllers
                 await _atendimentoServices.UpdateAsync(atendimento);
                 return Json(true);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 return Json(ex.Message);
             }
         }

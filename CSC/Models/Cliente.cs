@@ -4,7 +4,6 @@ using Newtonsoft.Json.Converters;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Globalization;
 
 namespace CSC.Models
 {
@@ -63,7 +62,7 @@ namespace CSC.Models
             get { return Numero.ToString(); }
             set
             {
-                if (value.Contains("S") || value==null || value.Equals("")) { Numero = 0; }
+                if (value.Contains("S") || value == null || value.Equals("")) { Numero = 0; }
                 else
                 {
                     Numero = Convert.ToInt32(value);

@@ -1,8 +1,6 @@
 ﻿using CSC.Models;
-using CSC.Models.ViewModel;
 using CSC.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace CSC.Controllers
 {
-    [Authorize(Roles ="Admin, Supervisor")]
+    [Authorize(Roles = "Admin, Supervisor")]
     public class RelatoriosController : Controller
     {
         private readonly UserManager<User> _userManager;

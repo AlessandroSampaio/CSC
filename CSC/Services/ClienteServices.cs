@@ -75,13 +75,14 @@ namespace CSC.Services
                 .FirstOrDefaultAsync(f => f.Id == id);
         }
 
-        public void Insert (Cliente cliente)
+        public void Insert(Cliente cliente)
         {
             try
             {
                 _context.Cliente.Add(cliente);
                 _context.SaveChanges();
-            }catch(DbUpdateException e)
+            }
+            catch (DbUpdateException e)
             {
                 throw e;
             }

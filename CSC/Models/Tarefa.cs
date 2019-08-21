@@ -14,7 +14,7 @@ namespace CSC.Models
         [Required]
         public string Descricao { get; set; }
         public ICollection<Atendimento> Atendimentos { get; set; }
-        public DateTime? Conclusao{ get; set; }
+        public DateTime? Conclusao { get; set; }
         public DateTime Abertura { get; set; }
     }
 }
