@@ -60,23 +60,36 @@ namespace CSC.Controllers
         {
             try
             {
-                //Editar para buscar usuario logado
+                //Busca usuario logado
                 var user = await _userManager.GetUserAsync(User);
                 ViewBag.Controller = "Atendimentos \\ Novo";
-                ViewBag.TipoAtendimento = Enum.GetValues(typeof(TipoAtendimento)).Cast<TipoAtendimento>().Select(v => new SelectListItem
-                {
-                    Text = v.ToString(),
-                    Value = ((int)v).ToString()
-                }).ToList();
+                Cliente cliente = await _clienteServices.FindByIdAsync(ClienteId);
                 Atendimento atendimento = new Atendimento
                 {
-                    Cliente = await _clienteServices.FindByIdAsync(ClienteId),
+                    Cliente = cliente,
                     ClienteId = ClienteId,
                     Abertura = DateTime.Now.Date,
                     User = user,
                     UserId = user.Id
                 };
+                if (!cliente.Mono)
+                {
+                    ViewBag.TipoAtendimento = Enum.GetValues(typeof(TipoAtendimento)).Cast<TipoAtendimento>().Select(v => new SelectListItem
+                    {
+                        Text = v.ToString(),
+                        Value = ((int)v).ToString()
+                    }).ToList();
+                }
+                else
+                {
+                    ViewBag.TipoAtendimento = Enum.GetValues(typeof(TipoAtendimento)).Cast<TipoAtendimento>().Where(t => t.Equals(TipoAtendimento.Chave)).Select(v => new SelectListItem
+                    {
+                        Text = v.ToString(),
+                        Value = ((int)v).ToString()
+                    }).ToList();
+                }
                 return View(atendimento);
+
             }catch(Exception ex)
             {
                 return RedirectToAction("Error", ex.Message);

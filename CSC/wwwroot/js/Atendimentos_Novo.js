@@ -79,6 +79,8 @@
         ]
     });
 
+    Mono();
+
     (function AttBadges() {
         $.ajax({
             url: '/Atendimentos/Notificacoes',
@@ -100,7 +102,14 @@
         var form = $(this).parents('form');
         SWALEncerrar(form);
     });
+
 });
+
+function Mono() {
+    if ($('#AtendimentoTipo option').length == 1) {
+        Swal.fire("Cliente Mono","Possui direito apenas a chave", "info");
+    }
+}
 
 function SWALEncerrar(form) {
     Swal.fire({

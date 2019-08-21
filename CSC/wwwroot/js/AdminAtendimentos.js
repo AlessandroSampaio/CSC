@@ -130,16 +130,12 @@
 
     $('#TbClientes tbody').on('dblclick', 'tr', function () {
         var data = tableClientes.row(this).data();
-        if (data["Mono"] == true) {
-            SWALBloqueio("Cliente Mono, impossível abrir atendimento");
-        } else {
-            if (data["SituacaoCadastro"] == "Ativo") {
-                var url = "/Atendimentos/Novo?ClienteId=" + data['Id'];
-                window.location.href = url;
-            }
-            else {
-                SWALBloqueio("Cliente Inativo, impossível abrir atendimento!");
-            }
+        if (data["SituacaoCadastro"] == "Ativo") {
+            var url = "/Atendimentos/Novo?ClienteId=" + data['Id'];
+            window.location.href = url;
+        }
+        else {
+            SWALBloqueio("Cliente Inativo, impossível abrir atendimento!");
         }
     });
 

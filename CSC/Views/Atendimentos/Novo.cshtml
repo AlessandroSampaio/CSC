@@ -4,7 +4,7 @@
     <form asp-action="Salvar" id="novo" method="post">
         <div class="form-row">
             <div class="col-sm-3">
-                <label class="col-form-label col-form-label-sm">Nome</label>
+                <label class="col-form-label col-form-label-sm">Analista</label>
                 <input asp-for="@User.Identity.Name" class="form-control form-control-sm input-Capitalize" disabled />
             </div>
             <div class="col-sm-5">
@@ -16,7 +16,7 @@
                 <label asp-for="Abertura" class="col-form-label col-form-label-sm"></label>
                 <input asp-for="Abertura" type="date" class="form-control form-control-sm" readonly />
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-1">
                 <label asp-for="Status" class="col-form-label col-form-label-sm"></label>
                 <input asp-for="Status" class="form-control form-control-sm" readonly />
             </div>
