@@ -32,6 +32,40 @@ namespace CSC.Controllers
             _atendimentoServices = atendimentoServices;
         }
 
+        //Relatorio de Desempenho por Analista
+        public IActionResult DesempenhoAnalista()
+        {
+            ViewBag.Controller = "Atendimentos por Analistas";
+            var list = _userManager.Users.ToList();
+            ViewBag.Funcionarios = list.Select(v => new SelectListItem
+            {
+                Text = v.Nome,
+                Value = v.UserId.ToString()
+            }).ToList();
+
+            return View();
+        }
+
+        //Relatorio de Desempenho por Analista
+        [HttpPost]
+        public async Task<IActionResult> DesempenhoAnalistaPDF(int Analista, string dataInicial, string dataFinal, int tipo)
+        {
+            var desempenho = await _atendimentoServices.GetDesempenhoAnalistas(DateTime.ParseExact(dataInicial, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(dataFinal, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+            if(Analista != 0)
+            {
+                desempenho.Where(a => a.AnalistaId == Analista).ToList();
+
+            }
+            if (tipo == 0)
+            {
+                return new ViewAsPdf("DesempenhoAnalistaPDF", desempenho);
+            }
+            else
+            {
+                return View("DesempenhoAnalistaPDF", desempenho);
+            }
+        }
+
         public IActionResult AtendimentosCliente()
         {
             ViewBag.Controller = "Relatorio de Atendimentos por Cliente";
@@ -61,35 +95,6 @@ namespace CSC.Controllers
             else
             {
                 return View();
-            }
-        }
-
-        public IActionResult DesempenhoAnalista()
-        {
-            ViewBag.Controller = "Atendimentos por Analistas";
-            ViewBag.user = new User();
-            var list = new List<User>();
-            ViewBag.Funcionarios = list.Select(v => new SelectListItem
-            {
-                Text = v.Nome,
-                Value = v.Id.ToString()
-            }).ToList();
-
-            return View();
-        }
-
-        //Relatorio de Desempenho por Analista
-        [HttpPost]
-        public async Task<IActionResult> DesempenhoAnalistaPDF(int Analista, string dataInicial, string dataFinal, int tipo)
-        {
-            var desempenho = await _atendimentoServices.GetDesempenhoAnalistas(DateTime.ParseExact(dataInicial, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(dataFinal, "dd/MM/yyyy", CultureInfo.InvariantCulture));
-            if (tipo == 0)
-            {
-                return new ViewAsPdf("DesempenhoAnalistaPDF", desempenho);
-            }
-            else
-            {
-                return View("DesempenhoAnalistaPDF", desempenho);
             }
         }
 

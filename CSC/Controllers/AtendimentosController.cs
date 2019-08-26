@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -259,6 +260,35 @@ namespace CSC.Controllers
             var lista = await _atendimentoServices.FindAllAsync();
             return Json(lista.Where(a => a.Abertura >= DataInicio && a.Abertura <= DataFinal).GroupBy(func => func.User.Nome)
                 .Select(funcionario => new { Funcionario = funcionario.Key, Atendimentos = funcionario.Count() }));
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AtendimentosPorCategoria(string dataIni, string dataFim)
+        {
+            DateTime DataInicio;
+            DateTime DataFinal;
+            if (dataIni == null || dataFim == null)
+            {
+                DataInicio = DateTime.Now;
+                DataFinal = DateTime.Now;
+            }
+            else
+            {
+                DataInicio = DateTime.ParseExact(dataIni, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                DataFinal = DateTime.ParseExact(dataFim, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
+            //var newList = new { Categoria, Atendimentos };
+            var lista = await _atendimentoServices.FindAllAsync();
+            Dictionary<string, int> result = new Dictionary<string, int>();
+
+            var tipos = Enum.GetValues(typeof(TipoAtendimento));
+            for (int x=0; x < tipos.Length; x++)
+            {
+
+            }
+                        
+            return Json(lista.Where(a => a.Abertura >= DataInicio && a.Abertura <= DataFinal).GroupBy(a => a.AtendimentoTipo)
+                .Select(categoria => new { Categoria = categoria.Key, Atendimentos = categoria.Count() }));
         }
     }
 }

@@ -2,7 +2,8 @@
     var AtdTransfer;
 
     var tableAtendimentos = $('#TbAtendimentos').DataTable({
-        dom: '<"botton"p>',
+        dom: "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-12 col-md-5'li><'col-sm-12 col-md-7'p>>",
         ajax: {
             url: '/Atendimentos/Listagem',
             dataSrc: ''
@@ -118,7 +119,7 @@
     $('#TbAtendimentos').on('dblclick', 'tr', function () {
         var data = tableAtendimentos.row(this).data();
         if (data['Status'] != 'Aberto') {
-            SWALBloqueio('Não é possível editar um atendimento ' + data['Status']);
+            SWALInfoAtendimento(data);
         } else {
             var url = "/Atendimentos/Editar/" + data['Id'];
             window.location.href = url;
@@ -204,6 +205,12 @@
         $('#ClientSelect').modal('show');
     })
 
+    $('#slctOption').on('change', '', function () {
+        tableAtendimentos.search('').columns().search('').draw();
+        tableAtendimentos.columns($("option:selected", this).val()).search($('#txtSearch').val()).draw();
+        $('#txtSearch').focus();
+    });
+
     $('#txtSearch').on('keyup', function () {
         tableAtendimentos.columns($('#slctOption').val()).search(this.value).draw();
     })
@@ -236,4 +243,13 @@ function SWALEncerrar(Id) {
             });
         }
     });
+}
+
+function SWALInfoAtendimento(data) {
+    Swal.fire({
+        title: data["AtendimentoTipo"],
+        html: '<strong>Detalhes</strong>: ' + data["Detalhes"]
+
+    });
+
 }

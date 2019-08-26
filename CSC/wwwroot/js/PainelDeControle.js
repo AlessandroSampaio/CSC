@@ -1,6 +1,8 @@
 ﻿$(document).ready(function () {
     var atdTotal = $('#AtdAbertos');
     var atdPorFunc = $('#AtdPorFuncionarios');
+    var atdPorCat = $('#AtdCategoria');
+    var AtdPorCat;
     var AtdPorSit;
     var AtdPorFunc;
     var date = new Date();
@@ -39,15 +41,16 @@
 
         } else {
 
-            if (AtdPorSit != null || AtdPorFunc != null) {
+            if (AtdPorSit != null || AtdPorFunc != null || AtdPorCat != null) {
                 AtdPorSit.destroy();
                 AtdPorFunc.destroy();
+                AtdPorCat.destroy();
             }
 
+            //Separando label de Data
+
+            //Atendimentos por Situação
             var situacoes = await AtdPorSituacao(dataini, datafim);
-            var funcs = await AtdPorFuncionarios(dataini, datafim);
-            var funcionario = funcs.map(item => item.funcionario);
-            var totais = funcs.map(item => item.atendimentos);
             var tipo = situacoes.map(item => item.Tipo);
             var tipoContador = situacoes.map(item => item.Contador);
             var color = [];
@@ -66,6 +69,21 @@
                 }
 
             }
+
+            //Atendimentos por funcionario
+            var funcs = await AtdPorFuncionarios(dataini, datafim);
+            var funcionario = funcs.map(item => item.funcionario);
+            var totais = funcs.map(item => item.atendimentos);
+
+            //Atendimentos por Categoria
+            var categorias = await AtdPorCategoria(dataini, datafim);
+            var nameCategoria = categorias.map(categoria => categoria.categoria);
+            var totaisCategoria = categorias.map(categoria => categoria.atendimentos);
+            console.log(categorias);
+            console.log(nameCategoria);
+            console.log(totaisCategoria);
+
+            //Gerando ChartJs
             AtdPorSit = new Chart(atdTotal, {
                 type: 'pie',
                 data: {
@@ -95,6 +113,23 @@
                             return "rgb( 0 ," + g + "," + b + ")";
                         },
                         data: totais
+                    }]
+                },
+                options: {
+                    legend: {
+                        display: false
+                    }
+                }
+            });
+
+            AtdPorCat = new Chart(atdPorCat, {
+                type: 'bar',
+                data: {
+                    labels: nameCategoria,
+                    datasets: [{
+                        labels: "Numero de Atendimentos",
+                        backgroundColor: color,
+                        data: totaisCategoria
                     }]
                 },
                 options: {
@@ -137,6 +172,21 @@ async function AtdPorSituacao(dataIni, dataFim) {
         result = e;
     }
     );
+    return result;
+}
+
+async function AtdPorCategoria(dataIni, dataFim) {
+    var result;
+    await $.ajax({
+        url: '/Atendimentos/AtendimentosPorCategoria',
+        type: 'post',
+        async: true,
+        cache: false,
+        data: { dataIni, dataFim },
+        dataType: 'Json'
+    }).then(function (e) {
+        result = e;
+    });
     return result;
 }
 

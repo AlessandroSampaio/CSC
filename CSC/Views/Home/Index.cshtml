@@ -33,7 +33,7 @@
                     <h4>Total de Atendimentos</h4>
                 </div>
                 <div class="card-body">
-                    <canvas id="AtdAbertos" aria-label="Atendimentos em aberto"></canvas>
+                    <canvas id="AtdAbertos" aria-label="Total de Atendimentos"></canvas>
                 </div>
             </div>
         </div>
@@ -43,7 +43,19 @@
                     <h4>Total de Atendimentos por funcionario</h4>
                 </div>
                 <div class="card-body">
-                    <canvas id="AtdPorFuncionarios" aria-label="Atendimentos em aberto"></canvas>
+                    <canvas id="AtdPorFuncionarios" aria-label="Atendimentos por Funcionario"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Atendimentos por Categoria</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="AtdCategoria" aria-label="Atendimentos por Categoria"></canvas>
                 </div>
             </div>
         </div>
@@ -51,7 +63,7 @@
 </div>
 
 @section Scripts
-    {
+{
     <script type="text/javascript" src="~/lib/ChartJS/Chart.min.js"></script>
     <script type="text/javascript" src="~/js/PainelDeControle.js"></script>
 }

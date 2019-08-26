@@ -1,6 +1,7 @@
 ﻿using CSC.Models;
 using CSC.Models.Enums;
 using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,17 +90,39 @@ namespace CSC.Services
             }
         }
 
-        public async Task<List<DesempenhoAnalista>> GetDesempenhoAnalistas(DateTime? inicio, DateTime? fim)
+        public async Task<List<DesempenhoAnalista>> GetDesempenhoAnalistas(DateTime inicio, DateTime fim)
         {
             //Verifica se foi fornecido valores de Data e retorna o intervalo
             if (inicio != null && fim != null)
             {
-                return await _context.DesempenhoAnalista.FromSql($"select * from desempenho_analista where abertura between {0} and {1}", inicio, fim).ToListAsync();
+                return await _context.DesempenhoAnalista.FromSql("SELECT u.UserId AS AnalistaId," +
+                    "u.Nome AS Analista, COUNT(1) AS TotalAtendimento, SUM((CASE WHEN(a.Status = 0) THEN 1 ELSE 0 END)) AS TotalAtendimentoAberto," +
+                    "SUM((CASE WHEN(a.Status = 1) THEN 1 ELSE 0 END)) AS TotalAtendimentoFechado," +
+                    "SUM((CASE WHEN(a.Status = 2) THEN 1 ELSE 0 END)) AS TotalAtendimentoTransferido," +
+                    "(datediff({1},{0}) + 1) AS TotalDias," +
+                    "(COUNT(1) / (datediff({1},{0}) + 1)) AS MediaAtendimento," +
+                    "SUM((CASE WHEN(a.AtendimentoTipo = 0) THEN 1 ELSE 0 END)) AS chaves," +
+                    "SUM((CASE WHEN(a.AtendimentoTipo = 2) THEN 1 ELSE 0 END)) AS operacional," +
+                    "SUM((CASE WHEN(a.AtendimentoTipo = 1) THEN 1 ELSE 0 END)) AS tecnico," +
+                    "SUM((CASE WHEN(a.AtendimentoTipo = 3) THEN 1 ELSE 0 END)) AS externo " +
+                    "FROM (atendimento a JOIN aspnetusers u ON((u.Id = a.UserId))) where a.abertura between {0} and {1} GROUP BY a.UserId ", inicio.ToString("yyyy/MM/dd"), fim.ToString("yyyy/MM/dd"))
+                    .ToListAsync();
             }
             //Caso não informado, retorna toda a view
             if (inicio == null && fim == null)
             {
-                return await _context.DesempenhoAnalista.FromSql($"select * from desempenho_analista").ToListAsync();
+                return await _context.DesempenhoAnalista.FromSql($"SELECT u.UserId AS AnalistaId," +
+                    $"u.Nome AS Analista, COUNT(1) AS TotalAtendimento, SUM((CASE WHEN(a.Status = 0) THEN 1 ELSE 0 END)) AS TotalAtendimentoAberto," +
+                    $"SUM((CASE WHEN(a.Status = 1) THEN 1 ELSE 0 END)) AS TotalAtendimentoFechado," +
+                    $"SUM((CASE WHEN(a.Status = 2) THEN 1 ELSE 0 END)) AS TotalAtendimentoTransferido," +
+                    $"(datediff(max(a.abertura),min(a.abertura)) + 1) AS TotalDias," +
+                    $"(COUNT(1) / (datediff(max(a.abertura),min(a.abertura)) + 1)) AS MediaAtendimento," +
+                    $"SUM((CASE WHEN(a.AtendimentoTipo = 0) THEN 1 ELSE 0 END)) AS chaves," +
+                    $"SUM((CASE WHEN(a.AtendimentoTipo = 2) THEN 1 ELSE 0 END)) AS operacional," +
+                    $"SUM((CASE WHEN(a.AtendimentoTipo = 1) THEN 1 ELSE 0 END)) AS tecnico," +
+                    $"SUM((CASE WHEN(a.AtendimentoTipo = 3) THEN 1 ELSE 0 END)) AS externo " +
+                    $"FROM (atendimento a JOIN aspnetusers u ON((u.Id = a.UserId))) GROUP BY a.UserId ").
+                    ToListAsync();
             }
             return null;
         }

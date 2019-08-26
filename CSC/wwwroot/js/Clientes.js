@@ -1,7 +1,8 @@
 ﻿$(document).ready(function () {
 
     var tableClientes = $('#TbClientes').DataTable({
-        dom: '<"top"P>p',
+        dom: "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-12 col-md-5'li><'col-sm-12 col-md-7'p>>",
         ajax: {
             url: '/Clientes/Listagem',
             dataSrc: ''
