@@ -277,18 +277,14 @@ namespace CSC.Controllers
                 DataInicio = DateTime.ParseExact(dataIni, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                 DataFinal = DateTime.ParseExact(dataFim, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
-            //var newList = new { Categoria, Atendimentos };
-            var lista = await _atendimentoServices.FindAllAsync();
-            Dictionary<string, int> result = new Dictionary<string, int>();
-
-            var tipos = Enum.GetValues(typeof(TipoAtendimento));
-            for (int x=0; x < tipos.Length; x++)
+            var lista = await _atendimentoServices.FindByDateIntervalAsync(DataInicio, DataFinal);
+            int[] CategoriasCount = new int[4];
+            for (int x=0; x < 4; x++)
             {
-
+                CategoriasCount.SetValue((lista.Where(a => a.AtendimentoTipo == (TipoAtendimento)x).Count()), x);
             }
-                        
-            return Json(lista.Where(a => a.Abertura >= DataInicio && a.Abertura <= DataFinal).GroupBy(a => a.AtendimentoTipo)
-                .Select(categoria => new { Categoria = categoria.Key, Atendimentos = categoria.Count() }));
+
+            return Json(CategoriasCount);
         }
     }
 }

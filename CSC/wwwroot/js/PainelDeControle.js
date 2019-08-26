@@ -77,11 +77,6 @@
 
             //Atendimentos por Categoria
             var categorias = await AtdPorCategoria(dataini, datafim);
-            var nameCategoria = categorias.map(categoria => categoria.categoria);
-            var totaisCategoria = categorias.map(categoria => categoria.atendimentos);
-            console.log(categorias);
-            console.log(nameCategoria);
-            console.log(totaisCategoria);
 
             //Gerando ChartJs
             AtdPorSit = new Chart(atdTotal, {
@@ -125,16 +120,24 @@
             AtdPorCat = new Chart(atdPorCat, {
                 type: 'bar',
                 data: {
-                    labels: nameCategoria,
+                    labels: ["Chave", "Técnico", "operacional", "Externo"],
                     datasets: [{
                         labels: "Numero de Atendimentos",
-                        backgroundColor: color,
-                        data: totaisCategoria
+                        backgroundColor: ["rgb(0, 184, 148)", "rgb(9, 132, 227)", "rgb(251, 197, 49)", "rgb(232, 65, 24)"],
+                        data: categorias
                     }]
                 },
                 options: {
                     legend: {
                         display: false
+                    },
+                    scales: {
+                        yAxes: [{
+                            display: true,
+                            ticks: {
+                                beginAtZero: true  
+                            }
+                        }]
                     }
                 }
             });
