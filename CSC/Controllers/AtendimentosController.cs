@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -122,9 +121,7 @@ namespace CSC.Controllers
             {
                 return RedirectToAction("Index");
             }
-            User user = new User();
             ViewBag.Controller = "Atendimentos \\ Novo";
-            ViewBag.user = user;
             ViewBag.TipoAtendimento = Enum.GetValues(typeof(TipoAtendimento)).Cast<TipoAtendimento>().Select(v => new SelectListItem
             {
                 Text = v.ToString(),
@@ -140,6 +137,18 @@ namespace CSC.Controllers
             {
                 ViewBag.user = new User();
                 return View(obj);
+            }
+            if (!obj.UserId.Equals(_userManager.GetUserId(User)))
+            {
+                ViewBag.Controller = "Atendimentos \\ Novo";
+                ViewBag.TipoAtendimento = Enum.GetValues(typeof(TipoAtendimento)).Cast<TipoAtendimento>().Select(v => new SelectListItem
+                {
+                    Text = v.ToString(),
+                    Value = ((int)v).ToString()
+                }).ToList();
+                ModelState.AddModelError(string.Empty, "Usuario não é o mesmo da abertura!");
+                var newAtd = _atendimentoServices.FindByIDAsync(obj.Id);
+                return View(newAtd);
             }
             await _atendimentoServices.UpdateAsync(obj);
             return RedirectToAction("Index");
