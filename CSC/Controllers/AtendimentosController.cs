@@ -268,7 +268,7 @@ namespace CSC.Controllers
             }
             var lista = await _atendimentoServices.FindAllAsync();
             return Json(lista.Where(a => a.Abertura >= DataInicio && a.Abertura <= DataFinal).GroupBy(func => func.User.Nome)
-                .Select(funcionario => new { Funcionario = funcionario.Key, Atendimentos = funcionario.Count() }));
+                .Select(funcionario => new { Funcionario = funcionario.Key, Atendimentos = funcionario.Count() }).OrderByDescending(a => a.Atendimentos));
         }
 
         [HttpPost]
