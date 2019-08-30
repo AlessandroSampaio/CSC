@@ -34,11 +34,12 @@ namespace CSC.Controllers
             _clienteServices = clienteServices;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             ViewBag.Controller = "Atendimentos";
             var users = _userManager.Users;
-            ViewBag.Funcionarios = await users.Select(v => new SelectListItem
+            ViewBag.Funcionarios = await users.Where(f => f.UserId != 1).Select(v => new SelectListItem
             {
                 Text = v.Nome,
                 Value = v.Id.ToString()

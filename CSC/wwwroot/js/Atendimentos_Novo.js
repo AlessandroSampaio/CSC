@@ -71,12 +71,13 @@
         "scrollX": "true",
         "columns": [
             { "data": "User.Nome" },
-            { "data": "Cliente.nome" },
+            { "data": "Abertura" },
             { "data": "Solicitante"},
             { "data": "AtendimentoTipo" },
             { "data": "Status" },
             { "data": "Detalhes" }
-        ]
+        ],
+        order: [1, 'desc']
     });
 
     Mono();
