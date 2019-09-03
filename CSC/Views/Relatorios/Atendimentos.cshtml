@@ -1,0 +1,75 @@
+﻿
+<div class="container-fluid">
+    <form method="post" target="_blank">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">< Title here ></h3>
+            </div>
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="col-4">
+                        <label class="col-form-label">Analista</label>
+                        <select id="Analista" name="Analista" asp-items="@ViewBag.Funcionarios" class="form-control form-control-sm mh-75" style="padding:5px 10px 0px 10px; height:calc(1.65rem + 6px)">
+                            <option value="0">Todos</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <label class="col-form-label">CNPJ</label>
+                        <input id="CNPJ"  class="form-control form-control-sm"/>
+                    </div>
+                    <div class="col-6">
+                        <label class="col-form-label">Cliente</label>
+                        <input id="RazaoSocial" class="form-control form-control-sm" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-2">
+                        <label class="col-form-label">Status</label>
+                        <select id="status" name="status" class="form-control form-control-sm" style="padding:5px 10px 0px 10px; height:calc(1.65rem + 6px)">
+                            <option value="3">Todos</option>
+                            <option value="1">Abertos</option>
+                            <option value="2">Fechados</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <label class="col-form-label">Status</label>
+                        <select id="status" name="status" class="form-control form-control-sm" style="padding:5px 10px 0px 10px; height:calc(1.65rem + 6px)">
+                            <option value="5">Todos</option>
+                            <option value="1">Chave</option>
+                            <option value="2">Tecnico</option>
+                            <option value="3">Operacional</option>
+                            <option value="4">Externo</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <label class="col-form-label">De :</label>
+                        <div id="datai" class="input-group date">
+                            <input id="DataInicial" type="text" class="form-control form-control-sm" name="DataInicial" required />
+                            <span class="input-group-addon" style="position:absolute; right:5px;"><i class="fa fa-calendar"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <label class="col-form-label">Até :</label>
+                        <div id="dataf" class="input-group date">
+                            <input id="DataFinal" type="text" class="form-control form-control-sm" name="DataFinal" required />
+                            <span class="input-group-addon" style="position:absolute; right:5px;"><i class="fa fa-calendar"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <label>&nbsp;</label>
+                        <button type="button" id="btnPesquisar" class="btn btn-block btn-primary">Gerar</button>
+                    </div>
+                    <div class="col-2">
+                        <label>&nbsp;</label>
+                        <button type="submit" asp-action="DesempenhoAnalistaPDF" id="btnImprimir" class="btn btn-block btn-primary">Imprimir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="~/js/RelAtendimentos.js"></script>
+
+}

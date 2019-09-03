@@ -35,7 +35,7 @@ namespace CSC.Controllers
         //Relatorio de Desempenho por Analista
         public IActionResult DesempenhoAnalista()
         {
-            ViewBag.Controller = "Atendimentos por Analistas";
+            ViewBag.Controller = "Desempenho por Analista";
             var list = _userManager.Users.ToList();
             ViewBag.Funcionarios = list.Select(v => new SelectListItem
             {
@@ -51,7 +51,7 @@ namespace CSC.Controllers
         public async Task<IActionResult> DesempenhoAnalistaPDF(int Analista, string dataInicial, string dataFinal, int tipo)
         {
             var desempenho = await _atendimentoServices.GetDesempenhoAnalistas(DateTime.ParseExact(dataInicial, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(dataFinal, "dd/MM/yyyy", CultureInfo.InvariantCulture));
-            if(Analista != 0)
+            if (Analista != 0)
             {
                 desempenho.Where(a => a.AnalistaId == Analista).ToList();
 
@@ -68,41 +68,22 @@ namespace CSC.Controllers
 
         public IActionResult AtendimentosCliente()
         {
-            ViewBag.Controller = "Relatorio de Atendimentos por Cliente";
-            ViewBag.user = new User();
+            ViewBag.Controller = "Desempenho por Analista";
             return View();
         }
 
-        public IActionResult DadosCliente()
+        [HttpGet]
+        public IActionResult Atendimentos()
         {
-            ViewBag.Controller = "Clientes";
-            ViewBag.user = new User();
-            return View();
-        }
-
-        public async Task<IActionResult> DadosClientePDF(int tipo)
-        {
-            var _clientList = await _clienteServices.FindAllAsync();
-            if (tipo == 0)
+            var list = _userManager.Users.ToList();
+            ViewBag.Funcionarios = list.Select(v => new SelectListItem
             {
-                return new ViewAsPdf("DadosClientePDF", _clientList)
-                {
-                    PageSize = Rotativa.AspNetCore.Options.Size.A4,
-                    CustomSwitches = "--footer-right \" [page]/[toPage]\"" +
-          " --footer-line --footer-font-size \"10\" --footer-spacing 1 --footer-font-name \"Times New Roman\""
-                };
-            }
-            else
-            {
-                return View();
-            }
-        }
-
-        public IActionResult DetalhesTarefa()
-        {
-            ViewBag.Controller = "Tarefas";
-            ViewBag.user = new User();
+                Text = v.Nome,
+                Value = v.UserId.ToString()
+            }).ToList();
+            ViewBag.Controller = "Listagem de Atendimentos";
             return View();
         }
+
     }
 }

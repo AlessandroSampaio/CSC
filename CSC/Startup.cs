@@ -77,7 +77,6 @@ namespace CSC
             {
                 // Cookie settings  
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                 options.LoginPath = "/Home/Login";
                 options.LogoutPath = "/Home/Logout";
                 options.AccessDeniedPath = "/Home/AccessDenied";
