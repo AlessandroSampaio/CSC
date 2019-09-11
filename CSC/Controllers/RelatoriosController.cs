@@ -1,4 +1,5 @@
 ﻿using CSC.Models;
+using CSC.Models.Enums;
 using CSC.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -7,9 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Rotativa.AspNetCore;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace CSC.Controllers
@@ -66,12 +67,6 @@ namespace CSC.Controllers
             }
         }
 
-        public IActionResult AtendimentosCliente()
-        {
-            ViewBag.Controller = "Desempenho por Analista";
-            return View();
-        }
-
         [HttpGet]
         public IActionResult Atendimentos()
         {
@@ -84,6 +79,59 @@ namespace CSC.Controllers
             ViewBag.Controller = "Listagem de Atendimentos";
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Atendimentos(string CNPJ, int Analista, int Status, int Tipo, DateTime dataInicial, DateTime dataFinal)
+        {
+            try
+            {
+                
+                return new ViewAsPdf("Atendimentos");
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+
+        }
+
+        #region Helper
+        public Func<TSource, bool> DynamicFilter<TSource>(string field, string value)
+        {
+            var type = typeof(TSource);
+            var pe = Expression.Parameter(type, field);
+            var dates = type.GetProperties()
+                .Where(p => p.PropertyType == typeof(DateTime));
+            Expression busca = Expression.Constant(value);
+            Expression selectLeft = null;
+            Expression selectRight = null;
+            Expression filterExpression = null;
+            foreach (var date in dates)
+            {
+                Expression left = Expression.Property(pe, value);
+                Expression comparison =
+                    Expression.Equal(left, busca);
+                if (selectLeft == null)
+                {
+                    selectLeft = comparison;
+                    filterExpression = selectLeft;
+                    continue;
+                }
+                if (selectRight == null)
+                {
+                    selectRight = comparison;
+                    filterExpression =
+                        Expression.AndAlso(selectLeft, selectRight);
+                    continue;
+                }
+                filterExpression =
+                    Expression.AndAlso(filterExpression, comparison);
+            }
+            return Expression.Lambda<Func<TSource, bool>>
+                (filterExpression, pe).Compile();
+        }
+
+        #endregion
 
     }
 }

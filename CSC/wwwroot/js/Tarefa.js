@@ -54,7 +54,7 @@
                     data: "Id",
                     render: function (data) {
                         return '<div class="btn-group btn-group-justified">' +
-                            '<a class="btn btn-primary " title="Editar" href="Tarefas\\Editar\\' + data + '"><i class="fas fa-pen"></i></a>' +
+                            '<a class="btn btn-primary " title="Editar" href="Editar\\' + data + '"><i class="fas fa-pen"></i></a>' +
                             '<button data-id="' + data +'" title="Concluir Tarefa" class="btn btn-primary concluirTarefa"><i class="fas fa-times"></i></button>' +
                             '</div>';
                     }

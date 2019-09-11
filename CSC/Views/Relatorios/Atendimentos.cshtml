@@ -15,7 +15,7 @@
                     </div>
                     <div class="col-2">
                         <label class="col-form-label">CNPJ</label>
-                        <input id="CNPJ"  class="form-control form-control-sm"/>
+                        <input id="CNPJ" name="CNPJ" class="form-control form-control-sm"/>
                     </div>
                     <div class="col-6">
                         <label class="col-form-label">Cliente</label>
@@ -25,20 +25,21 @@
                 <div class="form-row">
                     <div class="col-2">
                         <label class="col-form-label">Status</label>
-                        <select id="status" name="status" class="form-control form-control-sm" style="padding:5px 10px 0px 10px; height:calc(1.65rem + 6px)">
+                        <select id="Status" name="Status" class="form-control form-control-sm" style="padding:5px 10px 0px 10px; height:calc(1.65rem + 6px)">
                             <option value="3">Todos</option>
-                            <option value="1">Abertos</option>
-                            <option value="2">Fechados</option>
+                            <option value="0">Abertos</option>
+                            <option value="1">Fechados</option>
+                            <option value="2">Transferidos</option>
                         </select>
                     </div>
                     <div class="col-2">
                         <label class="col-form-label">Status</label>
-                        <select id="status" name="status" class="form-control form-control-sm" style="padding:5px 10px 0px 10px; height:calc(1.65rem + 6px)">
-                            <option value="5">Todos</option>
-                            <option value="1">Chave</option>
-                            <option value="2">Tecnico</option>
-                            <option value="3">Operacional</option>
-                            <option value="4">Externo</option>
+                        <select id="Tipo" name="Tipo" class="form-control form-control-sm" style="padding:5px 10px 0px 10px; height:calc(1.65rem + 6px)">
+                            <option value="4">Todos</option>
+                            <option value="0">Chave</option>
+                            <option value="1">Tecnico</option>
+                            <option value="2">Operacional</option>
+                            <option value="3">Externo</option>
                         </select>
                     </div>
                     <div class="col-2">
@@ -61,7 +62,7 @@
                     </div>
                     <div class="col-2">
                         <label>&nbsp;</label>
-                        <button type="submit" asp-action="DesempenhoAnalistaPDF" id="btnImprimir" class="btn btn-block btn-primary">Imprimir</button>
+                        <button type="submit" asp-action="Atendimentos" id="btnImprimir" class="btn btn-block btn-primary">Imprimir</button>
                     </div>
                 </div>
             </div>

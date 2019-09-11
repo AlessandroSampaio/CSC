@@ -1,7 +1,6 @@
 ﻿using CSC.Models;
 using CSC.Models.Enums;
 using Microsoft.EntityFrameworkCore;
-using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -131,5 +130,6 @@ namespace CSC.Services
         {
             return await _context.Atendimento.ToListAsync();
         }
+
     }
 }
