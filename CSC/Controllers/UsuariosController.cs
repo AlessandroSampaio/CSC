@@ -263,9 +263,9 @@ namespace CSC.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AlterarSenha(string userName, string password)
         {
+
             if (password == null)
             {
                 throw new ArgumentNullException(nameof(password));
