@@ -100,9 +100,11 @@
 @section Scripts {
     @if (User.IsInRole("Admin"))
     {
-        <script type="text/javascript" src="~/js/AdminAtendimentos.js"></script>
+    <script type="text/javascript" src="~/js/AdminAtendimentos.js"></script>
     }
     else
     {
-        <script type="text/javascript" src="~/js/Atendimentos.js"></script>
-    }}
+    <script type="text/javascript" src="~/js/Atendimentos.js"></script>
+    }
+    <script src="https://cdn.datatables.net/plug-ins/1.10.12/sorting/date-eu.js"></script>
+}

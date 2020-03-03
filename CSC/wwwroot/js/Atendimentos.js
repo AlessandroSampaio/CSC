@@ -13,7 +13,10 @@
             { "data": "User.Nome" },
             { "data": "Cliente.nome" },
             { "data": "Cliente.fantasia" },
-            { "data": "Abertura" },
+            {
+                "data": "Abertura",
+                "type": "date-eu"
+            },
             { "data": "Status" },
             { "data": "Id" }
         ],
